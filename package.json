@@ -12,14 +12,14 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@astrojs/check": "latest",
-    "astro": "latest",
-    "typescript": "latest",
-    "yaml": "latest"
+    "@astrojs/check": "0.9.12",
+    "astro": "7.4.4",
+    "typescript": "6.0.3",
+    "yaml": "2.9.1"
   },
   "devDependencies": {
-    "@axe-core/playwright": "latest",
-    "@playwright/test": "latest",
-    "@types/node": "latest"
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.6"
   }
 }

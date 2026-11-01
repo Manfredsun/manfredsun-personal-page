@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import type { CollectionEntry } from "astro:content";
 import EmptySlot from "./EmptySlot.astro";
 interface Props { work: CollectionEntry<"works">; }
@@ -7,7 +8,7 @@ const { data } = work;
 ---
 {data.gallery.length > 0 ? <section class="project-media" aria-label="作品圖片">
   <h2>作品圖片</h2><div class="project-gallery">
-    {data.gallery.map((item) => <figure><img src={item.src} alt={item.alt} width={item.width || 1600} height={item.height || 1000} loading="lazy" decoding="async" />{item.caption && <figcaption>{item.caption}</figcaption>}</figure>)}
+    {data.gallery.map((item) => <figure><img src={sitePath(item.src)} alt={item.alt} width={item.width || 1600} height={item.height || 1000} loading="lazy" decoding="async" />{item.caption && <figcaption>{item.caption}</figcaption>}</figure>)}
   </div>
 </section> : <EmptySlot label="作品圖片" source={`src/content/works/${data.slug}.md → gallery`} />}
 {data.media.length > 0 ? <section class="project-media" aria-labelledby="project-media-title">
@@ -15,8 +16,8 @@ const { data } = work;
   {data.media.map((item) => <figure class="media-item">
     {item.type === "link" ? <a class="text-link" href={item.url} target="_blank" rel="noopener noreferrer">{item.label} ↗</a> : <>
       <figcaption>{item.label}</figcaption>
-      {item.type === "audio" ? <audio controls preload="none" src={item.url} aria-label={item.label} /> : <video controls preload="none" src={item.url} poster={item.poster || undefined} aria-label={item.label}>
-        {item.captions && <track kind="captions" src={item.captions} srclang="zh-Hant" label="繁體中文" default />}
+      {item.type === "audio" ? <audio controls preload="none" src={sitePath(item.url)} aria-label={item.label} /> : <video controls preload="none" src={sitePath(item.url)} poster={item.poster ? sitePath(item.poster) : undefined} aria-label={item.label}>
+        {item.captions && <track kind="captions" src={sitePath(item.captions)} srclang="zh-Hant" label="繁體中文" default />}
       </video>}
       {item.transcript && <details><summary>文字說明／逐字稿</summary><p>{item.transcript}</p></details>}
     </>}

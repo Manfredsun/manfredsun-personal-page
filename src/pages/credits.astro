@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import Copy from "../components/Copy.astro";
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -49,7 +50,7 @@ const categories = [...new Set(publicProjects.map((credit) => credit.category))]
           <li class="credits-table__row" data-year={credit.year || ""} data-category={credit.category} data-roles={credit.roles.join("|")}>
             <div class="credit-project">
               {caseSlugs.has(credit.work_slug)
-                ? <a href={`/works/${credit.work_slug}/`}>{credit.project}</a>
+                ? <a href={sitePath(`/works/${credit.work_slug}/`)}>{credit.project}</a>
                 : credit.external_url
                   ? <a href={credit.external_url} target="_blank" rel="noopener noreferrer">{credit.project} <span aria-hidden="true">↗</span></a>
                   : <strong>{credit.project}</strong>}

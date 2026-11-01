@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import { site } from "../data/site";
 ---
 <footer class="site-footer">
@@ -6,7 +7,7 @@ import { site } from "../data/site";
     <p class="site-footer__name">{site.name}<br /><span>{site.alternate_name}</span></p>
     <p>{site.roles}<br />{site.theatre_role}</p>
     <div>
-      <a href="/contact/">Start a conversation <span aria-hidden="true">↗</span></a>
+      <a href={sitePath("/contact/")}>Start a conversation <span aria-hidden="true">↗</span></a>
       <p>{site.location}</p>
     </div>
   </div>

@@ -1,3 +1,4 @@
 ---
-return Astro.redirect('/credits/', 301);
+import { sitePath } from "../utils/paths";
+return Astro.redirect(sitePath('/credits/'), 301);
 ---

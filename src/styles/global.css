@@ -57,7 +57,7 @@ img {
 
 ::selection {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-text);
 }
 
 .skip-link {
@@ -173,7 +173,7 @@ img {
 .filter-bar__button[aria-pressed="true"] {
   border-color: var(--accent);
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-text);
 }
 
 .filter-bar__button:active { transform: scale(.97); }
@@ -181,7 +181,7 @@ img {
 .button--primary {
   border-color: var(--accent);
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-text);
 }
 
 .button:hover {

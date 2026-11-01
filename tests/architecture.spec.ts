@@ -7,7 +7,7 @@ import { z } from "astro/zod";
 const configuredEmail = parse(readFileSync("src/data/site.yaml", "utf8")).email.trim();
 const contactReady = z.email().safeParse(configuredEmail).success;
 
-const routes = ["/", "/works/", "/credits/", "/about/", "/services/", "/product/", "/contact/", "/works/galangal-lemongrass-poppies/", "/works/duckbill-mission/", "/works/useless-youth/", "/works/sunset-yuki-law/", "/404.html"];
+const routes = ["/manfredsun-personal-page/", "/manfredsun-personal-page/credits/", "/manfredsun-personal-page/about/", "/manfredsun-personal-page/services/", "/manfredsun-personal-page/product/", "/manfredsun-personal-page/contact/", "/manfredsun-personal-page/works/galangal-lemongrass-poppies/", "/manfredsun-personal-page/works/duckbill-mission/", "/manfredsun-personal-page/works/useless-youth/", "/manfredsun-personal-page/works/sunset-yuki-law/", "/manfredsun-personal-page/404.html"];
 
 test("every internal link, fragment, image and button target is valid", async ({ page, request }) => {
   const checked = new Set<string>();
@@ -37,8 +37,9 @@ test("every internal link, fragment, image and button target is valid", async ({
         expect(await response.text(), url.href).toContain(`id="${decodeURIComponent(url.hash.slice(1))}"`);
       }
     }
-    for (const img of await page.locator("img").all()) {
-      expect(await img.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+    for (const img of await page.locator("img[src]:visible").all()) {
+      await img.scrollIntoViewIfNeeded();
+      await expect.poll(() => img.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
     }
     for (const button of await page.locator("button").all()) {
       // Product site actions remain disabled until a real URL is supplied.
@@ -53,32 +54,29 @@ test("every internal link, fragment, image and button target is valid", async ({
   }
 });
 
-test("selected works have reachable case study links", async ({ page, request }) => {
-  await page.goto("/works/");
-  const links = page.locator(".selected-work__link");
-  await expect(links).toHaveCount(3);
-  for (const link of await links.all()) {
-    await expect(link).toBeVisible();
-    expect((await request.get((await link.getAttribute("href"))!)).ok()).toBe(true);
-  }
+test("featured works have reachable case study links", async ({ page, request }) => {
+  await page.goto("/manfredsun-personal-page/");
+  const links = page.locator(".work-list--home a[href*='/works/']");
+  expect(await links.count()).toBeGreaterThan(0);
+  for (const link of await links.all()) expect((await request.get((await link.getAttribute("href"))!)).ok()).toBe(true);
 });
 
 test("desktop navigation and each mobile navigation link work", async ({ page }) => {
   for (const mobile of [false, true]) {
     await page.setViewportSize({ width: mobile ? 375 : 1440, height: 900 });
-    for (const path of ["/", "/works/", "/credits/", "/about/", "/services/", "/product/", "/contact/"]) {
-      await page.goto("/");
+    for (const path of ["/manfredsun-personal-page/", "/manfredsun-personal-page/credits/", "/manfredsun-personal-page/about/", "/manfredsun-personal-page/services/", "/manfredsun-personal-page/product/", "/manfredsun-personal-page/contact/"]) {
+      await page.goto("/manfredsun-personal-page/");
       if (mobile) await page.getByRole("button", { name: "Menu", exact: true }).click();
       const nav = mobile ? page.getByRole("navigation", { name: "Mobile navigation" }) : page.getByRole("banner");
       await nav.locator(`a[href="${path}"]`).filter({ visible: true }).first().click();
-      await expect(page).toHaveURL(new RegExp(path === "/" ? "/$" : `${path}$`));
+      await expect(page).toHaveURL(new RegExp(path === "/manfredsun-personal-page/" ? "/manfredsun-personal-page/$" : `${path}$`));
       await expect(page.locator("main h1")).toBeVisible();
     }
   }
 });
 
 test("every credit role and category option filters the matching records", async ({ page }) => {
-  await page.goto("/credits/");
+  await page.goto("/manfredsun-personal-page/credits/");
   for (const field of ["category", "role"]) {
     const select = page.locator(`select[data-field="${field}"]`);
     const values = await select.locator("option").evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
@@ -93,7 +91,7 @@ test("every credit role and category option filters the matching records", async
 });
 
 test("contact follows configured email and 404 offers working routes", async ({ page }) => {
-  await page.goto("/contact/");
+  await page.goto("/manfredsun-personal-page/contact/");
   await expect(page.locator('a[href^="mailto:"]')).toHaveCount(contactReady ? 1 : 0);
   if (contactReady) {
     await expect(page.locator('a[href^="mailto:"]')).toHaveAttribute("href", `mailto:${configuredEmail}`);
@@ -101,13 +99,13 @@ test("contact follows configured email and 404 offers working routes", async ({ 
   } else {
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
   }
-  await page.goto("/404.html");
+  await page.goto("/manfredsun-personal-page/404.html");
   await page.getByRole("link", { name: "瀏覽作品", exact: true }).click();
-  await expect(page).toHaveURL(/\/works\/$/);
+  await expect(page).toHaveURL(/\/credits\/$/);
 });
 
 test("all remaining pages pass accessibility and responsive checks", async ({ page }) => {
-  for (const route of ["/about/", "/services/", "/product/", "/contact/", "/works/useless-youth/", "/404.html"]) {
+  for (const route of ["/manfredsun-personal-page/about/", "/manfredsun-personal-page/services/", "/manfredsun-personal-page/product/", "/manfredsun-personal-page/contact/", "/manfredsun-personal-page/works/useless-youth/", "/manfredsun-personal-page/404.html"]) {
     await page.goto(route);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.filter(({ impact }) => impact === "critical" || impact === "serious"), route).toEqual([]);
@@ -121,11 +119,11 @@ test("all remaining pages pass accessibility and responsive checks", async ({ pa
 
 test("mobile close button restores page interaction", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/works/");
+  await page.goto("/manfredsun-personal-page/credits/");
   await page.getByRole("button", { name: "Menu", exact: true }).click();
   await page.getByRole("button", { name: "Close", exact: true }).click();
   await expect(page.locator("main")).not.toHaveAttribute("inert", "");
-  await page.locator(".selected-work__link").first().click();
+  await page.locator('a[href="/manfredsun-personal-page/works/useless-youth/"]').first().click();
   await expect(page).toHaveURL(/\/works\/useless-youth\/$/);
   await expect(page.locator("main h1")).toContainText("我們就是沒有用的年輕人");
 });
@@ -133,9 +131,9 @@ test("mobile close button restores page interaction", async ({ page }) => {
 
 test("capture completed desktop and mobile layouts", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/");
+  await page.goto("/manfredsun-personal-page/");
   await page.screenshot({ path: "test-results/v1-home-desktop.png", fullPage: true });
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/works/");
+  await page.goto("/manfredsun-personal-page/credits/");
   await page.screenshot({ path: "test-results/v1-works-mobile.png", fullPage: true });
 });

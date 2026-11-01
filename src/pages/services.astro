@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import Copy from "../components/Copy.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getServices } from "../data/services";
@@ -27,7 +28,7 @@ const services = await getServices();
   <section class="services-cta shell">
     <p class="eyebrow">New Project</p>
     <Copy name="services/contact-heading" as="h2" />
-    <a class="button button--primary" href="/contact/">Request a Quote <span aria-hidden="true">↗</span></a>
+    <a class="button button--primary" href={sitePath("/contact/")}>Request a Quote <span aria-hidden="true">↗</span></a>
   </section>
 </BaseLayout>
 

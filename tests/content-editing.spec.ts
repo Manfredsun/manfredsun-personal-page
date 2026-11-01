@@ -14,7 +14,7 @@ test("isolated authoring: blanks, Markdown, skeleton, media, contact and product
   const fixture = await mkdtemp(path.join(tmpdir(), "portfolio-authoring-"));
   let server: ReturnType<typeof spawn> | undefined;
   let logs = "";
-  const url = "http://127.0.0.1:4332";
+  const url = "http://127.0.0.1:4332/manfredsun-personal-page";
   try {
     for (const name of ["src", "public", "astro.config.mjs", "package.json", "tsconfig.json"]) await cp(path.join(root, name), path.join(fixture, name), { recursive: true });
     await symlink(path.join(root, "node_modules"), path.join(fixture, "node_modules"));
@@ -83,6 +83,7 @@ test("isolated authoring: blanks, Markdown, skeleton, media, contact and product
     const settings = parse(await readFile(settingsPath, "utf8"));
     settings.email = "not-an-email";
     await writeFile(settingsPath, stringify(settings));
+    await expect.poll(async () => (await (await request.get(`${url}/contact/`)).text()).includes("noindex, nofollow"), { timeout: 15_000 }).toBe(true);
     await page.goto(`${url}/contact/`);
     await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
@@ -160,7 +161,7 @@ test("isolated authoring: blanks, Markdown, skeleton, media, contact and product
       await page.setViewportSize({ width, height: 900 });
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
     }
-    await page.goto(`${url}/works/`);
+    await page.goto(`${url}/`);
     await expect(page.getByAltText("測試封面")).toHaveCount(1);
 
     // Stop dev before building to ensure production is genuinely independent.

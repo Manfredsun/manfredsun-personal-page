@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import PreviewControls from "../components/PreviewControls.astro";
 import { site } from "../data/site";
 import Header from "../components/Header.astro";
@@ -21,9 +22,9 @@ const {
   noindex = false,
 } = Astro.props;
 
-const canonical = new URL(canonicalPath, Astro.site);
+const canonical = new URL(sitePath(canonicalPath), Astro.site);
 const shareImage = site.social_image.trim() || image;
-const socialImage = shareImage ? new URL(shareImage, Astro.site) : undefined;
+const socialImage = shareImage ? new URL(sitePath(shareImage), Astro.site) : undefined;
 ---
 
 <!doctype html>

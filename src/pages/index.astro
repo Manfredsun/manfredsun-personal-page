@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import Copy from "../components/Copy.astro";
@@ -26,7 +27,7 @@ const personSchema = {
     { "@type": "Place", name: "Hong Kong" },
     { "@type": "Place", name: "Taiwan" },
   ],
-  url: "https://manfredsun.github.io/",
+  url: new URL(sitePath("/"), Astro.site).href,
 };
 ---
 
@@ -44,7 +45,7 @@ const personSchema = {
         <p class="hero__role">{site.theatre_role}</p>
         <div class="hero__actions">
           <a class="button button--primary" href="#selected-works">Selected Works <span aria-hidden="true">↓</span></a>
-          <a class="button" href="/contact/">Contact <span aria-hidden="true">↗</span></a>
+          <a class="button" href={sitePath("/contact/")}>Contact <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     <div class="hero__media">
@@ -82,7 +83,7 @@ const personSchema = {
       <p class="eyebrow">About</p>
       <Copy name="home/about-heading" as="h2" />
       <Copy name="home/about-intro" as="p" />
-      <a class="text-link" href="/about/">More about Manfred <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="text-link" href={sitePath("/about/")}>More about Manfred <span class="arrow" aria-hidden="true">→</span></a>
     </article>
 
     <article class="services-preview">
@@ -91,7 +92,7 @@ const personSchema = {
       <ul>
         {services.map((service) => <li>{service.data.english}</li>)}
       </ul>
-      <a class="text-link" href="/services/">View services <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="text-link" href={sitePath("/services/")}>View services <span class="arrow" aria-hidden="true">→</span></a>
     </article>
   </section>
 
@@ -101,7 +102,7 @@ const personSchema = {
         <p class="eyebrow">New Project</p>
         <Copy name="home/contact-heading" as="h2" id="contact-title" />
       </div>
-      <a class="button button--primary" href="/contact/">Request a Quote <span aria-hidden="true">↗</span></a>
+      <a class="button button--primary" href={sitePath("/contact/")}>Request a Quote <span aria-hidden="true">↗</span></a>
     </div>
   </section>
 </BaseLayout>

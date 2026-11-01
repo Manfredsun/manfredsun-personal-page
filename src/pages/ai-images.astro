@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 // Add future images here in the order they should appear in the gallery.
@@ -24,8 +25,8 @@ const images = [
     <div class="gallery__heading"><span>Selected Images</span><span>{String(images.length).padStart(2, "0")} Works</span></div>
     <div class="gallery__grid">
       {images.map((image, index) => (
-        <a class:list={["gallery__item", { "gallery__item--wide": index === 0 || image.file === "ships" }]} href={`/images/ai-images/${image.file}.webp`} data-gallery-item aria-label={`放大圖片：${image.alt}`}>
-          <img src={`/images/ai-images/${image.file}.webp`} alt={image.alt} width={image.width} height={image.height} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+        <a class:list={["gallery__item", { "gallery__item--wide": index === 0 || image.file === "ships" }]} href={sitePath(`/images/ai-images/${image.file}.webp`)} data-gallery-item aria-label={`放大圖片：${image.alt}`}>
+          <img src={sitePath(`/images/ai-images/${image.file}.webp`)} alt={image.alt} width={image.width} height={image.height} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
           <span class="gallery__number" aria-hidden="true">{String(index + 1).padStart(2, "0")} <span>↗</span></span>
           <span class="gallery__title">{image.title}</span>
           <span class="gallery__description">{image.description}</span>

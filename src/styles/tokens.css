@@ -5,6 +5,7 @@
   --ink: #18181a;
   --muted-ink: #5e5e63;
   --accent: #9d2f22;
+  --accent-text: #fff;
   --accent-inverse: #ff7162;
   --separator: #d8d8d4;
   --glass: rgb(245 245 242 / 72%);
@@ -24,6 +25,7 @@
     --ink: #f5f5f7;
     --muted-ink: #b5b5bb;
     --accent: #ff7162;
+    --accent-text: #18181a;
     --accent-inverse: #9d2f22;
     --separator: #3a3a3c;
     --glass: rgb(14 14 16 / 72%);

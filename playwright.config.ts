@@ -9,8 +9,8 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "python3 -m http.server 4331 --bind 127.0.0.1 --directory dist",
-    url: "http://127.0.0.1:4331",
+    command: "npm run preview -- --host 127.0.0.1 --port 4331 --ignore-lock",
+    url: "http://127.0.0.1:4331/manfredsun-personal-page/",
     reuseExistingServer: false,
     timeout: 120_000,
     stdout: "ignore",

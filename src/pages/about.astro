@@ -1,4 +1,5 @@
 ---
+import { sitePath } from "../utils/paths";
 import Copy from "../components/Copy.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
@@ -25,16 +26,16 @@ const selectedWorks = sortWorks((await getCollection("works")).filter(({ data })
     <div class="about-body__copy">
       <Copy name="about/bio" as="p" />
       <Copy name="about/story" as="p" />
-      <a class="text-link" href="/services/">Explore services <span aria-hidden="true">→</span></a>
+      <a class="text-link" href={sitePath("/services/")}>Explore services <span aria-hidden="true">→</span></a>
     </div>
   </section>
   <section class="about-work shell" aria-labelledby="about-work-title">
     <p class="eyebrow">Selected Experience</p>
     <h2 id="about-work-title">作品與職務</h2>
     <ul>
-      {selectedWorks.map((work) => <li><a href={`/works/${work.data.slug}/`}>{work.data.title}</a><span>{publicRoles(work).join(" · ")}</span></li>)}
+      {selectedWorks.map((work) => <li><a href={sitePath(`/works/${work.data.slug}/`)}>{work.data.title}</a><span>{publicRoles(work).join(" · ")}</span></li>)}
     </ul>
-    <a class="text-link" href="/credits/">Previous Work List <span aria-hidden="true">→</span></a>
+    <a class="text-link" href={sitePath("/credits/")}>Previous Work List <span aria-hidden="true">→</span></a>
   </section>
   <section class="shell optional-sections" aria-label="更多背景">
     <Copy name="about/areas" title="工作領域" class="optional-copy" />
