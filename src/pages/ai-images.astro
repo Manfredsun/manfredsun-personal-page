@@ -1,0 +1,99 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Add future images here in the order they should appear in the gallery.
+const images = [
+  { file: "57500", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面，並使用實景參考。", alt: "車站大廳裡，一位背著背包的女子站在人群中", width: 1344, height: 768 },
+  { file: "57498", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面。", alt: "背著背包的女子站在餐廳門外，窗內有人聚餐", width: 1344, height: 768 },
+  { file: "57499", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面，並使用實景參考。", alt: "背著背包的女子走在綠樹成蔭的街道上", width: 1344, height: 768 },
+  { file: "57502", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面。", alt: "戴草帽的農夫在藍天下耕作", width: 1344, height: 768 },
+  { file: "57503", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面，並使用實景參考。", alt: "車廂內顯示萬華、台北及松山的電子站牌", width: 1344, height: 768 },
+  { file: "57497", title: "NTFS Editor Icon Design", description: "程式圖像設計。", alt: "以手繪水彩風格呈現的外接硬碟圖示", width: 1024, height: 1024 },
+  { file: "ships", title: "AI 遊戲素材生成", description: "使用 AI 生成遊戲素材畫面。", alt: "四艘橙色球形飛船的插畫", width: 903, height: 218 },
+];
+---
+
+<BaseLayout title="AI Images — Manfred Sun" description="申承羲 Manfred Sun 的 AI 圖像作品選集。" canonicalPath="/ai-images/">
+  <section class="page-hero shell ai-hero">
+    <p class="eyebrow">Visual Portfolio</p>
+    <h1 class="display">AI Images</h1>
+    <p class="page-hero__lede">以 AI 創作的圖像選集，從場景到插畫，記錄不同的視覺想像。</p>
+  </section>
+
+  <section class="gallery shell" aria-label="AI 圖像作品">
+    <div class="gallery__heading"><span>Selected Images</span><span>{String(images.length).padStart(2, "0")} Works</span></div>
+    <div class="gallery__grid">
+      {images.map((image, index) => (
+        <a class:list={["gallery__item", { "gallery__item--wide": index === 0 || image.file === "ships" }]} href={`/images/ai-images/${image.file}.webp`} data-gallery-item aria-label={`放大圖片：${image.alt}`}>
+          <img src={`/images/ai-images/${image.file}.webp`} alt={image.alt} width={image.width} height={image.height} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+          <span class="gallery__number" aria-hidden="true">{String(index + 1).padStart(2, "0")} <span>↗</span></span>
+          <span class="gallery__title">{image.title}</span>
+          <span class="gallery__description">{image.description}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <dialog class="viewer" aria-label="圖片放大檢視" data-viewer>
+    <div class="viewer__bar"><span data-counter></span><button type="button" data-close aria-label="關閉圖片">Close ×</button></div>
+    <div class="viewer__image"><img data-viewer-image src="" alt="" /></div>
+    <div class="viewer__controls"><button type="button" data-previous aria-label="上一張圖片">← Previous</button><button type="button" data-next aria-label="下一張圖片">Next →</button></div>
+  </dialog>
+</BaseLayout>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("[data-viewer]");
+  const items = [...document.querySelectorAll<HTMLAnchorElement>("[data-gallery-item]")];
+  const display = dialog?.querySelector<HTMLImageElement>("[data-viewer-image]");
+  const counter = dialog?.querySelector<HTMLElement>("[data-counter]");
+  let current = 0;
+  let opener: HTMLAnchorElement | undefined;
+  const show = (index: number) => {
+    if (!display || !counter) return;
+    current = (index + items.length) % items.length;
+    const source = items[current].querySelector("img");
+    display.src = items[current].href;
+    display.alt = source?.alt ?? "";
+    counter.textContent = `${String(current + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
+  };
+  if (dialog && typeof dialog.showModal === "function") {
+    items.forEach((item, index) => item.addEventListener("click", (event) => {
+      event.preventDefault();
+      opener = item;
+      show(index);
+      dialog.showModal();
+      dialog.querySelector<HTMLButtonElement>("[data-close]")?.focus();
+    }));
+    dialog.querySelector("[data-close]")?.addEventListener("click", () => dialog.close());
+    dialog.querySelector("[data-previous]")?.addEventListener("click", () => show(current - 1));
+    dialog.querySelector("[data-next]")?.addEventListener("click", () => show(current + 1));
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+    });
+    dialog.addEventListener("close", () => opener?.focus());
+  }
+</script>
+
+<style>
+  .ai-hero { padding-bottom: clamp(3rem, 7vw, 6rem); }
+  .gallery { padding-bottom: clamp(5rem, 10vw, 10rem); }
+  .gallery__heading { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--ink); font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .gallery__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: clamp(1.5rem, 3vw, 3rem); }
+  .gallery__item { display: block; min-width: 0; color: inherit; text-decoration: none; }
+  .gallery__item--wide { grid-column: 1 / -1; }
+  .gallery__item img { display: block; width: 100%; height: auto; }
+  .gallery__number { display: flex; justify-content: space-between; padding-top: .65rem; color: var(--muted-ink); font-size: .8rem; letter-spacing: .1em; }
+  .gallery__title { display: block; margin-top: .8rem; font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.5rem); }
+  .gallery__description { display: block; margin-top: .4rem; color: var(--muted-ink); font-size: .95rem; line-height: 1.6; }
+  .gallery__item:hover .gallery__number { color: var(--accent); }
+  .viewer { position: fixed; width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; padding: clamp(1rem, 3vw, 2.5rem); border: 0; background: #18181a; color: #f5f5f7; }
+  .viewer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 1rem; }
+  .viewer::backdrop { background: #18181a; }
+  .viewer__bar, .viewer__controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+  .viewer button { min-height: 2.75rem; padding: .5rem; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+  .viewer button:focus-visible { outline: 2px solid #ff7162; outline-offset: 2px; }
+  .viewer__image { display: flex; min-height: 0; align-items: center; justify-content: center; }
+  .viewer__image img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+  @media (max-width: 40rem) { .gallery__grid { grid-template-columns: minmax(0, 1fr); } .gallery__item--wide { grid-column: auto; } }
+</style>

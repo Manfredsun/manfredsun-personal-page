@@ -1,0 +1,117 @@
+---
+import Copy from "../components/Copy.astro";
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { publicProjects } from "../data/credits";
+import { categoryLabels } from "../data/portfolio";
+
+const caseSlugs = new Set((await getCollection("works", ({ data }) => data.case_study && data.verification === "verified")).map(({ data }) => data.slug));
+const years = [...new Set(publicProjects.flatMap((credit) => credit.year ? [credit.year] : []))].sort((a, b) => b - a);
+const roles = [...new Set(publicProjects.flatMap((credit) => credit.roles))].sort();
+const categories = [...new Set(publicProjects.map((credit) => credit.category))];
+---
+
+<BaseLayout
+  title="Previous Work List — Manfred Sun"
+  description="申承羲 Manfred Sun 的劇場、音樂與個人企劃職務紀錄。"
+  canonicalPath="/credits/"
+>
+  <section class="page-hero shell">
+    <p class="eyebrow">Roles &amp; Collaborations</p>
+    <h1 class="display">Previous Work List</h1>
+    <Copy name="credits/intro" as="p" class="page-hero__lede" />
+  </section>
+  <section class="credits-index shell" aria-label="作品職務">
+    <div class="credit-filters" data-credit-filters>
+      <label>年份
+        <select data-field="year" disabled={years.length === 0}>
+          <option value="all">全部年份</option>
+          {years.map((year) => <option value={year}>{year}</option>)}
+        </select>
+      </label>
+      <label>類別
+        <select data-field="category">
+          <option value="all">全部類別</option>
+          {categories.map((category) => <option value={category}>{categoryLabels[category]}</option>)}
+        </select>
+      </label>
+      <label>職務
+        <select data-field="role">
+          <option value="all">全部職務</option>
+          {roles.map((role) => <option value={role}>{role}</option>)}
+        </select>
+      </label>
+    </div>
+    <div class="credits-table">
+      <div class="credits-table__head" aria-hidden="true"><span>Project</span><span>Role</span><span>Category</span></div>
+      <ul>
+        {publicProjects.map((credit) => (
+          <li class="credits-table__row" data-year={credit.year || ""} data-category={credit.category} data-roles={credit.roles.join("|")}>
+            <div class="credit-project">
+              {caseSlugs.has(credit.work_slug)
+                ? <a href={`/works/${credit.work_slug}/`}>{credit.project}</a>
+                : credit.external_url
+                  ? <a href={credit.external_url} target="_blank" rel="noopener noreferrer">{credit.project} <span aria-hidden="true">↗</span></a>
+                  : <strong>{credit.project}</strong>}
+              {(credit.year || credit.artist || credit.company) && <small>{[credit.year, credit.artist && !credit.project.includes(credit.artist) ? credit.artist : null, credit.company].filter(Boolean).join(" · ")}</small>}
+              {caseSlugs.has(credit.work_slug) && credit.external_url && (
+                <a class="credit-external" href={credit.external_url} target="_blank" rel="noopener noreferrer">外部連結 ↗</a>
+              )}
+            </div>
+            <strong>{credit.roles.join(" · ")}</strong>
+            <span>{categoryLabels[credit.category]}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <p class="filter-empty" data-credit-empty hidden>沒有符合條件的作品。</p>
+  </section>
+</BaseLayout>
+
+<script>
+  const filters = document.querySelector<HTMLElement>("[data-credit-filters]");
+  const rows = [...document.querySelectorAll<HTMLElement>(".credits-table__row")];
+  const empty = document.querySelector<HTMLElement>("[data-credit-empty]");
+  const update = () => {
+    const values = Object.fromEntries(
+      [...(filters?.querySelectorAll<HTMLSelectElement>("select") || [])].map((select) => [select.dataset.field, select.value]),
+    );
+    let visible = 0;
+    rows.forEach((row) => {
+      row.hidden = (values.year !== "all" && row.dataset.year !== values.year)
+        || (values.category !== "all" && row.dataset.category !== values.category)
+        || (values.role !== "all" && !row.dataset.roles?.split("|").includes(values.role));
+      if (!row.hidden) visible++;
+    });
+    if (empty) empty.hidden = visible > 0;
+  };
+  filters?.querySelectorAll("select").forEach((select) => select.addEventListener("change", update));
+</script>
+
+<style is:global>
+  .credit-project { display: grid; gap: .5rem; min-width: 0; }
+  .credit-project small { color: var(--muted-ink); }
+  .credit-project .credit-external { width: fit-content; color: var(--muted-ink); font-family: var(--sans); font-size: .875rem; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
+  .credit-project .credit-external:hover { color: var(--ink); }
+  .credits-index { padding-block: clamp(3rem, 7vw, 6rem) clamp(5rem, 11vw, 9rem); }
+  .credit-filters { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+  .credit-filters label { display: grid; gap: .45rem; min-width: min(100%, 12rem); color: var(--muted-ink); font-size: .9375rem; font-weight: 650; }
+  .credit-filters select { min-height: 2.75rem; padding: .5rem 2rem .5rem .75rem; border: 1px solid var(--separator); border-radius: .35rem; background: var(--surface); color: var(--ink); font: inherit; }
+  .credit-filters select:disabled { opacity: .55; }
+  .credits-table { border-top: 1px solid var(--separator); }
+  .credits-table__head, .credits-table__row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, .8fr); gap: 1rem; align-items: center; }
+  .credits-table__head { padding: 1rem 0; color: var(--muted-ink); font-size: .9375rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .credits-table ul { margin: 0; padding: 0; list-style: none; }
+  .credits-table__row { min-height: 5.5rem; padding: 1.25rem 0; border-top: 1px solid var(--separator); }
+  .credits-table__row a { width: fit-content; font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.8rem); line-height: 1.2; }
+  .credits-table__row strong { font-weight: 650; }
+  .credits-table__row span { color: var(--muted-ink); }
+  .filter-empty { color: var(--muted-ink); }
+  @media (max-width: 42rem) {
+    .credit-filters label { flex: 1 1 9rem; }
+    .credits-table__head { display: none; }
+    .credits-table__row { grid-template-columns: 1fr 1fr; }
+    .credits-table__row .credit-project { grid-column: 1 / -1; }
+    .credits-table__row span { justify-self: end; }
+  }
+</style>

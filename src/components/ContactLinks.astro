@@ -1,0 +1,9 @@
+---
+import { contactEmail, socialLinks } from "../data/site";
+import EmptySlot from "./EmptySlot.astro";
+---
+{contactEmail || socialLinks.length ? <nav class="contact-links" aria-label="公開聯絡方式">
+  {contactEmail && <a class="button" href={`mailto:${contactEmail}`}>Email · {contactEmail}</a>}
+  {socialLinks.map(({ label, url }) => <a class="button" href={url} target="_blank" rel="noopener noreferrer">{label} ↗</a>)}
+</nav> : <EmptySlot label="Email 與社群連結" source="src/data/site.yaml" />}
+<style>.contact-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 2rem; } a { overflow-wrap: anywhere; max-width: 100%; line-height: 1.5; }</style>

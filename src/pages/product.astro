@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Copy from "../components/Copy.astro";
+import ProductEntry from "../components/ProductEntry.astro";
+
+const products = (await getCollection("products")).sort((a, b) => a.id.localeCompare(b.id));
+---
+
+<BaseLayout
+  title="Apps — 申承羲 Manfred Sun"
+  description="探索申承羲 Manfred Sun 開發的 macOS 工具：Audio File Library 與 NTFS Editor for macOS。"
+  canonicalPath="/product/"
+>
+  <section class="page-hero shell">
+    <p class="eyebrow">Creative Tools</p>
+    <h1 class="display">Apps</h1>
+    <Copy name="product/intro" as="p" class="page-hero__lede" />
+  </section>
+  <section class="product-list shell" aria-label="產品">
+    {products.map((product) => <ProductEntry product={product} />)}
+  </section>
+</BaseLayout>
+
+<style>
+  .product-list { padding-block: clamp(5rem, 11vw, 9rem); }
+</style>

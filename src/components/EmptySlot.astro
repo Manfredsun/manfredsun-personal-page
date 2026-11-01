@@ -1,0 +1,12 @@
+---
+interface Props { label: string; source: string; }
+const { label, source } = Astro.props;
+---
+{import.meta.env.DEV && <aside class="empty-slot" data-empty-slot hidden aria-label={`${label}：待填`}>
+  <strong>{label}</strong><p>此區塊尚未填寫</p><code>{source}</code>
+</aside>}
+<style>
+.empty-slot { margin-block: 1.5rem; padding: 2rem; border: 1px dashed var(--muted-ink); background: var(--surface); color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+.empty-slot p { margin: .4rem 0; }
+.empty-slot code { font-size: .8rem; }
+</style>

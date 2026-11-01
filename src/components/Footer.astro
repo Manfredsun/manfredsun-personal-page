@@ -1,0 +1,62 @@
+---
+import { site } from "../data/site";
+---
+<footer class="site-footer">
+  <div class="shell site-footer__grid">
+    <p class="site-footer__name">{site.name}<br /><span>{site.alternate_name}</span></p>
+    <p>{site.roles}<br />{site.theatre_role}</p>
+    <div>
+      <a href="/contact/">Start a conversation <span aria-hidden="true">↗</span></a>
+      <p>{site.location}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: clamp(3rem, 7vw, 5rem);
+    border-top: 1px solid var(--separator);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted-ink);
+    font-size: 0.9375rem;
+  }
+
+  .site-footer__name {
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .site-footer__name span {
+    color: var(--muted-ink);
+    font-family: var(--sans);
+    font-size: 0.9375rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  @media (max-width: 42rem) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

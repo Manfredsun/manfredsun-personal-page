@@ -1,0 +1,39 @@
+---
+import Copy from "../components/Copy.astro";
+import ContactLinks from "../components/ContactLinks.astro";
+import { contactReady, socialLinks } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Contact — Manfred Sun"
+  description="與申承羲 Manfred Sun 討論音樂、劇場與聲音設計合作。"
+  canonicalPath="/contact/"
+  noindex={!contactReady}
+>
+  <section class="page-hero shell">
+    <p class="eyebrow">New Project</p>
+    <h1 class="display">Contact</h1>
+    <Copy name="contact/intro" as="p" class="page-hero__lede" />
+  </section>
+  <section class="contact-body shell" aria-label="合作詢問">
+    <div>
+      <p class="eyebrow">Working Together</p>
+      <Copy name="contact/heading" as="h2" />
+    </div>
+    <div>
+      <Copy name="contact/brief" />
+      <ContactLinks />
+      {!contactReady && !socialLinks.length && <Copy name="contact/pending" as="p" class="contact-body__note" />}
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 7vw, 8rem); padding-block: clamp(5rem, 11vw, 9rem); }
+  .contact-body h2 { max-width: 14ch; margin: 1rem 0 0; font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.1; }
+  .contact-body ul { margin: 0; padding: 0; border-top: 1px solid var(--separator); list-style: none; }
+  .contact-body li { display: flex; align-items: center; min-height: 5rem; border-bottom: 1px solid var(--separator); font-size: clamp(1.1rem, 1.6vw, 1.3rem); }
+  .contact-body__note { margin-top: 2rem; color: var(--muted-ink); }
+  @media (max-width: 48rem) { .contact-body { grid-template-columns: 1fr; } }
+</style>

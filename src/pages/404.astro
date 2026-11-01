@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="找不到頁面 — Manfred Sun" description="這個頁面不存在，請返回首頁或作品列表。" canonicalPath="/404/" noindex>
+  <section class="page-hero shell">
+    <p class="eyebrow">404</p><h1 class="display">找不到頁面</h1>
+    <p class="page-hero__lede">這個網址可能已變更，請從首頁或作品列表繼續瀏覽。</p>
+    <nav aria-label="返回網站" style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem">
+      <a class="button" href="/">返回首頁</a><a class="button" href="/credits/">瀏覽作品</a>
+    </nav>
+  </section>
+</BaseLayout>

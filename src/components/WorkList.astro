@@ -1,0 +1,217 @@
+---
+import type { CollectionEntry } from "astro:content";
+import EmptySlot from "./EmptySlot.astro";
+import { categoryLabels, publicRoles } from "../data/portfolio";
+
+interface Props {
+  works: CollectionEntry<"works">[];
+  compact?: boolean;
+  home?: boolean;
+}
+
+const { works, compact = false, home = false } = Astro.props;
+
+---
+
+<ol class:list={["work-list", { "work-list--compact": compact, "work-list--home": home }]}>
+  {works.map((work) => {
+    const { data } = work;
+    const roles = publicRoles(work);
+    const link = data.case_study && data.verification === "verified";
+    return <li
+      id={data.slug}
+      class:list={["work-row", { "work-row--has-home-cover": home && Boolean(data.cover) }]}
+      data-category={data.category}
+    >
+      {link ? <a href={`/works/${data.slug}/`} aria-label={`View ${data.title}`}>
+        <span class="work-row__spine">
+          <span>{categoryLabels[data.category]}</span>
+          {roles.length > 0 && <span>{roles.join(" · ")}</span>}
+          {data.artist && <span>{data.artist}</span>}
+          {data.year && <span>{data.year}</span>}
+        </span>
+        <span class="work-row__title">
+          {!home && data.cover && <img class="work-row__cover" src={data.cover} alt={data.cover_alt || data.title} width="960" height="600" loading="lazy" decoding="async" />}
+          {data.title}
+        </span>
+        {home && data.cover && (
+          <span class="work-row__media">
+            <img class="work-row__cover" src={data.cover} alt={data.cover_alt || data.title} width="960" height="600" loading="lazy" decoding="async" />
+          </span>
+        )}
+        <span class="work-row__arrow" aria-hidden="true">↗</span>
+      </a> : <div class="work-row__static">
+        <span class="work-row__spine"><span>{categoryLabels[data.category]}</span>{roles.length > 0 && <span>{roles.join(" · ")}</span>}</span>
+        <span class="work-row__title">
+          {!home && data.cover && <img class="work-row__cover" src={data.cover} alt={data.cover_alt || data.title} width="960" height="600" loading="lazy" decoding="async" />}
+          {data.title}
+        </span>
+        {home && data.cover && (
+          <span class="work-row__media">
+            <img class="work-row__cover" src={data.cover} alt={data.cover_alt || data.title} width="960" height="600" loading="lazy" decoding="async" />
+          </span>
+        )}
+      </div>}
+      {!data.cover && <EmptySlot label={`${data.title}：封面`} source={`src/content/works/${data.slug}.md → cover / cover_alt`} />}
+    </li>;
+  })}
+</ol>
+
+<style>
+  .work-row__cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 1.35rem;
+    object-fit: cover;
+  }
+
+  .work-row__media {
+    display: grid;
+    min-width: 0;
+    place-items: center;
+  }
+
+  .work-list--home .work-row--has-home-cover a,
+  .work-list--home .work-row--has-home-cover .work-row__static {
+    grid-template-columns: minmax(9rem, 0.65fr) minmax(0, 1.7fr) minmax(160px, 220px) auto;
+  }
+
+  .work-list--home .work-row__media .work-row__cover {
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    aspect-ratio: auto;
+    margin: 0;
+    object-fit: contain;
+  }
+  .work-list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--separator);
+    list-style: none;
+  }
+
+  .work-row {
+    border-bottom: 1px solid var(--separator);
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  .work-row a,
+  .work-row__static {
+    display: grid;
+    min-height: 12rem;
+    grid-template-columns: minmax(9rem, 0.65fr) minmax(0, 3fr) auto;
+    gap: clamp(1rem, 3vw, 3rem);
+    align-items: center;
+    padding-block: 2rem;
+    text-decoration: none;
+    transition: background-color 180ms ease, padding-inline 180ms ease;
+  }
+
+  .work-row__static { color: var(--ink); }
+
+  .work-row a:hover {
+    padding-inline: 1.25rem;
+    background: var(--surface);
+  }
+
+  .work-row a:active {
+    opacity: 0.72;
+  }
+
+  .work-row__spine {
+    display: grid;
+    gap: 0.35rem;
+    color: var(--muted-ink);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .work-row__spine span:first-child {
+    color: var(--accent);
+  }
+
+  .work-row__title {
+    display: block;
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4.5vw, 4.6rem);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+
+  .work-row__arrow {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--separator);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    transition: background-color 180ms ease, color 180ms ease, rotate 180ms ease;
+  }
+
+  .work-row:nth-child(1) .work-row__title {
+    font-size: clamp(2.5rem, 5.6vw, 5.8rem);
+  }
+
+  .work-row a:hover .work-row__arrow {
+    background: var(--ink);
+    color: var(--canvas);
+    rotate: 45deg;
+  }
+
+  .work-list--compact .work-row a,
+  .work-list--compact .work-row__static {
+    min-height: 7rem;
+  }
+
+  .work-list--compact .work-row__title {
+    font-size: clamp(1.45rem, 3vw, 2.7rem);
+  }
+
+  @media (max-width: 42rem) {
+    .work-row a,
+    .work-row__static {
+      min-height: 10rem;
+      grid-template-columns: 1fr auto;
+      align-content: center;
+      gap: 1rem;
+    }
+
+    .work-row__spine {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.8rem;
+    }
+
+    .work-row__spine span + span::before {
+      margin-right: 0.8rem;
+      color: var(--separator);
+      content: "/";
+    }
+
+    .work-list--home .work-row--has-home-cover a,
+    .work-list--home .work-row--has-home-cover .work-row__static {
+      grid-template-columns: 1fr auto;
+    }
+
+    .work-list--home .work-row__media {
+      grid-column: 1 / -1;
+      justify-items: start;
+    }
+
+    .work-list--home .work-row__media .work-row__cover {
+      width: min(52vw, 180px);
+    }
+
+    .work-row a:hover {
+      padding-inline: 0;
+      background: transparent;
+    }
+  }
+</style>

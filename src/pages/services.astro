@@ -1,0 +1,42 @@
+---
+import Copy from "../components/Copy.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getServices } from "../data/services";
+const services = await getServices();
+---
+
+<BaseLayout
+  title="Services — Manfred Sun"
+  description="詞曲創作、編曲、音樂製作、劇場音樂設計、音頻後製處理與樂譜製作服務。"
+  canonicalPath="/services/"
+>
+  <section class="page-hero shell">
+    <p class="eyebrow">Practice</p>
+    <h1 class="display">Services</h1>
+    <Copy name="services/intro" as="p" class="page-hero__lede" />
+  </section>
+  <section class="services-grid shell" aria-label="服務項目">
+    {services.map((service) => (
+      <article class="service-card">
+        <p class="eyebrow">{service.data.english}</p>
+        <h2>{service.data.title}</h2>
+        <Copy name={service.id} label={service.data.title} />
+      </article>
+    ))}
+  </section>
+  <section class="services-cta shell">
+    <p class="eyebrow">New Project</p>
+    <Copy name="services/contact-heading" as="h2" />
+    <a class="button button--primary" href="/contact/">Request a Quote <span aria-hidden="true">↗</span></a>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 1px; background: var(--separator); }
+  .service-card { min-height: 15rem; padding: clamp(1.5rem, 4vw, 3rem); background: var(--canvas); }
+  .service-card h2 { margin: .7rem 0 1rem; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; }
+  .service-card p:last-child { max-width: 28rem; color: var(--muted-ink); line-height: 1.65; }
+  .services-cta { padding-block: clamp(6rem, 12vw, 10rem); }
+  .services-cta h2 { max-width: 35rem; margin: .6rem 0 2rem; font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 5rem); line-height: .98; }
+  @media (max-width: 42rem) { .services-grid { grid-template-columns: 1fr; } }
+</style>

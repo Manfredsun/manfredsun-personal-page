@@ -1,0 +1,361 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Copy from "../components/Copy.astro";
+import { site, socialLinks } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import WorkList from "../components/WorkList.astro";
+import heroImage from "../assets/manfred-live.jpeg";
+import { sortWorks } from "../data/portfolio";
+import { getServices } from "../data/services";
+const services = await getServices();
+
+const title = "申承羲 Manfred Sun — Composer, Arranger, Music Producer & Theatre Music Designer";
+const description = "申承羲（Manfred Sun），來自香港、現於台灣工作的作曲家、編曲師、音樂製作人及劇場音樂／聲音設計工作者。";
+
+const featuredWorks = sortWorks((await getCollection("works")).filter(({ data }) => data.featured));
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  alternateName: site.alternate_name,
+  ...(socialLinks.length ? { sameAs: socialLinks.map((link) => link.url) } : {}),
+  jobTitle: ["Composer", "Arranger", "Music Producer", "Theatre Music & Sound Designer"],
+  homeLocation: [
+    { "@type": "Place", name: "Hong Kong" },
+    { "@type": "Place", name: "Taiwan" },
+  ],
+  url: "https://manfredsun.github.io/",
+};
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/" image={heroImage.src}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__content shell">
+      <div class="hero__identity">
+        <p class="hero__kicker">{site.roles}</p>
+        <h1 id="hero-title">
+          <span class="hero__chinese">{site.name}</span>
+          <span class="hero__english">{site.alternate_name}</span>
+        </h1>
+        <p class="hero__role">{site.theatre_role}</p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#selected-works">Selected Works <span aria-hidden="true">↓</span></a>
+          <a class="button" href="/contact/">Contact <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    <div class="hero__media">
+      <Image
+        src={heroImage}
+        alt="申承羲 Manfred Sun 在現場演奏鍵盤"
+        widths={[640, 960, 1280, 1600, 1920]}
+        sizes="(max-width: 42rem) 100vw, 55vw"
+        format="avif"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+      <aside class="hero__spine" aria-label="Professional metadata">
+        <div><span>Based</span><strong>{site.location}</strong></div>
+        <div><span>Practice</span><strong>{site.practice}</strong></div>
+        <div><span>Selected roles</span><strong>{site.selected_roles}</strong></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="works-section shell" id="selected-works" aria-labelledby="works-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Selected Works</p>
+        <Copy name="home/works-heading" as="h2" class="section-title" id="works-title" />
+      </div>
+      <Copy name="home/works-intro" as="p" />
+    </div>
+    <WorkList works={featuredWorks} home />
+  </section>
+
+  <section class="about-services shell" aria-label="About and services">
+    <article class="about-preview">
+      <p class="eyebrow">About</p>
+      <Copy name="home/about-heading" as="h2" />
+      <Copy name="home/about-intro" as="p" />
+      <a class="text-link" href="/about/">More about Manfred <span class="arrow" aria-hidden="true">→</span></a>
+    </article>
+
+    <article class="services-preview">
+      <p class="eyebrow">Services</p>
+      <Copy name="home/services-heading" as="h2" />
+      <ul>
+        {services.map((service) => <li>{service.data.english}</li>)}
+      </ul>
+      <a class="text-link" href="/services/">View services <span class="arrow" aria-hidden="true">→</span></a>
+    </article>
+  </section>
+
+  <section class="contact-cta" aria-labelledby="contact-title">
+    <div class="shell contact-cta__inner">
+      <div>
+        <p class="eyebrow">New Project</p>
+        <Copy name="home/contact-heading" as="h2" id="contact-title" />
+      </div>
+      <a class="button button--primary" href="/contact/">Request a Quote <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .hero {
+    position: relative;
+    display: grid;
+    min-height: 100svh;
+    overflow: hidden;
+    background: #171719;
+    color: #f5f5f7;
+  }
+
+  .hero__media { margin: 0; min-width: 0; }
+
+  .hero__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    padding-top: calc(var(--header-height) + 4rem);
+    padding-bottom: 4rem;
+  }
+
+  .hero__identity {
+    align-self: center;
+  }
+
+  .hero__kicker,
+  .hero__role {
+    margin: 0;
+    font-size: clamp(1rem, 1.7vw, 1.3rem);
+    font-weight: 550;
+    letter-spacing: 0.015em;
+  }
+
+  h1 {
+    max-width: 10ch;
+    margin: 1.2rem 0 1.5rem;
+    font-family: var(--serif);
+    font-size: clamp(4rem, 7.5vw, 8rem);
+    font-weight: 500;
+    letter-spacing: -0.065em;
+    line-height: 0.92;
+    animation: hero-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero__chinese,
+  .hero__english {
+    display: block;
+  }
+
+  .hero__chinese {
+    font-family: var(--hand);
+    font-weight: 400;
+    letter-spacing: 0.015em;
+    line-height: 0.92;
+  }
+
+  .hero__english {
+    margin-top: 0.18em;
+    font-family: var(--sans);
+    font-size: 0.42em;
+    font-weight: 650;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+
+  .hero .button:not(.button--primary) {
+    color: #f5f5f7;
+  }
+
+  .hero .button:hover {
+    background: #f5f5f7;
+    color: #18181a;
+  }
+
+  .hero__spine {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    border-top: 1px solid rgb(255 255 255 / 36%);
+  }
+
+  .hero__spine div {
+    display: grid;
+    gap: 0.35rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid rgb(255 255 255 / 36%);
+  }
+
+  .hero__spine span {
+    color: rgb(245 245 247 / 68%);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hero__spine strong {
+    font-size: 0.9375rem;
+    font-weight: 550;
+    line-height: 1.35;
+  }
+
+  .works-section {
+    padding-block: clamp(6rem, 13vw, 12rem);
+  }
+
+  .text-link {
+    display: inline-flex;
+    min-height: 2.75rem;
+    width: fit-content;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+  .about-services {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1px;
+    padding-block: clamp(6rem, 12vw, 11rem);
+  }
+
+  .about-services article {
+    padding: clamp(2rem, 5vw, 5rem);
+    background: var(--surface);
+  }
+
+  .about-services h2 {
+    margin: 1.5rem 0 2rem;
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4.5vw, 4.5rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+  }
+
+  .about-preview > p:not(.eyebrow) {
+    max-width: 37rem;
+    color: var(--muted-ink);
+    font-size: 1.1rem;
+  }
+
+  .services-preview ul {
+    margin: 0 0 2rem;
+    padding: 0;
+    border-top: 1px solid var(--separator);
+    list-style: none;
+  }
+
+  .services-preview li {
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--separator);
+    font-size: 1.05rem;
+    font-weight: 620;
+  }
+
+  .contact-cta {
+    padding-block: clamp(5rem, 11vw, 9rem);
+    border-top: 1px solid var(--separator);
+  }
+
+  .contact-cta__inner {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .contact-cta h2 {
+    max-width: 15ch;
+    margin: 1.25rem 0 0;
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 6.5vw, 6.5rem);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+  }
+
+  @keyframes hero-in {
+    from { opacity: 0; transform: translateY(1.2rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 56rem) {
+    .hero__content {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__spine {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .hero__spine div {
+      border-bottom: 0;
+    }
+
+    .about-services {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .hero { min-height: auto; }
+
+    .hero__content {
+      align-items: start;
+      padding-top: calc(var(--header-height) + 3.25rem);
+    }
+
+    .hero__identity {
+      align-self: start;
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 19vw, 5.4rem);
+    }
+
+    .hero__spine {
+      align-self: end;
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding-top: 0.5rem;
+    }
+
+    .hero__spine div {
+      grid-template-columns: 6.25rem 1fr;
+      padding-block: 0.55rem;
+    }
+
+    .contact-cta__inner {
+      align-items: start;
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from "astro:content";
+import EmptySlot from "./EmptySlot.astro";
+interface Props { work: CollectionEntry<"works">; }
+const { work } = Astro.props;
+const { data } = work;
+---
+{data.gallery.length > 0 ? <section class="project-media" aria-label="作品圖片">
+  <h2>作品圖片</h2><div class="project-gallery">
+    {data.gallery.map((item) => <figure><img src={item.src} alt={item.alt} width={item.width || 1600} height={item.height || 1000} loading="lazy" decoding="async" />{item.caption && <figcaption>{item.caption}</figcaption>}</figure>)}
+  </div>
+</section> : <EmptySlot label="作品圖片" source={`src/content/works/${data.slug}.md → gallery`} />}
+{data.media.length > 0 ? <section class="project-media" aria-labelledby="project-media-title">
+  <h2 id="project-media-title">Listen</h2>
+  {data.media.map((item) => <figure class="media-item">
+    {item.type === "link" ? <a class="text-link" href={item.url} target="_blank" rel="noopener noreferrer">{item.label} ↗</a> : <>
+      <figcaption>{item.label}</figcaption>
+      {item.type === "audio" ? <audio controls preload="none" src={item.url} aria-label={item.label} /> : <video controls preload="none" src={item.url} poster={item.poster || undefined} aria-label={item.label}>
+        {item.captions && <track kind="captions" src={item.captions} srclang="zh-Hant" label="繁體中文" default />}
+      </video>}
+      {item.transcript && <details><summary>文字說明／逐字稿</summary><p>{item.transcript}</p></details>}
+    </>}
+  </figure>)}
+</section> : <EmptySlot label="音訊、影片與外部影音" source={`src/content/works/${data.slug}.md → media`} />}
+<style>
+.project-media { margin-block: 0 4rem; min-width: 0; }
+h2 { font-family: var(--serif); font-size: clamp(2rem,4vw,3.5rem); font-weight: 500; line-height: 1.15; }
+.project-gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 2rem; }
+figure { margin: 0; min-width: 0; }
+img { width: 100%; height: auto; }
+figcaption { margin-block: .75rem; color: var(--muted-ink); }
+.media-item { margin-bottom: 2rem; max-width: 54rem; }
+audio, video { display: block; width: 100%; }
+video { aspect-ratio: 16 / 9; background: #18181a; }
+.text-link, summary { display: inline-flex; align-items: center; min-height: 2.75rem; overflow-wrap: anywhere; }
+summary { cursor: pointer; display: list-item; }
+details p { white-space: pre-wrap; }
+@media(max-width:42rem) { .project-gallery { grid-template-columns: 1fr; } }
+</style>

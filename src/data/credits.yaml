@@ -1,0 +1,404 @@
+# Canonical credits data source.
+# Public rows require verified: true and a concrete role.
+# Keep uncertain candidates with verified: false so they are not lost.
+
+credits:
+  # ===== 2026 =====
+  - project: "右滑之後"
+    company: "東海大學戲劇節"
+    role: "音樂設計"
+    category: "theatre"
+    work_slug: "after-swiping-right"
+    year: 2026
+    external_url: "https://www.instagram.com/txs2005_403/"
+    verified: true
+    source: "使用者提供，演出日期 2026-10-31"
+
+  - project: "心之破滅"
+    artist: "Jacky Fcy 范卓賢"
+    role: "編曲"
+    category: "music"
+    work_slug: "jacky-fcy-heart-destruction"
+    year: 2026
+    external_url: "https://www.youtube.com/watch?v=Plezfe5zY1Y"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "南薑．香茅．罌粟花"
+    company: "慢島劇團"
+    role: "音樂設計"
+    category: "theatre"
+    work_slug: "galangal-lemongrass-poppies"
+    year: 2026
+    verified: true
+    source: "Obsidian: 自我簡歷.md / official programme"
+
+  - project: "達克比出任務：樂園怪蛋事件"
+    role: "音場設計"
+    category: "theatre"
+    work_slug: "duckbill-mission"
+    year: 2026
+    verified: true
+    source: "Obsidian: 自我簡歷.md / src/content/works/duckbill-mission.md"
+
+  # ===== 2025 =====
+  - project: "明日劇痛會暫停"
+    artist: "Jacky Fcy 范卓賢"
+    role: "編曲"
+    category: "music"
+    work_slug: "jacky-fcy-ming-ri-ju-tong"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=T4r6Ku4wKC0"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "末世花火散落後"
+    artist: "Jacky Fcy 范卓賢"
+    role: "編曲"
+    category: "music"
+    work_slug: "jacky-fcy-mo-shi-hua-huo"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=FmAZMQnNUYg"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "正當世界告別時"
+    artist: "Jacky Fcy 范卓賢"
+    role: "編曲"
+    category: "music"
+    work_slug: "jacky-fcy-zheng-dang-shi-jie"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=ImcwlQ6s0Qg"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "我想吃宵夜"
+    artist: "劉文傑"
+    role: "作曲"
+    category: "music"
+    work_slug: "wo-xiang-chi-xiao-ye"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=CSt-BYvDpmM"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "我想吃宵夜"
+    artist: "劉文傑"
+    role: "作詞"
+    category: "music"
+    work_slug: "wo-xiang-chi-xiao-ye"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=CSt-BYvDpmM"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "我想吃宵夜"
+    artist: "劉文傑"
+    role: "編曲"
+    category: "music"
+    work_slug: "wo-xiang-chi-xiao-ye"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=CSt-BYvDpmM"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "我想吃宵夜"
+    artist: "劉文傑"
+    role: "影片製作"
+    category: "music"
+    work_slug: "wo-xiang-chi-xiao-ye"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=CSt-BYvDpmM"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "我想吃宵夜"
+    artist: "劉文傑"
+    role: "封面設計"
+    category: "music"
+    work_slug: "wo-xiang-chi-xiao-ye"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=CSt-BYvDpmM"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "合唱音樂劇《第一市場》 First Public Retail Market"
+    role: "影像執行"
+    category: "theatre"
+    work_slug: "first-public-retail-market"
+    year: 2025
+    verified: true
+    source: "Obsidian: 自我簡歷.md"
+
+  - project: "北藝大導演1 聯合呈現《渴望》"
+    role: "音樂設計"
+    category: "theatre"
+    work_slug: "tua-directing-one-desire"
+    year: 2025
+    verified: true
+    source: "Obsidian: 自我簡歷.md"
+
+  - project: "佳鈺＋承煜 and their friends 專場演出"
+    role: "樂手"
+    category: "live"
+    work_slug: "jiayu-chengyu-and-their-friends"
+    year: 2025
+    verified: true
+    source: "Obsidian: 自我簡歷.md"
+
+  - project: "Present is Present 2025年度成發演唱會"
+    role: "樂手"
+    category: "live"
+    work_slug: "present-is-present-2025"
+    year: 2025
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  # ===== 2024 =====
+  - project: "戀愛圓舞曲"
+    artist: "Jacky Fcy 范卓賢"
+    role: "編曲"
+    category: "music"
+    work_slug: "jacky-fcy-lian-ai-yuan-wu-qu"
+    year: 2024
+    external_url: "https://www.youtube.com/watch?v=92efJUo09Jk"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "我希望你的感覺都一樣"
+    artist: "Jacky Fcy 范卓賢"
+    role: "編曲"
+    category: "music"
+    work_slug: "jacky-fcy-wo-xi-wang"
+    year: 2024
+    external_url: "https://www.youtube.com/watch?v=ygAXf216qP0"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "中壇元帥太子爺"
+    artist: "樂火樂團"
+    role: "編曲"
+    category: "music"
+    work_slug: "zhong-tan-yuan-shuai"
+    year: 2024
+    external_url: "https://www.youtube.com/watch?v=4ayQd8o1cIM"
+    verified: true
+    source: "YouTube official credit"
+
+  - project: "《媽祖》— 2024白沙屯媽祖進香主題曲"
+    artist: "歆柔"
+    role: "編曲"
+    category: "music"
+    work_slug: "mazu-xinrou"
+    year: 2024
+    external_url: "https://www.youtube.com/watch?v=RTIzuDY0TXw"
+    verified: true
+    source: "YouTube official credit / Wix Portfolio"
+
+  - project: "日落時"
+    artist: "Yuki Law"
+    role: "作曲"
+    category: "music"
+    work_slug: "sunset-yuki-law"
+    year: 2024
+    external_url: "https://www.youtube.com/watch?v=2FTv2ywAnCQ"
+    verified: true
+    source: "YouTube official credit / Wix Portfolio"
+
+  - project: "蘭陽戲劇團《新周公法鬥桃花女》"
+    company: "蘭陽戲劇團"
+    role: "影像執行"
+    category: "theatre"
+    work_slug: "new-zhou-gong-fights-peach-blossom-girl"
+    year: 2024
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "格桑製作《花與炸彈2024》"
+    company: "格桑製作"
+    role: "燈光執行"
+    category: "theatre"
+    work_slug: "flowers-and-bombs-2024"
+    year: 2024
+    verified: true
+    source: "2024 不貧窮藝術節 public programme"
+
+  - project: "《日常的無常》成發音樂會 @ Loi了咖啡"
+    role: "樂手"
+    category: "live"
+    work_slug: "daily-impermanence-live"
+    year: 2024
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "Madker 年度成果展"
+    role: "樂手"
+    category: "live"
+    work_slug: "madker-2024"
+    year: 2024
+    verified: true
+    source: "Wix About"
+
+  - project: "衛武營技術人才培育工作坊 TATT－影像視訊技術課程"
+    company: "衛武營國家藝術文化中心"
+    role: "助教"
+    category: "archive"
+    work_slug: "tatt-video-2024"
+    year: 2024
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  # ===== 2023 =====
+  - project: "我們就是沒有用的年輕人"
+    role: "專輯製作人"
+    category: "personal"
+    work_slug: "useless-youth"
+    year: 2023
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "我們就是沒有用的年輕人"
+    role: "音樂總監"
+    category: "personal"
+    work_slug: "useless-youth"
+    year: 2023
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "我們就是沒有用的年輕人"
+    role: "詞曲創作"
+    category: "personal"
+    work_slug: "useless-youth"
+    year: 2023
+    verified: true
+    source: "Wix About"
+
+  - project: "我們就是沒有用的年輕人"
+    role: "編曲"
+    category: "personal"
+    work_slug: "useless-youth"
+    year: 2023
+    verified: true
+    source: "Wix About"
+
+  - project: "我們就是沒有用的年輕人"
+    role: "樂手"
+    category: "personal"
+    work_slug: "useless-youth"
+    year: 2023
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "我們就是沒有用的年輕人"
+    role: "音響技術統籌"
+    category: "personal"
+    work_slug: "useless-youth"
+    year: 2023
+    verified: true
+    source: "Obsidian: 自我簡歷.md"
+
+  - project: "幕落"
+    company: "樹德科技大學112級畢業歌"
+    role: "編曲"
+    category: "music"
+    work_slug: "mu-luo"
+    year: 2023
+    external_url: "https://www.youtube.com/watch?v=GetJ0vpFF7E"
+    verified: true
+    source: "YouTube official credit / Wix Portfolio"
+
+  - project: "幕落"
+    company: "樹德科技大學112級畢業歌"
+    role: "混音"
+    category: "music"
+    work_slug: "mu-luo"
+    year: 2023
+    external_url: "https://www.youtube.com/watch?v=GetJ0vpFF7E"
+    verified: true
+    source: "YouTube official credit / Wix Portfolio"
+
+  - project: "幕落"
+    company: "樹德科技大學112級畢業歌"
+    role: "後製"
+    category: "music"
+    work_slug: "mu-luo"
+    year: 2023
+    external_url: "https://www.youtube.com/watch?v=GetJ0vpFF7E"
+    verified: true
+    source: "YouTube official credit / Wix Portfolio"
+
+  - project: "樹德科技大學《金牌製作人》"
+    role: "樂手"
+    category: "theatre"
+    work_slug: "the-producers-stu"
+    year: 2023
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "衛武營技術人才培育工作坊 TATT－影像視訊技術課程"
+    company: "衛武營國家藝術文化中心"
+    role: "助教"
+    category: "archive"
+    work_slug: "tatt-video-2023"
+    year: 2023
+    verified: true
+    source: "Wix About / Obsidian: 自我簡歷.md"
+
+  # ===== 2022 =====
+  - project: "半島體制"
+    role: "音樂設計"
+    category: "theatre"
+    work_slug: "peninsula-system"
+    year: 2022
+    verified: true
+    source: "Wix Portfolio / Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "這個世界沒有人會信任悲傷"
+    artist: "PandaMontana"
+    role: "節拍製作"
+    category: "music"
+    work_slug: "pandamontana-bei-shang"
+    year: 2022
+    external_url: "https://www.youtube.com/watch?v=6G_IsMGvo5o"
+    verified: true
+    source: "Wix Portfolio"
+
+  # ===== 2021 =====
+  - project: "2 AM"
+    artist: "Lok Chow feat. Michael Wu"
+    role: "編曲"
+    category: "music"
+    work_slug: "lok-chow-2-am"
+    year: 2021
+    external_url: "https://www.youtube.com/watch?v=ZVsAnmrWlf4"
+    verified: true
+    source: "YouTube official credit / Wix Portfolio"
+
+  - project: "2 AM"
+    artist: "Lok Chow feat. Michael Wu"
+    role: "樂手"
+    category: "music"
+    work_slug: "lok-chow-2-am"
+    year: 2021
+    external_url: "https://www.youtube.com/watch?v=ZVsAnmrWlf4"
+    verified: true
+    source: "YouTube official credit"
+
+  # ===== Year not explicit in the supplied sources =====
+  - project: "Kai & His Friends"
+    role: "樂手"
+    category: "live"
+    work_slug: "kai-and-his-friends"
+    verified: true
+    source: "Wix About"
+
+  # ===== Candidates retained but not public yet =====
+  - project: "與你鬥氣是一種習慣"
+    artist: "Lok Chow"
+    role: "編曲"
+    category: "music"
+    work_slug: "lok-chow-yu-ni-dou-qi"
+    year: 2025
+    external_url: "https://www.youtube.com/watch?v=RJWN2HR1wgY"
+    verified: true
+    source: "User-confirmed role / Wix Portfolio"

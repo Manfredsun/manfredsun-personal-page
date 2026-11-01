@@ -1,0 +1,14 @@
+---
+import { getEntry, render } from "astro:content";
+import EmptySlot from "./EmptySlot.astro";
+interface Props { name: string; collection?: "pageCopy" | "workCopy"; title?: string; label?: string; class?: string; as?: "div" | "p" | "h2" | "h3"; id?: string; fallback?: string; }
+const { name, collection = "pageCopy", title, label = title || name, class: className = "", as: Tag = "div", id, fallback = "" } = Astro.props;
+const entry = await getEntry(collection, name);
+const text = entry?.body?.trim() || fallback.trim();
+const Content = entry?.body?.trim() ? (await render(entry)).Content : null;
+const folder = collection === "workCopy" ? "work-copy" : "page-copy";
+---
+{text ? <Tag class:list={["editable-copy", className]} id={id}>
+  {title && <h2>{title}</h2>}
+  {Tag !== "div" ? text : Content ? <Content /> : <p>{text}</p>}
+</Tag> : <EmptySlot label={label} source={`src/content/${folder}/${name}.md`} />}

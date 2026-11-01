@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import scores from "../data/sheet-music.json";
+const formats = [...new Set(scores.map((score) => score.format))];
+const ensembles: Record<string, string> = { Band: "樂隊", Solo: "獨奏", "Two Pianos": "雙鋼琴" };
+---
+<BaseLayout title="Sheet Music — Manfred Sun" description="申承羲 Manfred Sun 的打譜作品集，涵蓋流行曲與爵士樂；前往 Music5 查看及購買樂譜。" canonicalPath="/sheet-music/">
+  <section class="page-hero shell">
+    <p class="eyebrow">Transcription &amp; Score Preparation</p>
+    <h1 class="display">Sheet Music</h1>
+    <p class="page-hero__lede">以流行曲與爵士樂為主的打譜作品集。</p>
+    <p class="score-intro">主要打譜類別：Leadsheet、Chord Chart、Full Score、Chord Analysis、Solo Transcription。以下收錄已在 Music5 公開上架的作品，樂譜查看與購買請前往各商品頁面。</p>
+    <a class="text-link" href="https://www.mymusic5.com/manfredsun" target="_blank" rel="noopener noreferrer">瀏覽 Music5 創作者頁面 ↗</a>
+  </section>
+  <section class="scores shell" aria-label="Music5 樂譜作品集">
+    <div class="scores__toolbar">
+      <label for="score-format">樂譜類型</label>
+      <select id="score-format"><option value="all">全部類型</option>{formats.map((format) => <option value={format}>{format}</option>)}</select>
+      <p role="status" aria-live="polite" data-score-count>共 {scores.length} 份樂譜</p>
+    </div>
+    <div class="scores__grid">
+      {scores.map((score) => <article class="score" data-score-format={score.format} data-score-id={score.id}>
+        <p class="eyebrow">{score.format}</p>
+        <h2>{score.title}</h2>
+        <dl><div><dt>樂器</dt><dd>{score.instruments.join(" · ")}</dd></div><div><dt>編制</dt><dd>{ensembles[score.ensemble] || score.ensemble}</dd></div></dl>
+        <a class="button" href={score.url} target="_blank" rel="noopener noreferrer" aria-label={`在 Music5 查看樂譜：${score.title}（新分頁）`}>在 Music5 查看樂譜 <span aria-hidden="true">↗</span></a>
+      </article>)}
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  const filter = document.querySelector<HTMLSelectElement>("#score-format");
+  const cards = [...document.querySelectorAll<HTMLElement>("[data-score-format]")];
+  const count = document.querySelector("[data-score-count]");
+  filter?.addEventListener("change", () => {
+    let visible = 0;
+    for (const card of cards) {
+      card.hidden = filter.value !== "all" && card.dataset.scoreFormat !== filter.value;
+      if (!card.hidden) visible++;
+    }
+    if (count) count.textContent = `共 ${visible} 份樂譜`;
+  });
+</script>
+<style>
+  .score-intro { max-width: 48rem; margin-block: 1.5rem; color: var(--muted-ink); line-height: 1.7; }
+  .text-link { display: inline-flex; align-items: center; min-height: 2.75rem; }
+  .scores { padding-block: 3rem 7rem; }
+  .scores__toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding-bottom: 2rem; }
+  select { max-width: 100%; min-height: 2.75rem; padding: .5rem 1rem; font: inherit; color: var(--ink); background: var(--canvas); border: 1px solid var(--separator); }
+  .scores__toolbar p { color: var(--muted-ink); }
+  .scores__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--separator); border: 1px solid var(--separator); }
+  .score { display: flex; flex-direction: column; align-items: start; min-width: 0; padding: clamp(1.5rem, 3vw, 3rem); background: var(--canvas); }
+  .score[hidden] { display: none; }
+  .score .eyebrow { margin: 0; }
+  .score h2 { margin: 1rem 0 1.5rem; font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.4rem); line-height: 1.2; overflow-wrap: anywhere; }
+  dl { margin: 0 0 2rem; color: var(--muted-ink); line-height: 1.7; }
+  dl div { display: flex; gap: 1rem; } dt { flex-shrink: 0; } dd { margin: 0; overflow-wrap: anywhere; }
+  .score .button { margin-top: auto; max-width: 100%; white-space: normal; }
+  @media(max-width: 64rem) { .scores__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media(max-width: 42rem) { .scores__grid { grid-template-columns: minmax(0, 1fr); } }
+</style>

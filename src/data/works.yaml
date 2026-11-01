@@ -1,0 +1,213 @@
+# 作品集資料表
+# 申承羲 Manfred Sun - 作品集
+
+works:
+  # ====== 編曲作品 ======
+  - id: 1
+    title: "明日劇痛會暫停"
+    artist: "Jacky Fcy 范卓賢"
+    category: "編曲作品"
+    image: "/images/works/01-jacky-fcy-ming-ri-ju-tong.jpg"
+    youtube: "https://youtu.be/T4r6Ku4wKC0"
+    tags: ["編曲", "流行", "MV"]
+    year: 2024
+    
+  - id: 2
+    title: "我想吃宵夜"
+    artist: "劉文傑"
+    category: "編曲作品"
+    image: "/images/works/02-liu-wen-jie-wo-xiang-chi-xiao-ye.jpg"
+    youtube: "https://youtu.be/CSt-BYvDpmM"
+    tags: ["編曲", "流行"]
+    year: 2024
+    
+  - id: 3
+    title: "中壇元帥太子爺"
+    artist: "樂火樂團"
+    category: "編曲作品"
+    image: "/images/works/03-le-huo-le-tuan.jpg"
+    youtube: "https://youtu.be/4ayQd8o1cIM"
+    tags: ["編曲", "傳統", "MV"]
+    year: 2024
+    
+  - id: 4
+    title: "末世花火散落後"
+    artist: "Jacky Fcy 范卓賢"
+    category: "編曲作品"
+    image: "/images/works/04-jacky-fcy-mo-shi-hua-huo.jpg"
+    youtube: "https://youtu.be/FmAZMQnNUYg"
+    tags: ["編曲", "流行", "MV"]
+    year: 2024
+    
+  - id: 5
+    title: "戀愛圓舞曲"
+    artist: "Jacky Fcy 范卓賢"
+    category: "編曲作品"
+    image: "/images/works/05-jacky-fcy-lian-ai-yuan-wu-qu.jpg"
+    youtube: "https://youtu.be/92efJUo09Jk"
+    tags: ["編曲", "流行", "MV"]
+    year: 2024
+    
+  - id: 6
+    title: "日落時"
+    artist: "YUKI"
+    category: "編曲作品"
+    image: "/images/works/06-yuki-ri-luo-shi.jpg"
+    youtube: "https://youtu.be/2FTv2ywAnCQ"
+    tags: ["編曲", "流行", "MV"]
+    year: 2024
+    
+  - id: 7
+    title: "2 AM"
+    artist: "Lok Chow feat. Michael Wu"
+    category: "編曲作品"
+    image: "/images/works/07-lok-chow-2am.jpg"
+    youtube: "https://youtu.be/ZVsAnmrWlf4"
+    tags: ["編曲", "流行"]
+    year: 2024
+    
+  - id: 8
+    title: "與你鬥氣是一種習慣"
+    artist: "未知"
+    category: "編曲作品"
+    image: "/images/works/08-yu-ni-dou-qi.jpg"
+    youtube: "https://youtu.be/RJWN2HR1wgY"
+    tags: ["編曲", "流行"]
+    year: 2024
+    
+  - id: 9
+    title: "正當世界告別時"
+    artist: "Jacky Fcy 范卓賢"
+    category: "編曲作品"
+    image: "/images/works/11-jacky-fcy-zheng-dang-shi-jie.jpg"
+    youtube: "https://youtu.be/ImcwlQ6s0Qg"
+    tags: ["編曲", "流行", "MV"]
+    year: 2024
+    
+  - id: 10
+    title: "Gururu"
+    artist: "Mochiice"
+    category: "編曲作品"
+    image: "/images/works/13-mochiice-gururu.jpg"
+    youtube: "https://youtu.be/MgDXP5IBsm0"
+    tags: ["編曲", "日系", "MV"]
+    year: 2024
+    
+  - id: 11
+    title: "好想食肉醬意粉"
+    artist: "未知"
+    category: "編曲作品"
+    image: "/images/works/14-hao-xiang-shi-rou-jiang-yi-fen.jpg"
+    youtube: "https://youtu.be/NYetChc7quY"
+    tags: ["編曲", "流行"]
+    year: 2024
+    
+  - id: 12
+    title: "這個世界沒有人會信任悲傷"
+    artist: "PandaMontana"
+    category: "編曲作品"
+    image: "/images/works/15-pandamontana-bei-shang.jpg"
+    youtube: "https://youtu.be/6G_IsMGvo5o"
+    tags: ["編曲", "流行"]
+    year: 2024
+    
+  - id: 13
+    title: "咪X搞9我"
+    artist: "未知"
+    category: "編曲作品"
+    image: "/images/works/16-mi-gao-9-wo.jpg"
+    youtube: "https://youtu.be/sJQCrUHI4-8"
+    tags: ["編曲", "流行"]
+    year: 2024
+    
+  - id: 14
+    title: "Crit It All"
+    artist: "CRIT"
+    category: "編曲作品"
+    image: "/images/works/20-crit-it-all.jpg"
+    youtube: "https://youtu.be/hn-4Oj-WFeo"
+    tags: ["編曲", "流行", "MV"]
+    year: 2024
+    
+  # ====== 原創作品 ======
+  - id: 15
+    title: "Take you home"
+    artist: "申承羲 Manfred Sun"
+    category: "原創作品"
+    image: "/images/works/18-take-you-home.jpg"
+    youtube: "https://youtu.be/cBI_Qlo4w7g"
+    tags: ["原創", "詞曲創作"]
+    year: 2024
+    
+  - id: 16
+    title: "サヨナラブレター - 再見情書"
+    artist: "申承羲 Manfred Sun"
+    category: "原創作品"
+    image: "/images/works/19-sayonara.jpg"
+    youtube: "https://youtu.be/DpnOSF3yUCM"
+    tags: ["原創", "日系", "純音樂"]
+    year: 2024
+    
+  - id: 17
+    title: "When My Candle Lights"
+    artist: "申承羲 Manfred Sun"
+    category: "原創作品"
+    image: "/images/works/21-when-my-candle-lights.jpg"
+    youtube: "https://youtu.be/zcqsHNH_cZQ"
+    tags: ["原創", "詞曲創作", "編曲"]
+    year: 2024
+    
+  # ====== 劇場/活動 ======
+  - id: 18
+    title: "幕落"
+    artist: "樹德科技大學112級畢業歌"
+    category: "劇場/活動"
+    image: "/images/works/09-shu-de-bi-ye-ge.jpg"
+    youtube: "https://youtu.be/GetJ0vpFF7E"
+    tags: ["畢業歌", "活動"]
+    year: 2023
+    
+  - id: 19
+    title: "與夢高唱"
+    artist: "劉軒"
+    category: "劇場/活動"
+    image: "/images/works/10-yu-meng-gao-chang.jpg"
+    youtube: "https://youtu.be/JKG4QMcyjF8"
+    tags: ["活動", "合唱"]
+    year: 2024
+    
+  - id: 20
+    title: "媽祖"
+    artist: "歆柔"
+    category: "劇場/活動"
+    image: "/images/works/12-ma-zu.jpg"
+    youtube: "https://youtu.be/RTIzuDY0TXw"
+    tags: ["主題曲", "傳統"]
+    year: 2024
+    
+  # ====== 其他 ======
+  - id: 21
+    title: "音階教學曲"
+    artist: "全半全全半全全"
+    category: "其他"
+    image: "/images/works/17-yin-jie-jiao-xue-qu.jpg"
+    youtube: "https://youtu.be/Wj7UR2HBoCo"
+    tags: ["教學", "音樂理論"]
+    year: 2024
+
+# 專輯資料
+albums:
+  - id: 1
+    title: "我們就是沒有用的年輕人"
+    artist: "申承羲 Manfred Sun"
+    image: "/images/works/album-cover-wo-men-jiu-shi.png"
+    tracks: 12
+    year: 2023
+    description: "個人首張專輯，收錄12首原創作品"
+    
+  - id: 2
+    title: "半島體制"
+    artist: "申承羲 Manfred Sun"
+    image: "/images/works/album-cover-ban-dao-ti-zhi.jpg"
+    year: 2022
+    description: "音樂單曲"

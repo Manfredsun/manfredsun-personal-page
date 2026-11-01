@@ -1,0 +1,21 @@
+<div class="preview-controls" data-preview-controls>
+  <label><input type="checkbox" data-preview-toggle /> 顯示待填區塊</label>
+</div>
+<script>
+  const toggle = document.querySelector<HTMLInputElement>("[data-preview-toggle]");
+  if (toggle) {
+    try { toggle.checked = sessionStorage.getItem("portfolio-skeleton") === "on"; } catch {}
+    const apply = () => {
+      document.querySelectorAll<HTMLElement>("[data-empty-slot]").forEach((slot) => { slot.hidden = !toggle.checked; });
+      try { sessionStorage.setItem("portfolio-skeleton", toggle.checked ? "on" : "off"); } catch {}
+    };
+    toggle.addEventListener("change", apply);
+    apply();
+  }
+</script>
+<style>
+.preview-controls { position: fixed; bottom: .75rem; right: .75rem; z-index: 15; padding: .65rem 1rem; background: var(--surface); color: var(--ink); border: 1px solid var(--separator); border-radius: .5rem; box-shadow: 0 2px 12px #0002; max-width: calc(100vw - 1.5rem); }
+label { display: flex; align-items: center; gap: .5rem; cursor: pointer; font-size: .875rem; min-height: 1.5rem; }
+input { accent-color: var(--accent); width: 1.1rem; height: 1.1rem; }
+:global(body.menu-open) .preview-controls { visibility: hidden; }
+</style>
