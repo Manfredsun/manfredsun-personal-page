@@ -16,7 +16,7 @@ const { data } = work;
   {data.media.map((item) => <figure class="media-item">
     {item.type === "link" ? <a class="text-link" href={item.url} target="_blank" rel="noopener noreferrer">{item.label} ↗</a> : <>
       <figcaption>{item.label}</figcaption>
-      {item.type === "audio" ? <audio controls preload="none" src={sitePath(item.url)} aria-label={item.label} /> : <video controls preload="none" src={sitePath(item.url)} poster={item.poster ? sitePath(item.poster) : undefined} aria-label={item.label}>
+      {item.type === "audio" ? <audio controls controlslist="nodownload" preload="none" src={sitePath(item.url)} aria-label={item.label} /> : <video controls preload="none" src={sitePath(item.url)} poster={item.poster ? sitePath(item.poster) : undefined} aria-label={item.label}>
         {item.captions && <track kind="captions" src={sitePath(item.captions)} srclang="zh-Hant" label="繁體中文" default />}
       </video>}
       {item.transcript && <details><summary>文字說明／逐字稿</summary><p>{item.transcript}</p></details>}

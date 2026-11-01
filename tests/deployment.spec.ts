@@ -4,6 +4,30 @@ import AxeBuilder from "@axe-core/playwright";
 const base = "/manfredsun-personal-page";
 const origin = "https://manfredsun.github.io";
 
+for (const viewport of [{ width: 1440, height: 900 }, { width: 375, height: 812 }]) {
+  test(`audio controls and playback at ${viewport.width}px`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    for (const slug of ["peninsula-system", "after-swiping-right"]) {
+      await page.goto(`${base}/works/${slug}/`);
+      const players = page.locator("audio");
+      expect(await players.count()).toBeGreaterThan(0);
+      for (const player of await players.all()) {
+        await expect(player).toHaveAttribute("controls", "");
+        await expect(player).toHaveAttribute("controlslist", "nodownload");
+      }
+      const player = players.first();
+      await player.scrollIntoViewIfNeeded();
+      await expect(player).toBeVisible();
+      await player.click();
+      await player.evaluate((element: HTMLAudioElement) => element.play());
+      await expect.poll(() => player.evaluate((element: HTMLAudioElement) => element.currentTime)).toBeGreaterThan(0);
+      await player.evaluate((element: HTMLAudioElement) => { element.currentTime = 1; element.pause(); });
+      await expect.poll(() => player.evaluate((element: HTMLAudioElement) => element.paused)).toBe(true);
+      expect(await player.evaluate((element: HTMLAudioElement) => element.currentTime)).toBeGreaterThanOrEqual(1);
+    }
+  });
+}
+
 test("subpath navigation, metadata, image and audio resolve", async ({ page, request }) => {
   await page.goto(`${base}/`);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `${origin}${base}/`);
