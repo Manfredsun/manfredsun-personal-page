@@ -35,6 +35,7 @@ const statusId = `${headingId}-status`;
       <button class="button product-entry__disabled" type="button" disabled aria-describedby={statusId} data-product-cta>Visit Product Site <span aria-hidden="true">↗</span></button>
       <p id={statusId}>產品網站尚未公開</p>
     </>}
+    {data.repository_url && <a class="button" href={data.repository_url} target="_blank" rel="noopener noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>}
   </div>
 </article>
 

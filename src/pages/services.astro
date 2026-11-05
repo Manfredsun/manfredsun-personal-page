@@ -16,6 +16,9 @@ const services = await getServices();
     <h1 class="display">Services</h1>
     <Copy name="services/intro" as="p" class="page-hero__lede" />
   </section>
+  <figure class="services-poster">
+    <img src={sitePath("/images/services/commission-poster-updated.jpg")} alt="音樂委託接案資訊：詞曲創作、音樂編曲、後製混音及譜務製作。交件時間及報價依委託需求確認。" width="1080" height="1385" fetchpriority="high" decoding="async" />
+  </figure>
   <section class="services-grid shell" aria-label="服務項目">
     {services.map((service) => (
       <article class="service-card">
@@ -33,11 +36,13 @@ const services = await getServices();
 </BaseLayout>
 
 <style is:global>
+  .services-poster { width: 40%; margin: 0 auto; }
+  .services-poster img { display: block; width: 100%; height: auto; }
   .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 1px; background: var(--separator); }
   .service-card { min-height: 15rem; padding: clamp(1.5rem, 4vw, 3rem); background: var(--canvas); }
   .service-card h2 { margin: .7rem 0 1rem; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; }
   .service-card p:last-child { max-width: 28rem; color: var(--muted-ink); line-height: 1.65; }
   .services-cta { padding-block: clamp(6rem, 12vw, 10rem); }
   .services-cta h2 { max-width: 35rem; margin: .6rem 0 2rem; font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 5rem); line-height: .98; }
-  @media (max-width: 42rem) { .services-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 42rem) { .services-poster { width: 90%; } .services-grid { grid-template-columns: 1fr; } }
 </style>

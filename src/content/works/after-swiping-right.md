@@ -10,6 +10,8 @@ year: 2026
 company: "東海大學戲劇節"
 case_study: true
 summary: "東海大學戲劇節舞台劇《右滑之後》的音樂設計，演出於 2026 年 10 月 31 日。"
+hero_image: "/media/after-swiping-right/poster.jpg"
+hero_alt: "2026 東海戲劇節《右滑之後》演出海報。"
 media:
   - label: "觀眾進場樂"
     url: "/media/after-swiping-right/audience-entrance.mp3"

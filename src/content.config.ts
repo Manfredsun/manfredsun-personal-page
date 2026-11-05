@@ -93,6 +93,7 @@ const products = defineCollection({
       height: z.number().int().positive(),
     }).optional(),
     site_url: z.union([z.literal(""), z.url().refine((url) => url.startsWith("https://"), "產品網站請使用 HTTPS 網址")]).default(""),
+    repository_url: z.union([z.literal(""), z.url().refine((url) => url.startsWith("https://"), "原始碼連結請使用 HTTPS 網址")]).default(""),
   }),
 });
 
