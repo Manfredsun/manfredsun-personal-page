@@ -20,15 +20,21 @@ const credits = data.credits.filter((credit) => credit.verified && (credit.artis
 const runs = data.runs.filter((run) => run.verified);
 const source = `src/content/works/${data.slug}.md`;
 const isSelectedWorks = data.page_type === "selected-works";
+const roles = workCredit?.roles.length ? workCredit.roles : [...new Set(data.selected_works.flatMap((item) => item.role?.split(" · ") ?? []))];
+const isGalangal = data.slug === "galangal-lemongrass-poppies";
 ---
 <BaseLayout title={`${data.title} — Manfred Sun`} description={data.summary || `申承羲 Manfred Sun 的作品：${data.title}。`} canonicalPath={`/works/${data.slug}/`} image={data.hero_image || data.cover}>
   <article class="case-study shell">
-    <header class="case-study__header">
+    <header class:list={["case-study__header", { "case-study__header--poster": isGalangal }]}>
+      {isGalangal && data.hero_image && <figure class="case-study__poster"><img src={sitePath(data.hero_image)} alt={data.hero_alt || data.title} width="1080" height="1080" fetchpriority="high" /></figure>}
+      <div class="case-study__heading">
+      {roles.length > 0 && <p class="case-study__role"><span>My Role</span> {roles.join(" · ")}</p>}
       <p class="eyebrow">{categoryLabels[data.category]}</p>
       <h1 class="display">{data.title}</h1>
       <Copy collection="workCopy" name={`${data.slug}/intro`} label="作品簡介" class="case-study__intro prose" />
+      </div>
     </header>
-    {data.hero_image ? <figure class="project-hero"><img src={sitePath(data.hero_image)} alt={data.hero_alt || data.title} width="1600" height="1000" decoding="async" fetchpriority="high" /></figure> : !isSelectedWorks && <EmptySlot label="作品主圖" source={`${source} → hero_image / hero_alt`} />}
+    {!isGalangal && (data.hero_image ? <figure class="project-hero"><img src={sitePath(data.hero_image)} alt={data.hero_alt || data.title} width="1600" height="1000" decoding="async" fetchpriority="high" /></figure> : !isSelectedWorks && <EmptySlot label="作品主圖" source={`${source} → hero_image / hero_alt`} />)}
     <dl class="case-study__metadata">
       <div><dt>Category</dt><dd>{categoryLabels[data.category]}</dd></div>
       {data.artist && <div><dt>Artist</dt><dd>{data.artist}</dd></div>}
@@ -60,10 +66,6 @@ const isSelectedWorks = data.page_type === "selected-works";
     </> : <>
       <Copy collection="workCopy" name={`${data.slug}/description`} title="作品描述" class="case-study__section prose" />
       <Copy collection="workCopy" name={`${data.slug}/architecture`} title="專案架構" class="case-study__section prose" />
-      {workCredit?.roles.length ? <section aria-labelledby="case-study-credits" class="case-study__section">
-        <p class="eyebrow">Credits</p><h2 id="case-study-credits">My Role</h2>
-        <ul class="case-study__list"><li><strong>{workCredit.roles.join(" · ")}</strong><span>{workCredit.project}</span></li></ul>
-      </section> : <EmptySlot label="個人職務" source="src/data/credits.yaml" />}
       <Copy collection="workCopy" name={`${data.slug}/concept`} title="創作概念" class="case-study__section prose" fallback={data.concept} />
       <Copy collection="workCopy" name={`${data.slug}/sound-language`} title="音樂與聲音語言" class="case-study__section prose" fallback={data.sound_language} />
       <Copy collection="workCopy" name={`${data.slug}/process`} title="製作過程" class="case-study__section prose" fallback={data.process} />
@@ -86,6 +88,11 @@ const isSelectedWorks = data.page_type === "selected-works";
   .project-hero img { width: 100%; height: auto; }
   .case-study { padding-block: calc(var(--header-height) + clamp(5rem, 10vw, 9rem)) clamp(6rem, 12vw, 10rem); }
   .case-study__header { max-width: 62rem; padding-bottom: clamp(4rem, 9vw, 8rem); border-bottom: 1px solid var(--separator); }
+  .case-study__header--poster { max-width: none; display: grid; grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); align-items: start; gap: clamp(2rem, 5vw, 5rem); }
+  .case-study__poster { margin: 0; }
+  .case-study__poster img { display: block; width: 100%; height: auto; }
+  .case-study__role { margin: 0 0 1.5rem; font-size: clamp(1rem, 1.6vw, 1.25rem); font-weight: 700; }
+  .case-study__role span { display: block; margin-bottom: .35rem; color: var(--muted-ink); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
   .case-study__metadata { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1.5rem; margin: 0; padding-block: 2rem 5rem; }
   .case-study__metadata div { display: grid; gap: .4rem; }
   .case-study__metadata dt { color: var(--muted-ink); font-size: .8125rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
@@ -102,6 +109,7 @@ const isSelectedWorks = data.page_type === "selected-works";
   .case-study__list { margin: 0; padding: 0; border-top: 1px solid var(--separator); list-style: none; }
   .case-study__list li { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--separator); }
   .case-study__list span { color: var(--muted-ink); }
+  .case-study__list strong, .case-study__list span { overflow-wrap: anywhere; }
   .case-study__links { display: flex; flex-wrap: wrap; gap: .8rem; margin-bottom: 4rem; }
   .selected-works { max-width: none; }
   .selected-works__list { margin: 0; padding: 0; border-top: 1px solid var(--separator); list-style: none; }
@@ -122,6 +130,9 @@ const isSelectedWorks = data.page_type === "selected-works";
   .selected-works__arrow { font-size: 1.15rem; transition: transform 180ms ease; }
   .selected-works__list a:hover .selected-works__arrow { transform: translate(0.2rem, -0.2rem); }
   @media (max-width: 42rem) {
+    .case-study__header--poster { grid-template-columns: minmax(0, 1fr); }
+    .case-study__poster { max-width: 24rem; }
+    .case-study__header--poster .case-study__heading { order: -1; }
     .case-study__list li { display: grid; }
     .selected-works__list a,
     .selected-works__list li > div {
