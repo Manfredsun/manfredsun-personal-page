@@ -1,0 +1,95 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { sitePath } from "../utils/paths";
+import { album, musicVideos } from "../data/music-portfolio";
+---
+
+<BaseLayout title="Music Portfolio — Manfred Sun" description="申承羲 Manfred Sun 的作曲、編曲及音樂製作作品。" canonicalPath="/music-portfolio/">
+  <section class="page-hero shell music-hero">
+    <p class="eyebrow">Selected Music</p>
+    <h1 class="display">Music Portfolio</h1>
+    <p class="page-hero__lede">作曲、編曲及音樂製作作品，透過聲音記錄每一次合作與創作。</p>
+  </section>
+
+  <section class="music-gallery shell" aria-label="音樂作品集">
+    <div class="music-gallery__heading"><span>Music &amp; Collaborations</span><span>{String(musicVideos.length + 1).padStart(2, "0")} Works</span></div>
+    <div class="music-grid">
+      {musicVideos.map((work) => (
+        <article class="music-card" data-music-card>
+          <div class="music-card__media" data-video-container>
+            <a class="music-card__preview" href={work.external_url} target="_blank" rel="noopener noreferrer" data-video-id={work.videoId} aria-label={`播放 ${work.project} 影片`}>
+              <img src={`https://i.ytimg.com/vi/${work.videoId}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
+              <span class="music-card__play" aria-hidden="true">▶</span>
+            </a>
+          </div>
+          <h2>{work.project}</h2>
+          {work.artist && <p class="music-card__artist">{work.artist}</p>}
+          <p class="music-card__role"><span>我的職務</span> {work.roles.join(" · ")}</p>
+          {work.team.length > 0 && <dl class="music-card__credits" aria-label={`${work.project} 製作名單`}>
+            {work.team.map((credit) => <div><dt>{credit.role}</dt><dd>{credit.name}</dd></div>)}
+          </dl>}
+          <a class="music-card__link" href={work.external_url} target="_blank" rel="noopener noreferrer">YouTube ↗<span class="sr-only">：{work.project}</span></a>
+        </article>
+      ))}
+      <article class="music-card music-card--album" data-music-card>
+        <a class="music-card__album-art" href={sitePath("/works/useless-youth/")} aria-label="Album：查看我們就是沒有用的年輕人作品詳情">
+          <img src={sitePath("/images/works/useless-youth.png")} alt="《我們就是沒有用的年輕人》專輯封面" width="800" height="800" loading="lazy" decoding="async" />
+          <span>Album ↗</span>
+        </a>
+        <h2>{album.project}</h2>
+        <p class="music-card__artist">申承羲 Manfred Sun</p>
+        <p class="music-card__role"><span>我的職務</span> {album.roles.join(" · ")}</p>
+        <div class="music-card__album-links"><a class="music-card__link" href={sitePath("/works/useless-youth/")}>作品詳情 ↗</a><a class="music-card__link" href="https://music.youtube.com/playlist?list=OLAK5uy_lYjsVXbAPtojnCkdPHlLFHva0HYFj5vRw" target="_blank" rel="noopener noreferrer">YouTube Music ↗</a></div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("[data-video-id]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const container = link.closest<HTMLElement>("[data-video-container]");
+      if (!container || !link.dataset.videoId) return;
+      event.preventDefault();
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${link.dataset.videoId}?autoplay=1`;
+      iframe.title = link.getAttribute("aria-label") || "YouTube 影片";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      container.replaceChildren(iframe);
+      iframe.focus();
+    });
+  });
+</script>
+
+<style>
+  .music-hero { padding-bottom: clamp(3rem, 7vw, 6rem); }
+  .music-gallery { padding-bottom: clamp(5rem, 10vw, 10rem); }
+  .music-gallery__heading { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--ink); font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .music-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 4rem) clamp(1rem, 2vw, 2rem); align-items: start; }
+  .music-card { min-width: 0; overflow-wrap: anywhere; }
+  .music-card__media, .music-card__album-art { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: .4rem; background: #29292d; }
+  .music-card__preview { position: absolute; inset: 0; display: block; }
+  .music-card__preview img { width: 100%; height: 100%; object-fit: cover; }
+  .music-card__play { position: absolute; top: 50%; left: 50%; display: grid; width: 3.2rem; height: 3.2rem; place-items: center; padding-left: .15rem; border: 1px solid rgb(255 255 255 / 70%); border-radius: 50%; background: rgb(20 20 22 / 75%); color: white; transform: translate(-50%, -50%); transition: background 160ms ease, transform 160ms ease; }
+  .music-card__preview:hover .music-card__play { background: #9d2f22; transform: translate(-50%, -50%) scale(1.08); }
+  .music-card__media iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .music-card__album-art img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .music-card__album-art span { position: absolute; right: .65rem; bottom: .65rem; padding: .2rem .55rem; border-radius: .2rem; background: rgb(20 20 22 / 80%); color: white; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .music-card h2 { margin: .85rem 0 0; font-family: var(--serif); font-size: clamp(1.05rem, 1.5vw, 1.4rem); line-height: 1.3; }
+  .music-card__artist { margin: .25rem 0 0; color: var(--muted-ink); font-size: .9rem; }
+  .music-card__role { margin: .8rem 0 0; font-size: .875rem; line-height: 1.55; }
+  .music-card__role span { display: block; color: var(--accent); font-size: .75rem; font-weight: 700; letter-spacing: .06em; }
+  .music-card__credits { margin: .8rem 0 0; color: var(--muted-ink); font-size: .8125rem; line-height: 1.6; }
+  .music-card__credits div { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: .25rem; }
+  .music-card__credits dt, .music-card__credits dd { margin: 0; }
+  .music-card__credits dt { font-weight: 700; }
+  .music-card__link { display: inline-block; margin-top: .9rem; font-size: .8rem; font-weight: 700; text-decoration-thickness: .06em; }
+  .music-card__album-links { display: flex; flex-wrap: wrap; gap: 0 1rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  @media (max-width: 75rem) { .music-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 45rem) { .music-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (prefers-reduced-motion: reduce) { .music-card__play { transition: none; } }
+</style>

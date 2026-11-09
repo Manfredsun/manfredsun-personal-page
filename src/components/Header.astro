@@ -4,6 +4,7 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about/" },
   { label: "Previous Work List", href: "/credits/" },
+  { label: "Music Portfolio", href: "/music-portfolio/" },
   { label: "Sheet Music", href: "/sheet-music/" },
   { label: "AI Images", href: "/ai-images/" },
   { label: "Apps", href: "/product/" },
@@ -107,7 +108,7 @@ const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\
       }
     });
 
-    const mediaQuery = window.matchMedia("(min-width: 64.01rem)");
+    const mediaQuery = window.matchMedia("(min-width: 80.01rem)");
     mediaQuery.addEventListener("change", (event) => {
       if (event.matches) setMenu(false);
     });
@@ -205,7 +206,7 @@ const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\
     display: none;
   }
 
-  @media (max-width: 64rem) {
+  @media (max-width: 80rem) {
     .site-header {
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 1rem;

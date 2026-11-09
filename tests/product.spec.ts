@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const navigation = ["Home", "About", "Previous Work List", "Sheet Music", "AI Images", "Apps", "Services", "Contact"];
+const navigation = ["Home", "About", "Previous Work List", "Music Portfolio", "Sheet Music", "AI Images", "Apps", "Services", "Contact"];
 
 test("product discovery links to both product sites", async ({ page, request }) => {
   await page.goto("/manfredsun-personal-page/product/");
@@ -44,8 +44,8 @@ test("desktop and mobile navigation preserve order and mark Product current", as
   }
 });
 
-test("seven desktop navigation links fit beside the brand", async ({ page }) => {
-  for (const width of [1025, 1100, 1440]) {
+test("desktop navigation links fit beside the brand", async ({ page }) => {
+  for (const width of [1281, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/manfredsun-personal-page/product/");
     const brand = await page.locator(".brand").boundingBox();
