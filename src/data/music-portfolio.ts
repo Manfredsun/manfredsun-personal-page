@@ -1,4 +1,6 @@
 import { publicProjects } from "./credits";
+import legacySource from "./works.yaml?raw";
+import { parse } from "yaml";
 
 // Additional published credits collected for this portfolio preview. Missing
 // fields are intentionally omitted pending confirmation from original sources.
@@ -29,8 +31,19 @@ const selected = new Set([
   "mu-luo", "pandamontana-bei-shang", "lok-chow-2-am", "lok-chow-yu-ni-dou-qi",
 ]);
 
-export const musicVideos = publicProjects.flatMap((project) => {
-  if (!selected.has(project.work_slug) || !project.external_url) return [];
+// User-selected videos; legacy metadata supplies titles, not unverified roles.
+const addedVideoIds = new Set(["JKG4QMcyjF8", "Wj7UR2HBoCo", "hn-4Oj-WFeo"]);
+const legacyWorks = (parse(legacySource) as { works: { title: string; artist: string; youtube: string }[] }).works;
+const addedProjects = legacyWorks.filter((work) => addedVideoIds.has(new URL(work.youtube).pathname.slice(1))).map((work) => ({
+  project: work.title,
+  artist: work.artist === "全半全全半全全" ? undefined : work.artist,
+  work_slug: `video-${new URL(work.youtube).pathname.slice(1)}`,
+  external_url: work.youtube,
+  roles: [] as string[],
+}));
+
+export const musicVideos = [...publicProjects.filter((project) => selected.has(project.work_slug)), ...addedProjects].flatMap((project) => {
+  if (!project.external_url) return [];
   const url = new URL(project.external_url);
   const videoId = url.hostname === "youtu.be" ? url.pathname.slice(1) : url.hostname === "www.youtube.com" ? url.searchParams.get("v") : null;
   if (!videoId || !/^[\w-]{11}$/.test(videoId)) return [];

@@ -6,7 +6,10 @@ const pagePath = "/manfredsun-personal-page/music-portfolio/";
 test("shows the selected works and preserves confirmed roles", async ({ page }) => {
   await page.goto(pagePath);
   const cards = page.locator("[data-music-card]");
-  await expect(cards).toHaveCount(15);
+  await expect(cards).toHaveCount(18);
+  for (const videoId of ["JKG4QMcyjF8", "Wj7UR2HBoCo", "hn-4Oj-WFeo"]) {
+    await expect(page.locator(`[data-video-id="${videoId}"]`)).toHaveAttribute("href", `https://youtu.be/${videoId}`);
+  }
   await expect(cards.filter({ hasText: "這個世界沒有人會信任悲傷" }).locator(".music-card__role")).toContainText("編曲");
   await expect(cards.filter({ hasText: "2 AM" }).locator(".music-card__role")).toContainText("編曲");
   await expect(cards.filter({ hasText: "2 AM" }).locator(".music-card__role")).not.toContainText("樂手");

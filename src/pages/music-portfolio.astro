@@ -24,7 +24,7 @@ import { album, musicVideos } from "../data/music-portfolio";
           </div>
           <h2>{work.project}</h2>
           {work.artist && <p class="music-card__artist">{work.artist}</p>}
-          <p class="music-card__role"><span>我的職務</span> {work.roles.join(" · ")}</p>
+          {work.roles.length > 0 && <p class="music-card__role"><span>我的職務</span> {work.roles.join(" · ")}</p>}
           {work.team.length > 0 && <dl class="music-card__credits" aria-label={`${work.project} 製作名單`}>
             {work.team.map((credit) => <div><dt>{credit.role}</dt><dd>{credit.name}</dd></div>)}
           </dl>}
