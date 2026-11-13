@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const navigation = ["Home", "About", "Previous Work List", "Music Portfolio", "Sheet Music", "AI Images", "Apps", "Services", "Contact"];
+const navigation = ["Home", "About", "Previous Work List", "Music Portfolio", "Live Performance", "Sheet Music", "AI Images", "AI Videos", "Apps", "Services", "Contact"];
 
 test("product discovery links to both product sites", async ({ page, request }) => {
   await page.goto("/manfredsun-personal-page/product/");

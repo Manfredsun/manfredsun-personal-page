@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import YouTubePreview from "../components/YouTubePreview.astro";
+import { liveVideos } from "../data/live-performance";
+import { publicProjects } from "../data/credits";
+
+const performances = publicProjects.filter((project) => project.category === "live")
+  .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+---
+<BaseLayout title="Live Performance — Manfred Sun" description="申承羲 Manfred Sun 的現場演奏影片及演出紀錄。" canonicalPath="/live-performance/">
+  <section class="page-hero shell">
+    <p class="eyebrow">On Stage</p>
+    <h1 class="display">Live Performance</h1>
+    <p class="page-hero__lede">現場演奏的聲音與片刻，記錄舞台上的每一次相遇。</p>
+  </section>
+  <section class="performances shell" aria-labelledby="live-videos-heading">
+    <div class="section-heading"><h2 id="live-videos-heading">Performance Videos</h2><span>{String(liveVideos.length).padStart(2, "0")} Videos</span></div>
+    <div class="performance-grid">
+      {liveVideos.map((video) => <article data-live-video>
+        <YouTubePreview title={video.title} videoId={video.videoId} />
+        <h3>{video.title}</h3>
+        <a class="video-link" href={`https://youtu.be/${video.videoId}`} target="_blank" rel="noopener noreferrer">YouTube ↗<span class="sr-only">：{video.title}</span></a>
+      </article>)}
+    </div>
+  </section>
+  <section class="performances shell" aria-labelledby="live-records-heading">
+    <div class="section-heading"><h2 id="live-records-heading">演出紀錄</h2><span>Live Archive</span></div>
+    <ul class="performance-records">
+      {performances.map((performance) => <li data-live-record>
+        <span class="record-year">{performance.year}</span>
+        <h3>{performance.project}</h3>
+        <p>{performance.roles.join(" · ")}</p>
+      </li>)}
+    </ul>
+  </section>
+</BaseLayout>
+<style>
+  .performances { padding-bottom: clamp(4rem, 8vw, 7rem); }
+  .section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--ink); }
+  .section-heading h2, .section-heading span { margin: 0; font-size: .85rem; font-weight: 700; letter-spacing: .08em; }
+  .section-heading span { color: var(--muted-ink); }
+  .performance-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem 2rem; }
+  article { min-width: 0; overflow-wrap: anywhere; }
+  h3 { margin: .85rem 0 0; font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.5rem); line-height: 1.35; }
+  .video-link { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: .85rem; font-weight: 700; }
+  .performance-records { margin: 0; padding: 0; list-style: none; }
+  .performance-records li { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 5rem; gap: 1rem; align-items: baseline; padding: 1.5rem 0; border-bottom: 1px solid var(--separator); }
+  .performance-records h3, .performance-records p { margin: 0; }
+  .record-year, .performance-records p { color: var(--muted-ink); }
+  @media (max-width: 65rem) { .performance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 40rem) { .performance-grid { grid-template-columns: minmax(0, 1fr); } .performance-records li { grid-template-columns: minmax(0, 1fr); gap: .5rem; } .record-year:empty { display: none; } }
+</style>

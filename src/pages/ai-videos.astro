@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { sitePath } from "../utils/paths";
+import { aiVideoProjects } from "../data/ai-videos";
+---
+<BaseLayout title="AI Videos — Manfred Sun" description="申承羲 Manfred Sun 的 AI 影片創作與生成片段。" canonicalPath="/ai-videos/">
+  <section class="page-hero shell">
+    <p class="eyebrow">Moving Images</p>
+    <h1 class="display">AI Videos</h1>
+    <p class="page-hero__lede">從概念、分鏡到動態畫面，以 AI 探索影像敘事。</p>
+  </section>
+  <div class="ai-projects shell">
+    {aiVideoProjects.map((project) => <section class="ai-project" aria-labelledby={`${project.id}-heading`}>
+      <header class="project-heading"><p class="eyebrow">AI Video Project</p><h2 id={`${project.id}-heading`}>{project.title}</h2><p>{project.description}</p></header>
+      <div class="clip-grid">
+        {project.clips.map((clip) => <figure data-ai-clip>
+          <video controls playsinline preload="none" poster={sitePath(clip.poster)} width={clip.width} height={clip.height} aria-label={clip.title} aria-describedby={`${project.id}-silent`}>
+            <source src={sitePath(clip.src)} type="video/mp4" />
+            你的瀏覽器未能播放此影片，請使用下方連結開啟。
+          </video>
+          <figcaption><h3>{clip.title}</h3><a href={sitePath(clip.src)}>開啟影片 ↗<span class="sr-only">：{clip.title}</span></a></figcaption>
+          <p class="playback-error" data-playback-error hidden role="status">影片暫時無法播放，請使用「開啟影片」連結再試。</p>
+        </figure>)}
+      </div>
+      <p class="silent-note" id={`${project.id}-silent`}>無聲片段</p>
+    </section>)}
+  </div>
+</BaseLayout>
+<script>
+  document.querySelectorAll<HTMLVideoElement>("[data-ai-clip] video").forEach((video) => {
+    const showError = () => { const message = video.closest("figure")?.querySelector<HTMLElement>("[data-playback-error]"); if (message) message.hidden = false; };
+    video.addEventListener("error", showError);
+    video.querySelector("source")?.addEventListener("error", showError);
+    video.addEventListener("play", () => {
+      document.querySelectorAll<HTMLVideoElement>("[data-ai-clip] video").forEach((other) => { if (other !== video) other.pause(); });
+    });
+  });
+</script>
+<style>
+  .ai-projects { padding-bottom: clamp(5rem, 10vw, 10rem); }
+  .ai-project { padding-block: 2rem; border-top: 1px solid var(--ink); }
+  .project-heading { max-width: 48rem; margin-bottom: 2rem; }
+  .project-heading h2 { margin: .6rem 0 1rem; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
+  .project-heading > p:last-child { color: var(--muted-ink); }
+  .clip-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+  figure { margin: 0; min-width: 0; }
+  video { display: block; width: 100%; height: auto; aspect-ratio: 854 / 480; background: #18181a; border-radius: .4rem; }
+  figcaption h3 { margin: 1rem 0 .25rem; font-family: var(--serif); font-size: 1.25rem; }
+  figcaption a { display: inline-flex; min-height: 2.75rem; align-items: center; font-size: .85rem; font-weight: 700; }
+  .silent-note, .playback-error { color: var(--muted-ink); font-size: .9rem; }
+  @media (max-width: 45rem) { .clip-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>

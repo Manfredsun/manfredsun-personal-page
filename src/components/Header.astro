@@ -5,8 +5,10 @@ const navItems = [
   { label: "About", href: "/about/" },
   { label: "Previous Work List", href: "/credits/" },
   { label: "Music Portfolio", href: "/music-portfolio/" },
+  { label: "Live Performance", href: "/live-performance/" },
   { label: "Sheet Music", href: "/sheet-music/" },
   { label: "AI Images", href: "/ai-images/" },
+  { label: "AI Videos", href: "/ai-videos/" },
   { label: "Apps", href: "/product/" },
   { label: "Services", href: "/services/" },
   { label: "Contact", href: "/contact/" },
@@ -204,6 +206,12 @@ const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\
   .menu-button,
   .mobile-menu {
     display: none;
+  }
+
+  @media (min-width: 80.01rem) and (max-width: 105rem) {
+    .site-header { gap: 1rem; }
+    .desktop-nav ul { gap: .1rem; }
+    .desktop-nav a { padding-inline: .35rem; font-size: .8125rem; letter-spacing: .03em; }
   }
 
   @media (max-width: 80rem) {
