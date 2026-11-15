@@ -20,9 +20,9 @@ for (const colorScheme of ["light", "dark"] as const) {
 
       await page.goto("/manfredsun-personal-page/");
       await expect(page.getByRole("heading", { level: 1 })).toContainText("申承羲");
-      await expect(page.locator(".hero").getByText("Hong Kong / Taiwan")).toBeVisible();
-      await expect(page.getByRole("link", { name: "Selected Works", exact: true })).toBeVisible();
-      await expect(page.locator(".hero").getByRole("link", { name: /Contact/ })).toBeVisible();
+      await expect(page.locator(".hero").getByText("香港／台灣")).toBeVisible();
+      await expect(page.getByRole("link", { name: "精選作品", exact: true })).toBeVisible();
+      await expect(page.locator(".hero").getByRole("link", { name: /聯絡我/ })).toBeVisible();
 
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
       expect(overflow).toBe(false);
@@ -41,10 +41,10 @@ test("homepage has no serious accessibility violations", async ({ page }) => {
 test("mobile menu supports keyboard open and Escape close", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/manfredsun-personal-page/");
-  const menuButton = page.getByRole("banner").getByRole("button", { name: "Menu" });
+  const menuButton = page.getByRole("banner").getByRole("button", { name: "選單" });
   await menuButton.focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("navigation", { name: "Mobile navigation" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "行動版導覽" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(menuButton).toHaveAttribute("aria-expanded", "false");
 });
@@ -55,7 +55,7 @@ for (const width of [375, 768]) {
       await page.setViewportSize({ width, height: 812 });
       await page.emulateMedia({ colorScheme });
       await page.goto("/manfredsun-personal-page/credits/");
-      await page.getByRole("button", { name: "Menu" }).click();
+      await page.getByRole("button", { name: "選單" }).click();
 
       const menu = page.locator("#mobile-menu");
       await expect(menu).toBeVisible();
@@ -96,10 +96,10 @@ test("enlarged mobile menu remains scrollable and its links are reachable", asyn
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/manfredsun-personal-page/credits/");
   await page.evaluate(() => document.documentElement.style.fontSize = "200%");
-  await page.getByRole("button", { name: "Menu" }).click();
+  await page.getByRole("button", { name: "選單" }).click();
   const menu = page.locator("#mobile-menu");
   await expect(menu).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)).toBe(false);
-  await menu.getByRole("link", { name: /Contact/ }).click();
+  await menu.getByRole("link", { name: /聯絡我/ }).click();
   await expect(page).toHaveURL(/\/contact\/$/);
 });

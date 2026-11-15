@@ -74,7 +74,7 @@ for (const route of ["live-performance", "ai-videos"]) {
       expect(violations).toEqual([]);
       if (width !== 768) await page.screenshot({ path: `test-results/${route}-${width}.png`, fullPage: true });
       if (width < 1281) {
-        await page.getByRole("button", { name: "Menu", exact: true }).click();
+        await page.getByRole("button", { name: "選單", exact: true }).click();
         await expect(page.locator("#mobile-menu [aria-current=page]")).toHaveAttribute("href", `${base}/${route}/`);
         await page.keyboard.press("Escape");
         await expect(page.locator("main")).not.toHaveAttribute("inert", "");

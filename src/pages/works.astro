@@ -1,4 +1,15 @@
 ---
 import { sitePath } from "../utils/paths";
-return Astro.redirect(sitePath('/credits/'), 301);
+const target = sitePath("/credits/");
 ---
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={new URL(target, Astro.site)} />
+    <title>作品與職務紀錄｜申承羲 Manfred Sun</title>
+  </head>
+  <body><p>正在前往<a href={target}>作品與職務紀錄</a>。</p></body>
+</html>

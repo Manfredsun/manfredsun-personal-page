@@ -1,4 +1,5 @@
 ---
+import { ui } from "../data/ui";
 import { sitePath } from "../utils/paths";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
@@ -11,7 +12,7 @@ import { sortWorks } from "../data/portfolio";
 import { getServices } from "../data/services";
 const services = await getServices();
 
-const title = "申承羲 Manfred Sun — Composer, Arranger, Music Producer & Theatre Music Designer";
+const title = "申承羲 Manfred Sun｜作曲、編曲、音樂製作與劇場音樂／聲音設計";
 const description = "申承羲（Manfred Sun），來自香港、現於台灣工作的作曲家、編曲師、音樂製作人及劇場音樂／聲音設計工作者。";
 
 const featuredWorks = sortWorks((await getCollection("works")).filter(({ data }) => data.featured));
@@ -22,7 +23,7 @@ const personSchema = {
   name: site.name,
   alternateName: site.alternate_name,
   ...(socialLinks.length ? { sameAs: socialLinks.map((link) => link.url) } : {}),
-  jobTitle: ["Composer", "Arranger", "Music Producer", "Theatre Music & Sound Designer"],
+  jobTitle: ["作曲", "編曲", "音樂製作", "劇場音樂與聲音設計"],
   homeLocation: [
     { "@type": "Place", name: "Hong Kong" },
     { "@type": "Place", name: "Taiwan" },
@@ -44,8 +45,8 @@ const personSchema = {
         </h1>
         <p class="hero__role">{site.theatre_role}</p>
         <div class="hero__actions">
-          <a class="button button--primary" href="#selected-works">Selected Works <span aria-hidden="true">↓</span></a>
-          <a class="button" href={sitePath("/contact/")}>Contact <span aria-hidden="true">↗</span></a>
+          <a class="button button--primary" href="#selected-works">{ui.selectedWorks} <span aria-hidden="true">↓</span></a>
+          <a class="button" href={sitePath("/contact/")}>{ui.contact} <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     <div class="hero__media">
@@ -59,10 +60,10 @@ const personSchema = {
         fetchpriority="high"
       />
     </div>
-      <aside class="hero__spine" aria-label="Professional metadata">
-        <div><span>Based</span><strong>{site.location}</strong></div>
-        <div><span>Practice</span><strong>{site.practice}</strong></div>
-        <div><span>Selected roles</span><strong>{site.selected_roles}</strong></div>
+      <aside class="hero__spine" aria-label="專業背景">
+        <div><span>工作地點</span><strong>{site.location}</strong></div>
+        <div><span>創作領域</span><strong>{site.practice}</strong></div>
+        <div><span>主要職務</span><strong>{site.selected_roles}</strong></div>
       </aside>
     </div>
   </section>
@@ -70,7 +71,7 @@ const personSchema = {
   <section class="works-section shell" id="selected-works" aria-labelledby="works-title">
     <div class="section-heading">
       <div>
-        <p class="eyebrow">Selected Works</p>
+        <p class="eyebrow">{ui.selectedWorks}</p>
         <Copy name="home/works-heading" as="h2" class="section-title" id="works-title" />
       </div>
       <Copy name="home/works-intro" as="p" />
@@ -78,31 +79,31 @@ const personSchema = {
     <WorkList works={featuredWorks} home />
   </section>
 
-  <section class="about-services shell" aria-label="About and services">
+  <section class="about-services shell" aria-label="個人介紹與合作服務">
     <article class="about-preview">
-      <p class="eyebrow">About</p>
+      <p class="eyebrow">關於我</p>
       <Copy name="home/about-heading" as="h2" />
       <Copy name="home/about-intro" as="p" />
-      <a class="text-link" href={sitePath("/about/")}>More about Manfred <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="text-link" href={sitePath("/about/")}>進一步認識我 <span class="arrow" aria-hidden="true">→</span></a>
     </article>
 
     <article class="services-preview">
-      <p class="eyebrow">Services</p>
+      <p class="eyebrow">合作服務</p>
       <Copy name="home/services-heading" as="h2" />
       <ul>
-        {services.map((service) => <li>{service.data.english}</li>)}
+        {services.map((service) => <li>{service.data.title}</li>)}
       </ul>
-      <a class="text-link" href={sitePath("/services/")}>View services <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="text-link" href={sitePath("/services/")}>查看合作服務 <span class="arrow" aria-hidden="true">→</span></a>
     </article>
   </section>
 
   <section class="contact-cta" aria-labelledby="contact-title">
     <div class="shell contact-cta__inner">
       <div>
-        <p class="eyebrow">New Project</p>
+        <p class="eyebrow">合作洽詢</p>
         <Copy name="home/contact-heading" as="h2" id="contact-title" />
       </div>
-      <a class="button button--primary" href={sitePath("/contact/")}>Request a Quote <span aria-hidden="true">↗</span></a>
+      <a class="button button--primary" href={sitePath("/contact/")}>{ui.requestQuote} <span aria-hidden="true">↗</span></a>
     </div>
   </section>
 </BaseLayout>

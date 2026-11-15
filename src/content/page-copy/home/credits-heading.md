@@ -1,1 +1,1 @@
-Credit is part of the work.
+每一筆職務，都是作品的一部分。

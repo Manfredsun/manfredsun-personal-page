@@ -28,6 +28,8 @@ body.menu-open {
   overflow: hidden;
 }
 
+h1, h2, h3 { text-wrap: balance; }
+
 a {
   color: inherit;
   text-decoration-thickness: 0.08em;

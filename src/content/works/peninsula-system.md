@@ -72,7 +72,7 @@ media:
 external_links:
   - label: "官方 Instagram"
     url: "https://www.instagram.com/half__island/"
-  - label: "Zeczec Project"
+  - label: "嘖嘖募資專案"
     url: "https://www.zeczec.com/projects/ban-dao-ti-zhi"
   - label: "SoundCloud"
     url: "https://soundcloud.com/suckslayer/sets/2022a"

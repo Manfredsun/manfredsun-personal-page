@@ -4,15 +4,15 @@ import { sitePath } from "../utils/paths";
 import { album, musicVideos } from "../data/music-portfolio";
 ---
 
-<BaseLayout title="Music Portfolio — Manfred Sun" description="申承羲 Manfred Sun 的作曲、編曲及音樂製作作品。" canonicalPath="/music-portfolio/">
+<BaseLayout title="音樂作品集｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的作曲、編曲及音樂製作作品。" canonicalPath="/music-portfolio/">
   <section class="page-hero shell music-hero">
-    <p class="eyebrow">Selected Music</p>
-    <h1 class="display">Music Portfolio</h1>
+    <p class="eyebrow">精選音樂作品</p>
+    <h1 class="display">音樂作品集</h1>
     <p class="page-hero__lede">作曲、編曲及音樂製作作品，透過聲音記錄每一次合作與創作。</p>
   </section>
 
   <section class="music-gallery shell" aria-label="音樂作品集">
-    <div class="music-gallery__heading"><span>Music &amp; Collaborations</span><span>{String(musicVideos.length + 1).padStart(2, "0")} Works</span></div>
+    <div class="music-gallery__heading"><span>音樂創作與合作</span><span>{String(musicVideos.length + 1).padStart(2, "0")} 件作品</span></div>
     <div class="music-grid">
       {musicVideos.map((work) => (
         <article class="music-card" data-music-card>
@@ -32,9 +32,9 @@ import { album, musicVideos } from "../data/music-portfolio";
         </article>
       ))}
       <article class="music-card music-card--album" data-music-card>
-        <a class="music-card__album-art" href={sitePath("/works/useless-youth/")} aria-label="Album：查看我們就是沒有用的年輕人作品詳情">
+        <a class="music-card__album-art" href={sitePath("/works/useless-youth/")} aria-label="專輯：查看我們就是沒有用的年輕人作品詳情">
           <img src={sitePath("/images/works/useless-youth.png")} alt="《我們就是沒有用的年輕人》專輯封面" width="800" height="800" loading="lazy" decoding="async" />
-          <span>Album ↗</span>
+          <span>專輯 ↗</span>
         </a>
         <h2>{album.project}</h2>
         <p class="music-card__artist">申承羲 Manfred Sun</p>

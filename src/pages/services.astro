@@ -1,4 +1,5 @@
 ---
+import { ui } from "../data/ui";
 import { sitePath } from "../utils/paths";
 import Copy from "../components/Copy.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -7,13 +8,13 @@ const services = await getServices();
 ---
 
 <BaseLayout
-  title="Services — Manfred Sun"
-  description="詞曲創作、編曲、音樂製作、劇場音樂設計、音頻後製處理與樂譜製作服務。"
+  title="合作服務｜申承羲 Manfred Sun"
+  description="詞曲創作、編曲、音樂製作、劇場音樂設計、音訊後製處理與樂譜製作服務。"
   canonicalPath="/services/"
 >
   <section class="page-hero shell">
-    <p class="eyebrow">Practice</p>
-    <h1 class="display">Services</h1>
+    <p class="eyebrow">服務項目</p>
+    <h1 class="display">合作服務</h1>
     <Copy name="services/intro" as="p" class="page-hero__lede" />
   </section>
   <figure class="services-poster">
@@ -22,16 +23,16 @@ const services = await getServices();
   <section class="services-grid shell" aria-label="服務項目">
     {services.map((service) => (
       <article class="service-card">
-        <p class="eyebrow">{service.data.english}</p>
+        <p class="eyebrow">服務項目</p>
         <h2>{service.data.title}</h2>
         <Copy name={service.id} label={service.data.title} />
       </article>
     ))}
   </section>
   <section class="services-cta shell">
-    <p class="eyebrow">New Project</p>
+    <p class="eyebrow">合作洽詢</p>
     <Copy name="services/contact-heading" as="h2" />
-    <a class="button button--primary" href={sitePath("/contact/")}>Request a Quote <span aria-hidden="true">↗</span></a>
+    <a class="button button--primary" href={sitePath("/contact/")}>{ui.requestQuote} <span aria-hidden="true">↗</span></a>
   </section>
 </BaseLayout>
 

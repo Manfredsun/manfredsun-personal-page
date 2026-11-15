@@ -1,4 +1,5 @@
 ---
+import { ui } from "../data/ui";
 import { sitePath } from "../utils/paths";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -9,23 +10,24 @@ const images = [
   { file: "57499", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面，並使用實景參考。", alt: "背著背包的女子走在綠樹成蔭的街道上", width: 1344, height: 768 },
   { file: "57502", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面。", alt: "戴草帽的農夫在藍天下耕作", width: 1344, height: 768 },
   { file: "57503", title: "AI MV 動畫生成", description: "使用 AI 生成新海誠風格的畫面，並使用實景參考。", alt: "車廂內顯示萬華、台北及松山的電子站牌", width: 1344, height: 768 },
-  { file: "57497", title: "NTFS Editor Icon Design", description: "程式圖像設計。", alt: "以手繪水彩風格呈現的外接硬碟圖示", width: 1024, height: 1024 },
+  { file: "57497", title: "NTFS Editor 圖示設計", description: "應用程式圖示設計。", alt: "以手繪水彩風格呈現的外接硬碟圖示", width: 1024, height: 1024 },
   { file: "ships", title: "AI 遊戲素材生成", description: "使用 AI 生成遊戲素材畫面。", alt: "四艘橙色球形飛船的插畫", width: 903, height: 218 },
 ];
 ---
 
-<BaseLayout title="AI Images — Manfred Sun" description="申承羲 Manfred Sun 的 AI 圖像作品選集。" canonicalPath="/ai-images/">
+<BaseLayout title="AI 圖像｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的 AI 圖像作品選集。" canonicalPath="/ai-images/">
   <section class="page-hero shell ai-hero">
-    <p class="eyebrow">Visual Portfolio</p>
-    <h1 class="display">AI Images</h1>
+    <p class="eyebrow">視覺作品集</p>
+    <h1 class="display">AI 圖像</h1>
     <p class="page-hero__lede">以 AI 創作的圖像選集，從場景到插畫，記錄不同的視覺想像。</p>
   </section>
 
   <section class="gallery shell" aria-label="AI 圖像作品">
-    <div class="gallery__heading"><span>Selected Images</span><span>{String(images.length).padStart(2, "0")} Works</span></div>
+    <div class="gallery__heading"><span>精選圖像</span><span>{String(images.length).padStart(2, "0")} 件作品</span></div>
     <div class="gallery__grid">
       {images.map((image, index) => (
-        <a class:list={["gallery__item", { "gallery__item--wide": index === 0 || image.file === "ships" }]} href={sitePath(`/images/ai-images/${image.file}.webp`)} data-gallery-item aria-label={`放大圖片：${image.alt}`}>
+        <a class:list={["gallery__item", { "gallery__item--wide": index === 0 || image.file === "ships" }]} href={sitePath(`/images/ai-images/${image.file}.webp`)} data-gallery-item>
+          <span class="sr-only">放大圖片：</span>
           <img src={sitePath(`/images/ai-images/${image.file}.webp`)} alt={image.alt} width={image.width} height={image.height} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
           <span class="gallery__number" aria-hidden="true">{String(index + 1).padStart(2, "0")} <span>↗</span></span>
           <span class="gallery__title">{image.title}</span>
@@ -36,9 +38,9 @@ const images = [
   </section>
 
   <dialog class="viewer" aria-label="圖片放大檢視" data-viewer>
-    <div class="viewer__bar"><span data-counter></span><button type="button" data-close aria-label="關閉圖片">Close ×</button></div>
+    <div class="viewer__bar"><span data-counter></span><button type="button" data-close aria-label={ui.closeImage}>{ui.closeImage} ×</button></div>
     <div class="viewer__image"><img data-viewer-image src="" alt="" /></div>
-    <div class="viewer__controls"><button type="button" data-previous aria-label="上一張圖片">← Previous</button><button type="button" data-next aria-label="下一張圖片">Next →</button></div>
+    <div class="viewer__controls"><button type="button" data-previous aria-label={ui.previousImage}>← {ui.previousImage}</button><button type="button" data-next aria-label={ui.nextImage}>{ui.nextImage} →</button></div>
   </dialog>
 </BaseLayout>
 

@@ -1,20 +1,21 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const navigation = ["Home", "About", "Previous Work List", "Music Portfolio", "Live Performance", "Sheet Music", "AI Images", "AI Videos", "Apps", "Services", "Contact"];
+const navigation = ["首頁", "關於我", "作品與職務紀錄", "音樂作品集", "現場演出", "樂譜作品", "AI 圖像", "AI 影片", "應用程式", "合作服務", "聯絡我"];
 
-test("product discovery links to both product sites", async ({ page, request }) => {
+test("product discovery links to all three product sites", async ({ page, request }) => {
   await page.goto("/manfredsun-personal-page/product/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Apps");
-  await expect(page.locator("main article")).toHaveCount(2);
-  await expect(page.getByRole("heading", { level: 2 })).toHaveText(["Audio File Library", "NTFS Editor for macOS"]);
-  await expect(page.locator("main")).toContainText("Native macOS Sound Library Manager");
-  await expect(page.locator("main")).toContainText("Search → Preview → Drag");
-  await expect(page.locator("main")).toContainText("Built by 申承羲 Manfred Sun");
-  const links = page.getByRole("link", { name: "Visit Product Site" });
-  await expect(links).toHaveCount(2);
-  await expect(links.nth(0)).toHaveAttribute("href", "https://manfredsun.github.io/audio-file-library/zh-hant.html?utm_source=chatgpt.com");
-  await expect(links.nth(1)).toHaveAttribute("href", "https://manfredsun.github.io/NTFS-Editor-On-Macos/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("應用程式");
+  await expect(page.locator("main article")).toHaveCount(3);
+  await expect(page.getByRole("heading", { level: 2 })).toHaveText(["AirDrop Wheel", "Audio File Library", "NTFS Editor for macOS"]);
+  await expect(page.locator("main")).toContainText("macOS 原生音效素材庫管理工具");
+  await expect(page.locator("main")).toContainText("搜尋 → 預聽 → 拖曳");
+  await expect(page.locator("main")).toContainText("由申承羲 Manfred Sun 開發");
+  const links = page.getByRole("link", { name: "前往產品網站" });
+  await expect(links).toHaveCount(3);
+  await expect(links.nth(0)).toHaveAttribute("href", "https://manfredsun.github.io/airdrop-wheel/");
+  await expect(links.nth(1)).toHaveAttribute("href", "https://manfredsun.github.io/audio-file-library/zh-hant.html?utm_source=chatgpt.com");
+  await expect(links.nth(2)).toHaveAttribute("href", "https://manfredsun.github.io/NTFS-Editor-On-Macos/");
   for (const link of await links.all()) await expect(link).toHaveAttribute("rel", "noopener noreferrer");
   await expect(page.getByAltText(/Audio File Library 標誌/)).toHaveAttribute("src", "/manfredsun-personal-page/media/audio-file-library-logo.png");
   await expect(page.getByAltText(/NTFS Editor 標誌/)).toHaveAttribute("src", "/manfredsun-personal-page/media/ntfs-editor-logo.png");
@@ -32,8 +33,8 @@ test("desktop and mobile navigation preserve order and mark Product current", as
   for (const mobile of [false, true]) {
     await page.setViewportSize({ width: mobile ? 375 : 1440, height: 900 });
     await page.goto("/manfredsun-personal-page/product/");
-    if (mobile) await page.getByRole("button", { name: "Menu", exact: true }).click();
-    const nav = page.getByRole("navigation", { name: mobile ? "Mobile navigation" : "Primary navigation" });
+    if (mobile) await page.getByRole("button", { name: "選單", exact: true }).click();
+    const nav = page.getByRole("navigation", { name: mobile ? "行動版導覽" : "主要導覽" });
     expect(await nav.locator("a").evaluateAll((links) => links.map((link) => link.textContent?.replace("↗", "").trim()))).toEqual(navigation);
     await expect(nav.locator('[aria-current="page"]')).toHaveCount(1);
     await expect(nav.locator('[aria-current="page"]')).toHaveAttribute("href", "/manfredsun-personal-page/product/");
@@ -84,7 +85,7 @@ test("product remains readable at 200% text with reduced motion", async ({ page 
   await page.goto("/manfredsun-personal-page/product/");
   await page.evaluate(() => document.documentElement.style.fontSize = "200%");
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
-  await page.getByRole("button", { name: "Menu", exact: true }).click();
-  await page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: /Apps/ }).click();
+  await page.getByRole("button", { name: "選單", exact: true }).click();
+  await page.getByRole("navigation", { name: "行動版導覽" }).getByRole("link", { name: /應用程式/ }).click();
   await expect(page).toHaveURL(/\/product\/$/);
 });

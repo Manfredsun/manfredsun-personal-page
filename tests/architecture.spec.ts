@@ -66,8 +66,8 @@ test("desktop navigation and each mobile navigation link work", async ({ page })
     await page.setViewportSize({ width: mobile ? 375 : 1440, height: 900 });
     for (const path of ["/manfredsun-personal-page/", "/manfredsun-personal-page/credits/", "/manfredsun-personal-page/about/", "/manfredsun-personal-page/services/", "/manfredsun-personal-page/product/", "/manfredsun-personal-page/contact/"]) {
       await page.goto("/manfredsun-personal-page/");
-      if (mobile) await page.getByRole("button", { name: "Menu", exact: true }).click();
-      const nav = mobile ? page.getByRole("navigation", { name: "Mobile navigation" }) : page.getByRole("banner");
+      if (mobile) await page.getByRole("button", { name: "選單", exact: true }).click();
+      const nav = mobile ? page.getByRole("navigation", { name: "行動版導覽" }) : page.getByRole("banner");
       await nav.locator(`a[href="${path}"]`).filter({ visible: true }).first().click();
       await expect(page).toHaveURL(new RegExp(path === "/manfredsun-personal-page/" ? "/manfredsun-personal-page/$" : `${path}$`));
       await expect(page.locator("main h1")).toBeVisible();
@@ -120,8 +120,8 @@ test("all remaining pages pass accessibility and responsive checks", async ({ pa
 test("mobile close button restores page interaction", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/manfredsun-personal-page/credits/");
-  await page.getByRole("button", { name: "Menu", exact: true }).click();
-  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.getByRole("button", { name: "選單", exact: true }).click();
+  await page.getByRole("button", { name: "關閉選單", exact: true }).click();
   await expect(page.locator("main")).not.toHaveAttribute("inert", "");
   await page.locator('a[href="/manfredsun-personal-page/works/useless-youth/"]').first().click();
   await expect(page).toHaveURL(/\/works\/useless-youth\/$/);

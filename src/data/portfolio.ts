@@ -8,13 +8,7 @@ export const featuredOrder = [
   "jacky-fcy-selected-works",
 ] as const;
 
-export const categoryLabels = {
-  music: "Music",
-  theatre: "Theatre",
-  live: "Live",
-  personal: "Personal",
-  archive: "Archive",
-} as const;
+export { categoryLabels } from "./ui";
 
 export function sortWorks(works: CollectionEntry<"works">[]) {
   return [...works].sort((a, b) => {

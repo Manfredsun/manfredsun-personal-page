@@ -10,6 +10,9 @@ const exec = promisify(execFile);
 
 test("isolated authoring: blanks, Markdown, skeleton, media, contact and production output", async ({ page, request }) => {
   test.setTimeout(150_000);
+  // This test reloads explicitly after file edits. Avoid a simultaneous HMR
+  // navigation destroying the context while checking the newly rendered page.
+  await page.route("**/@vite/client", (route) => route.fulfill({ contentType: "application/javascript", body: "" }));
   const root = process.cwd();
   const fixture = await mkdtemp(path.join(tmpdir(), "portfolio-authoring-"));
   let server: ReturnType<typeof spawn> | undefined;
@@ -84,7 +87,10 @@ test("isolated authoring: blanks, Markdown, skeleton, media, contact and product
     settings.email = "not-an-email";
     await writeFile(settingsPath, stringify(settings));
     await expect.poll(async () => (await (await request.get(`${url}/contact/`)).text()).includes("noindex, nofollow"), { timeout: 15_000 }).toBe(true);
-    await page.goto(`${url}/contact/`);
+    await expect.poll(async () => {
+      await page.goto(`${url}/contact/`);
+      return page.locator('meta[name="robots"]').evaluateAll((elements) => elements[0]?.getAttribute("content") ?? null);
+    }, { timeout: 15_000 }).toBe("noindex, nofollow");
     await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
     expect(await (await request.get(`${url}/sitemap.xml`)).text()).not.toContain("/contact/");
@@ -101,8 +107,8 @@ test("isolated authoring: blanks, Markdown, skeleton, media, contact and product
 
     // Product assets and links are edited only in this isolated copy.
     await page.goto(`${url}/product/`);
-    await expect(page.getByRole("button", { name: "Visit Product Site" })).toBeDisabled();
-    await expect(page.locator("main article").first().locator("[data-product-placeholder]")).toBeVisible();
+    await expect(page.getByRole("button", { name: "前往產品網站" })).toBeDisabled();
+    await expect(page.getByRole("article").filter({ has: page.getByRole("heading", { name: "Audio File Library", exact: true }) }).locator("[data-product-placeholder]")).toBeVisible();
     const imageSize = await page.evaluate(async (src) => {
       const image = new Image();
       image.src = src;
@@ -119,9 +125,9 @@ test("isolated authoring: blanks, Markdown, skeleton, media, contact and product
     }, { timeout: 15_000 }).toBe(1);
     await expect(page.locator("main")).toContainText("產品簡介填寫測試");
     await expect(page.getByAltText("產品圖片測試")).toHaveAttribute("loading", "lazy");
-    await expect(page.locator("main article").first().locator("[data-product-placeholder]")).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Visit Product Site" })).toHaveCount(0);
-    const productLink = page.locator("main article").first().getByRole("link", { name: "Visit Product Site" });
+    await expect(page.getByRole("article").filter({ has: page.getByRole("heading", { name: "Audio File Library", exact: true }) }).locator("[data-product-placeholder]")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "前往產品網站" })).toHaveCount(0);
+    const productLink = page.getByRole("article").filter({ has: page.getByRole("heading", { name: "Audio File Library", exact: true }) }).getByRole("link", { name: "前往產品網站" });
     await expect(productLink).toHaveAttribute("href", "https://example.com/");
     await expect(productLink).toHaveAttribute("target", "_blank");
     await expect(productLink).toHaveAttribute("rel", "noopener noreferrer");

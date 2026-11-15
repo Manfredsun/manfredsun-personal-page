@@ -5,7 +5,7 @@ const scores = JSON.parse(readFileSync(new URL("../src/data/sheet-music.json", i
 
 test("all verified products have matching independent product links and no score previews", async ({ page, request }) => {
   await page.goto('/manfredsun-personal-page/sheet-music/');
-  await expect(page).toHaveTitle('Sheet Music — Manfred Sun');
+  await expect(page).toHaveTitle('樂譜作品｜申承羲 Manfred Sun');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://manfredsun.github.io/manfredsun-personal-page/sheet-music/');
   await expect(page.locator('main article')).toHaveCount(34);
   expect(new Set(scores.map(s => s.url)).size).toBe(34);
@@ -36,11 +36,11 @@ for (const width of [375, 768, 1440]) test(`layout, navigation and accessibility
   const positions = await cards.evaluateAll((items) => items.slice(0, 4).map((item) => Math.round(item.getBoundingClientRect().top)));
   const expectedColumns = width <= 672 ? 1 : width <= 1024 ? 2 : 3;
   expect(positions.filter((top) => top === positions[0])).toHaveLength(expectedColumns);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Sheet Music');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('樂譜作品');
   if (width < 1025) {
-    await page.getByRole('button', { name: 'Menu', exact: true }).click();
-    await expect(page.locator('#mobile-menu').getByRole('link', { name: 'Sheet Music' })).toHaveAttribute('aria-current', 'page');
+    await page.getByRole('button', { name: '選單', exact: true }).click();
+    await expect(page.locator('#mobile-menu').getByRole('link', { name: '樂譜作品' })).toHaveAttribute('aria-current', 'page');
     await page.keyboard.press('Escape');
-  } else await expect(page.locator('.desktop-nav').getByRole('link', { name: 'Sheet Music' })).toHaveAttribute('aria-current', 'page');
+  } else await expect(page.locator('.desktop-nav').getByRole('link', { name: '樂譜作品' })).toHaveAttribute('aria-current', 'page');
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });

@@ -13,13 +13,13 @@ const categories = [...new Set(publicProjects.map((credit) => credit.category))]
 ---
 
 <BaseLayout
-  title="Previous Work List — Manfred Sun"
+  title="作品與職務紀錄｜申承羲 Manfred Sun"
   description="申承羲 Manfred Sun 的劇場、音樂與個人企劃職務紀錄。"
   canonicalPath="/credits/"
 >
   <section class="page-hero shell">
-    <p class="eyebrow">Roles &amp; Collaborations</p>
-    <h1 class="display">Previous Work List</h1>
+    <p class="eyebrow">職務與合作</p>
+    <h1 class="display">作品與職務紀錄</h1>
     <Copy name="credits/intro" as="p" class="page-hero__lede" />
   </section>
   <section class="credits-index shell" aria-label="作品職務">
@@ -44,7 +44,7 @@ const categories = [...new Set(publicProjects.map((credit) => credit.category))]
       </label>
     </div>
     <div class="credits-table">
-      <div class="credits-table__head" aria-hidden="true"><span>Project</span><span>Role</span><span>Category</span></div>
+      <div class="credits-table__head" aria-hidden="true"><span>作品</span><span>職務</span><span>類別</span></div>
       <ul>
         {publicProjects.map((credit) => (
           <li class="credits-table__row" data-year={credit.year || ""} data-category={credit.category} data-roles={credit.roles.join("|")}>

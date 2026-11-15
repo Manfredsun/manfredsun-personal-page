@@ -1,18 +1,6 @@
 ---
 import { sitePath } from "../utils/paths";
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about/" },
-  { label: "Previous Work List", href: "/credits/" },
-  { label: "Music Portfolio", href: "/music-portfolio/" },
-  { label: "Live Performance", href: "/live-performance/" },
-  { label: "Sheet Music", href: "/sheet-music/" },
-  { label: "AI Images", href: "/ai-images/" },
-  { label: "AI Videos", href: "/ai-videos/" },
-  { label: "Apps", href: "/product/" },
-  { label: "Services", href: "/services/" },
-  { label: "Contact", href: "/contact/" },
-];
+import { navigation as navItems, ui } from "../data/ui";
 
 const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\/$/, "").length) || "/";
 ---
@@ -20,10 +8,10 @@ const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\
 <header class="site-header" data-header>
   <a class="brand" href={sitePath("/")}>
     <span class="brand__name">Manfred Sun</span>
-    <span class="brand__role">Music / Theatre</span>
+    <span class="brand__role">音樂／劇場</span>
   </a>
 
-  <nav class="desktop-nav" aria-label="Primary navigation">
+  <nav class="desktop-nav" aria-label={ui.primaryNavigation}>
     <ul>
       {navItems.map((item) => (
         <li>
@@ -45,12 +33,12 @@ const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\
     aria-controls="mobile-menu"
     data-menu-button
   >
-    <span class="menu-button__label">Menu</span>
+    <span class="menu-button__label">{ui.menu}</span>
     <span class="menu-button__icon" aria-hidden="true"><i></i><i></i></span>
   </button>
 
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert data-mobile-menu>
-    <nav aria-label="Mobile navigation">
+    <nav aria-label={ui.mobileNavigation}>
       <ul>
         {navItems.map((item) => (
           <li>
@@ -64,11 +52,12 @@ const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\
         ))}
       </ul>
     </nav>
-    <p>Hong Kong / Taiwan<br />Theatre · Music · Sound</p>
+    <p>香港／台灣<br />劇場 · 音樂 · 聲音</p>
   </div>
 </header>
 
 <script>
+  import { ui } from "../data/ui";
   const header = document.querySelector("[data-header]");
   const button = header?.querySelector<HTMLButtonElement>("[data-menu-button]");
   const menu = header?.querySelector<HTMLElement>("[data-mobile-menu]");
@@ -80,7 +69,7 @@ const currentPath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\
       header.toggleAttribute("data-menu-open", open);
       document.body.classList.toggle("menu-open", open);
       button.setAttribute("aria-expanded", String(open));
-      button.querySelector(".menu-button__label")!.textContent = open ? "Close" : "Menu";
+      button.querySelector(".menu-button__label")!.textContent = open ? ui.closeMenu : ui.menu;
       menu.setAttribute("aria-hidden", String(!open));
       menu.inert = !open;
       if (pageContent) pageContent.inert = open;

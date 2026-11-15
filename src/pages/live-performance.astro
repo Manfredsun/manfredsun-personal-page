@@ -7,14 +7,14 @@ import { publicProjects } from "../data/credits";
 const performances = publicProjects.filter((project) => project.category === "live")
   .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 ---
-<BaseLayout title="Live Performance — Manfred Sun" description="申承羲 Manfred Sun 的現場演奏影片及演出紀錄。" canonicalPath="/live-performance/">
+<BaseLayout title="現場演出｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的現場演奏影片及演出紀錄。" canonicalPath="/live-performance/">
   <section class="page-hero shell">
-    <p class="eyebrow">On Stage</p>
-    <h1 class="display">Live Performance</h1>
+    <p class="eyebrow">舞台紀錄</p>
+    <h1 class="display">現場演出</h1>
     <p class="page-hero__lede">現場演奏的聲音與片刻，記錄舞台上的每一次相遇。</p>
   </section>
   <section class="performances shell" aria-labelledby="live-videos-heading">
-    <div class="section-heading"><h2 id="live-videos-heading">Performance Videos</h2><span>{String(liveVideos.length).padStart(2, "0")} Videos</span></div>
+    <div class="section-heading"><h2 id="live-videos-heading">演出影片</h2><span>{String(liveVideos.length).padStart(2, "0")} 段影片</span></div>
     <div class="performance-grid">
       {liveVideos.map((video) => <article data-live-video>
         <YouTubePreview title={video.title} videoId={video.videoId} />
@@ -24,7 +24,7 @@ const performances = publicProjects.filter((project) => project.category === "li
     </div>
   </section>
   <section class="performances shell" aria-labelledby="live-records-heading">
-    <div class="section-heading"><h2 id="live-records-heading">演出紀錄</h2><span>Live Archive</span></div>
+    <div class="section-heading"><h2 id="live-records-heading">演出紀錄</h2><span>演出歷程</span></div>
     <ul class="performance-records">
       {performances.map((performance) => <li data-live-record>
         <span class="record-year">{performance.year}</span>

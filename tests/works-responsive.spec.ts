@@ -25,9 +25,9 @@ test("Works redirects to Credits, which links to case studies", async ({ page })
   await page.goto(`${base}/works/`);
   await expect(page).toHaveURL(`${base}/credits/`);
   await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
-  await page.getByRole("button", { name: "Menu", exact: true }).click();
-  await expect(page.getByRole("navigation", { name: "Mobile navigation" })).toBeVisible();
-  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.getByRole("button", { name: "選單", exact: true }).click();
+  await expect(page.getByRole("navigation", { name: "行動版導覽" })).toBeVisible();
+  await page.getByRole("button", { name: "關閉選單", exact: true }).click();
   await expect(page.locator("main")).not.toHaveAttribute("inert", "");
   await page.locator(`a[href="${base}/works/useless-youth/"]`).first().click();
   await expect(page.locator("main h1")).toContainText("我們就是沒有用的年輕人");

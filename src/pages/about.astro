@@ -1,4 +1,5 @@
 ---
+import { ui } from "../data/ui";
 import { sitePath } from "../utils/paths";
 import Copy from "../components/Copy.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -9,13 +10,13 @@ const selectedWorks = sortWorks((await getCollection("works")).filter(({ data })
 ---
 
 <BaseLayout
-  title="About 申承羲 Manfred Sun — 作曲、音樂製作與劇場聲音"
+  title="關於我｜申承羲 Manfred Sun"
   description="認識來自香港、現於台灣工作的作曲家、編曲師、音樂製作人申承羲 Manfred Sun。"
   canonicalPath="/about/"
 >
   <section class="page-hero shell">
-    <p class="eyebrow">Profile</p>
-    <h1 class="display">About</h1>
+    <p class="eyebrow">個人簡介</p>
+    <h1 class="display">關於我</h1>
     <Copy name="about/intro" as="p" class="page-hero__lede" />
   </section>
   <section class="about-body shell" aria-label="個人介紹">
@@ -26,16 +27,16 @@ const selectedWorks = sortWorks((await getCollection("works")).filter(({ data })
     <div class="about-body__copy">
       <Copy name="about/bio" as="p" />
       <Copy name="about/story" as="p" />
-      <a class="text-link" href={sitePath("/services/")}>Explore services <span aria-hidden="true">→</span></a>
+      <a class="text-link" href={sitePath("/services/")}>查看合作服務 <span aria-hidden="true">→</span></a>
     </div>
   </section>
   <section class="about-work shell" aria-labelledby="about-work-title">
-    <p class="eyebrow">Selected Experience</p>
+    <p class="eyebrow">精選經歷</p>
     <h2 id="about-work-title">作品與職務</h2>
     <ul>
       {selectedWorks.map((work) => <li><a href={sitePath(`/works/${work.data.slug}/`)}>{work.data.title}</a><span>{publicRoles(work).join(" · ")}</span></li>)}
     </ul>
-    <a class="text-link" href={sitePath("/credits/")}>Previous Work List <span aria-hidden="true">→</span></a>
+    <a class="text-link" href={sitePath("/credits/")}>{ui.credits} <span aria-hidden="true">→</span></a>
   </section>
   <section class="shell optional-sections" aria-label="更多背景">
     <Copy name="about/areas" title="工作領域" class="optional-copy" />

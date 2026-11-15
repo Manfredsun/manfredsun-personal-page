@@ -1,28 +1,29 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import scores from "../data/sheet-music.json";
+import { scoreFormatLabels, instrumentLabels } from "../data/ui";
 const formats = [...new Set(scores.map((score) => score.format))];
 const ensembles: Record<string, string> = { Band: "樂隊", Solo: "獨奏", "Two Pianos": "雙鋼琴" };
 ---
-<BaseLayout title="Sheet Music — Manfred Sun" description="申承羲 Manfred Sun 的打譜作品集，涵蓋流行曲與爵士樂；前往 Music5 查看及購買樂譜。" canonicalPath="/sheet-music/">
+<BaseLayout title="樂譜作品｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的打譜作品集，涵蓋流行曲與爵士樂；前往 Music5 查看及購買樂譜。" canonicalPath="/sheet-music/">
   <section class="page-hero shell">
-    <p class="eyebrow">Transcription &amp; Score Preparation</p>
-    <h1 class="display">Sheet Music</h1>
+    <p class="eyebrow">採譜與樂譜製作</p>
+    <h1 class="display">樂譜作品</h1>
     <p class="page-hero__lede">以流行曲與爵士樂為主的打譜作品集。</p>
-    <p class="score-intro">主要打譜類別：Leadsheet、Chord Chart、Full Score、Chord Analysis、Solo Transcription。以下收錄已在 Music5 公開上架的作品，樂譜查看與購買請前往各商品頁面。</p>
+    <p class="score-intro">主要類型包括旋律與和弦譜、和弦譜、總譜、和弦分析及獨奏採譜。以下收錄已在 Music5 公開上架的作品，樂譜查看與購買請前往各商品頁面。</p>
     <a class="text-link" href="https://www.mymusic5.com/manfredsun" target="_blank" rel="noopener noreferrer">瀏覽 Music5 創作者頁面 ↗</a>
   </section>
   <section class="scores shell" aria-label="Music5 樂譜作品集">
     <div class="scores__toolbar">
       <label for="score-format">樂譜類型</label>
-      <select id="score-format"><option value="all">全部類型</option>{formats.map((format) => <option value={format}>{format}</option>)}</select>
+      <select id="score-format"><option value="all">全部類型</option>{formats.map((format) => <option value={format}>{scoreFormatLabels[format] || format}</option>)}</select>
       <p role="status" aria-live="polite" data-score-count>共 {scores.length} 份樂譜</p>
     </div>
     <div class="scores__grid">
       {scores.map((score) => <article class="score" data-score-format={score.format} data-score-id={score.id}>
-        <p class="eyebrow">{score.format}</p>
+        <p class="eyebrow">{scoreFormatLabels[score.format] || score.format}</p>
         <h2>{score.title}</h2>
-        <dl><div><dt>樂器</dt><dd>{score.instruments.join(" · ")}</dd></div><div><dt>編制</dt><dd>{ensembles[score.ensemble] || score.ensemble}</dd></div></dl>
+        <dl><div><dt>樂器</dt><dd>{score.instruments.map((instrument) => instrumentLabels[instrument] || instrument).join(" · ")}</dd></div><div><dt>編制</dt><dd>{ensembles[score.ensemble] || score.ensemble}</dd></div></dl>
         <a class="button" href={score.url} target="_blank" rel="noopener noreferrer" aria-label={`在 Music5 查看樂譜：${score.title}（新分頁）`}>在 Music5 查看樂譜 <span aria-hidden="true">↗</span></a>
       </article>)}
     </div>

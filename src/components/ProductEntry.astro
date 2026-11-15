@@ -1,4 +1,5 @@
 ---
+import { ui } from "../data/ui";
 import { sitePath } from "../utils/paths";
 import type { CollectionEntry } from "astro:content";
 interface Props { product: CollectionEntry<"products">; }
@@ -31,11 +32,11 @@ const statusId = `${headingId}-status`;
     </div>}
   </figure>
   <div class="product-entry__cta">
-    {data.site_url ? <a class="button" href={data.site_url} target="_blank" rel="noopener noreferrer">Visit Product Site <span aria-hidden="true">↗</span></a> : <>
-      <button class="button product-entry__disabled" type="button" disabled aria-describedby={statusId} data-product-cta>Visit Product Site <span aria-hidden="true">↗</span></button>
+    {data.site_url ? <a class="button" href={data.site_url} target="_blank" rel="noopener noreferrer">{ui.productSite} <span aria-hidden="true">↗</span></a> : <>
+      <button class="button product-entry__disabled" type="button" disabled aria-describedby={statusId} data-product-cta>{ui.productSite} <span aria-hidden="true">↗</span></button>
       <p id={statusId}>產品網站尚未公開</p>
     </>}
-    {data.repository_url && <a class="button" href={data.repository_url} target="_blank" rel="noopener noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>}
+    {data.repository_url && <a class="button" href={data.repository_url} target="_blank" rel="noopener noreferrer">{ui.repository} <span aria-hidden="true">↗</span></a>}
   </div>
 </article>
 
