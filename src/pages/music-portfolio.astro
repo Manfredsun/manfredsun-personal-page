@@ -24,6 +24,9 @@ import { album, musicVideos } from "../data/music-portfolio";
           </div>
           <h2>{work.project}</h2>
           {work.artist && <p class="music-card__artist">{work.artist}</p>}
+          {work.tags.length > 0 && <ul class="music-card__tags" aria-label={`${work.project} 作品標籤`}>
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>}
           {work.roles.length > 0 && <p class="music-card__role"><span>我的職務</span> {work.roles.join(" · ")}</p>}
           {work.team.length > 0 && <dl class="music-card__credits" aria-label={`${work.project} 製作名單`}>
             {work.team.map((credit) => <div><dt>{credit.role}</dt><dd>{credit.name}</dd></div>)}
@@ -80,6 +83,8 @@ import { album, musicVideos } from "../data/music-portfolio";
   .music-card__album-art span { position: absolute; right: .65rem; bottom: .65rem; padding: .2rem .55rem; border-radius: .2rem; background: rgb(20 20 22 / 80%); color: white; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
   .music-card h2 { margin: .85rem 0 0; font-family: var(--serif); font-size: clamp(1.05rem, 1.5vw, 1.4rem); line-height: 1.3; }
   .music-card__artist { margin: .25rem 0 0; color: var(--muted-ink); font-size: .9rem; }
+  .music-card__tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: .75rem 0 0; padding: 0; list-style: none; }
+  .music-card__tags li { padding: .2rem .6rem; border: 1px solid var(--separator); border-radius: 999px; background: var(--surface); color: var(--ink); font-size: .75rem; line-height: 1.5; }
   .music-card__role { margin: .8rem 0 0; font-size: .875rem; line-height: 1.55; }
   .music-card__role span { display: block; color: var(--accent); font-size: .75rem; font-weight: 700; letter-spacing: .06em; }
   .music-card__credits { margin: .8rem 0 0; color: var(--muted-ink); font-size: .8125rem; line-height: 1.6; }

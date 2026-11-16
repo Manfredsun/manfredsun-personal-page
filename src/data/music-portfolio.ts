@@ -24,6 +24,15 @@ const roleOverrides: Record<string, string[]> = {
   "sunset-yuki-law": ["作曲"],
 };
 
+// String arrangement confirmed by the user; tags describe these selected works.
+const workTags: Record<string, string[]> = {
+  "jacky-fcy-ming-ri-ju-tong": ["弦樂編曲"],
+  "jacky-fcy-mo-shi-hua-huo": ["弦樂編曲"],
+  "jacky-fcy-zheng-dang-shi-jie": ["弦樂編曲"],
+  "jacky-fcy-wo-xi-wang": ["弦樂編曲"],
+  "mu-luo": ["弦樂編曲"],
+};
+
 const selected = new Set([
   "jacky-fcy-heart-destruction", "jacky-fcy-ming-ri-ju-tong", "jacky-fcy-mo-shi-hua-huo",
   "jacky-fcy-zheng-dang-shi-jie", "wo-xiang-chi-xiao-ye", "jacky-fcy-lian-ai-yuan-wu-qu",
@@ -47,7 +56,7 @@ export const musicVideos = [...publicProjects.filter((project) => selected.has(p
   const url = new URL(project.external_url);
   const videoId = url.hostname === "youtu.be" ? url.pathname.slice(1) : url.hostname === "www.youtube.com" ? url.searchParams.get("v") : null;
   if (!videoId || !/^[\w-]{11}$/.test(videoId)) return [];
-  return [{ ...project, videoId, roles: roleOverrides[project.work_slug] ?? project.roles, team: team[project.work_slug] ?? [] }];
+  return [{ ...project, videoId, tags: workTags[project.work_slug] ?? [], roles: roleOverrides[project.work_slug] ?? project.roles, team: team[project.work_slug] ?? [] }];
 });
 
 export const album = publicProjects.find((project) => project.work_slug === "useless-youth")!;
