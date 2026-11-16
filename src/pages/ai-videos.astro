@@ -14,7 +14,7 @@ import { aiVideoProjects } from "../data/ai-videos";
       <header class="project-heading"><p class="eyebrow">AI 影片專案</p><h2 id={`${project.id}-heading`}>{project.title}</h2><p>{project.description}</p></header>
       <div class="clip-grid">
         {project.clips.map((clip) => <figure data-ai-clip>
-          <video controls playsinline preload="none" poster={sitePath(clip.poster)} width={clip.width} height={clip.height} aria-label={clip.title} aria-describedby={`${project.id}-silent`}>
+          <video controls playsinline preload="none" poster={sitePath(clip.poster)} width={clip.width} height={clip.height} style={`aspect-ratio: ${clip.width} / ${clip.height}`} class:list={{ portrait: clip.height > clip.width }} aria-label={clip.title} aria-describedby={`${project.id}-silent`}>
             <source src={sitePath(clip.src)} type="video/mp4" />
             你的瀏覽器未能播放此影片，請使用下方連結開啟。
           </video>
@@ -45,6 +45,7 @@ import { aiVideoProjects } from "../data/ai-videos";
   .clip-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
   figure { margin: 0; min-width: 0; }
   video { display: block; width: 100%; height: auto; aspect-ratio: 854 / 480; background: #18181a; border-radius: .4rem; }
+  video.portrait { width: auto; max-width: 100%; max-height: 75vh; margin-inline: auto; }
   figcaption h3 { margin: 1rem 0 .25rem; font-family: var(--serif); font-size: 1.25rem; }
   figcaption a { display: inline-flex; min-height: 2.75rem; align-items: center; font-size: .85rem; font-weight: 700; }
   .silent-note, .playback-error { color: var(--muted-ink); font-size: .9rem; }

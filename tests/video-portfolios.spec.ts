@@ -28,7 +28,7 @@ test("AI videos load only on demand and both play and seek", async ({ page, requ
   page.on("request", (req) => { if (req.url().includes(".mp4")) initialRequests.push(req.url()); });
   await page.goto(`${base}/ai-videos/`);
   const videos = page.locator("video");
-  await expect(videos).toHaveCount(2);
+  await expect(videos).toHaveCount(3);
   await expect(page.getByText("食農扎根 × 世代共享", { exact: false })).toBeVisible();
   expect(initialRequests).toEqual([]);
   for (const video of await videos.all()) {
@@ -47,7 +47,12 @@ test("AI videos load only on demand and both play and seek", async ({ page, requ
       v.pause();
       return { duration: v.duration, width: v.videoWidth, height: v.videoHeight, time: v.currentTime, paused: v.paused };
     });
-    expect(metrics).toMatchObject({ duration: 8, width: 854, height: 480, paused: true });
+    if (await video.getAttribute("class") === "portrait") {
+      expect(metrics).toMatchObject({ width: 1080, height: 1920, paused: true });
+      expect(metrics.duration).toBeCloseTo(20.667, 1);
+    } else {
+      expect(metrics).toMatchObject({ duration: 8, width: 854, height: 480, paused: true });
+    }
     expect(metrics.time).toBeGreaterThanOrEqual(4);
     await video.evaluate((element) => (element as HTMLVideoElement).requestFullscreen());
     await expect.poll(() => video.evaluate((element) => document.fullscreenElement === element)).toBe(true);

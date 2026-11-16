@@ -13,4 +13,11 @@ export const aiVideoProjects: AIVideoProject[] = [{
     { title: "植物生成畫面｜片段 1", src: "/media/ai-videos/plant-growth-01.mp4", poster: "/images/ai-videos/plant-growth-01.jpg", width: 854, height: 480 },
     { title: "植物生成畫面｜片段 2", src: "/media/ai-videos/plant-growth-02.mp4", poster: "/images/ai-videos/plant-growth-02.jpg", width: 854, height: 480 },
   ],
+}, {
+  id: "useless-youth-2-acrylic",
+  title: "年輕人 2 壓克力宣傳 Demo",
+  description: "壓克力宣傳影片的 AI 影像 Demo。",
+  clips: [
+    { title: "年輕人 2 壓克力宣傳 Demo", src: "/media/ai-videos/useless-youth-2-acrylic-demo.mp4", poster: "/images/ai-videos/useless-youth-2-acrylic-demo.jpg", width: 1080, height: 1920 },
+  ],
 }];
