@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { sitePath } from "../utils/paths";
 import { aiVideoProjects } from "../data/ai-videos";
+import YouTubePreview from "../components/YouTubePreview.astro";
 ---
 <BaseLayout title="AI 影片｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的 AI 影片創作與生成片段。" canonicalPath="/ai-videos/">
   <section class="page-hero shell">
@@ -14,15 +15,20 @@ import { aiVideoProjects } from "../data/ai-videos";
       <header class="project-heading"><p class="eyebrow">AI 影片專案</p><h2 id={`${project.id}-heading`}>{project.title}</h2><p>{project.description}</p></header>
       <div class="clip-grid">
         {project.clips.map((clip) => <figure data-ai-clip>
-          <video controls playsinline preload="none" poster={sitePath(clip.poster)} width={clip.width} height={clip.height} style={`aspect-ratio: ${clip.width} / ${clip.height}`} class:list={{ portrait: clip.height > clip.width }} aria-label={clip.title} aria-describedby={`${project.id}-silent`}>
+          {"videoId" in clip ? <>
+            <YouTubePreview title={clip.title} videoId={clip.videoId} />
+            <figcaption><h3>{clip.title}</h3><a href={`https://youtu.be/${clip.videoId}`} target="_blank" rel="noopener noreferrer">YouTube ↗<span class="sr-only">：{clip.title}</span></a></figcaption>
+          </> : <>
+          <video controls playsinline preload="none" poster={sitePath(clip.poster)} width={clip.width} height={clip.height} style={`aspect-ratio: ${clip.width} / ${clip.height}`} class:list={{ portrait: clip.height > clip.width }} aria-label={clip.title} aria-describedby={project.silent ? `${project.id}-silent` : undefined}>
             <source src={sitePath(clip.src)} type="video/mp4" />
             你的瀏覽器未能播放此影片，請使用下方連結開啟。
           </video>
           <figcaption><h3>{clip.title}</h3><a href={sitePath(clip.src)}>開啟影片 ↗<span class="sr-only">：{clip.title}</span></a></figcaption>
           <p class="playback-error" data-playback-error hidden role="status">影片暫時無法播放，請使用「開啟影片」連結再試。</p>
+          </>}
         </figure>)}
       </div>
-      <p class="silent-note" id={`${project.id}-silent`}>無聲片段</p>
+      {project.silent && <p class="silent-note" id={`${project.id}-silent`}>無聲片段</p>}
     </section>)}
   </div>
 </BaseLayout>

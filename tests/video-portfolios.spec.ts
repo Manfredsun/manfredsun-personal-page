@@ -60,6 +60,17 @@ test("AI videos load only on demand and both play and seek", async ({ page, requ
   }
 });
 
+test("AI YouTube work loads on activation and keeps its external link", async ({ page }) => {
+  await page.goto(`${base}/ai-videos/`);
+  const project = page.locator(".ai-project").filter({ has: page.getByRole("heading", { name: "2973 公里 MV", level: 2 }) });
+  await expect(project.locator("iframe")).toHaveCount(0);
+  await expect(project.locator(".silent-note")).toHaveCount(0);
+  await expect(project.getByRole("link", { name: /YouTube/ })).toHaveAttribute("href", "https://youtu.be/XhzLFlL5tqs");
+  await page.route("https://www.youtube-nocookie.com/**", (route) => route.fulfill({ body: "<html><body>Player test</body></html>", contentType: "text/html" }));
+  await project.getByRole("link", { name: "播放 2973 公里 MV 影片" }).click();
+  await expect(project.locator("iframe")).toHaveAttribute("src", "https://www.youtube-nocookie.com/embed/XhzLFlL5tqs?autoplay=1");
+});
+
 test("AI playback errors retain a usable fallback", async ({ page }) => {
   await page.route("**/media/ai-videos/*.mp4", (route) => route.abort());
   await page.goto(`${base}/ai-videos/`);
