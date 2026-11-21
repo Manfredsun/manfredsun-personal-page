@@ -5,14 +5,15 @@ const base = "/manfredsun-personal-page";
 const liveGroups = {
   "videos-present-is-present-2025": ["J0bPjp2XGWI", "c0sOOMVziDU", "nfooLE7mTIM"],
   "videos-jacky-fcy-world-farewell-live": ["4NhX5vrqocg", "Nz9dSXVYQWQ", "2CnLZawVToQ", "rPbpmAUaI90", "YeZypGd4UGU", "Ti69Xjatlb0", "ugzgCozT9bc"],
-  "videos-other": ["yq0equzjNqQ", "q4AVHDOKNuk", "JIP0Q-JD1rQ", "13Mgn-qjHn4", "hOaTewrgL5M", "hsGobVtd54M", "zEp-2UBg_qA", "L7v5kUNnysA", "P0BaSgjNJiY", "q2lbxjT_-I8"],
+  "videos-other": ["yq0equzjNqQ", "q4AVHDOKNuk", "JIP0Q-JD1rQ", "13Mgn-qjHn4", "hOaTewrgL5M"],
 };
 
-test("live recordings show all 20 available clips once and connect both concerts to their credits", async ({ page }) => {
+test("live recordings show the selected 15 clips and connect both concerts to their credits", async ({ page }) => {
   await page.goto(`${base}/about/`);
   await page.getByRole("link", { name: "查看演奏履歷" }).click();
   await expect(page).toHaveURL(`${base}/live-performance/#performance-records`);
-  await expect(page.locator("[data-live-video]")).toHaveCount(20);
+  await expect(page.locator("[data-live-video]")).toHaveCount(15);
+  await expect(page.getByText("15 段影片", { exact: true })).toBeVisible();
   await expect(page.locator("iframe")).toHaveCount(0);
   await expect(page.locator("[data-live-record]")).toHaveCount(6);
   await expect(page.locator("[data-live-record]").last()).toContainText("Kai & His Friends");
@@ -29,7 +30,9 @@ test("live recordings show all 20 available clips once and connect both concerts
   await jacky.getByRole("link", { name: /觀看演出影片/ }).click();
   await expect(page).toHaveURL(`${base}/live-performance/#videos-jacky-fcy-world-farewell-live`);
   await expect(page.locator("#videos-jacky-fcy-world-farewell-live").getByText("keyboard 2", { exact: true })).toHaveCount(6);
-  await expect(page.getByRole("link", { name: /YouTube 完整播放清單/ })).toHaveAttribute("href", "https://www.youtube.com/playlist?list=PLiZ7WjNpF4H4AxUbHKn1Q2FCJ35mAIjXs");
+  for (const id of ["hsGobVtd54M", "zEp-2UBg_qA", "L7v5kUNnysA", "P0BaSgjNJiY", "q2lbxjT_-I8", "PLiZ7WjNpF4H4AxUbHKn1Q2FCJ35mAIjXs"]) {
+    await expect(page.locator(`a[href*="${id}"]`)).toHaveCount(0);
+  }
 
   await page.route("https://www.youtube-nocookie.com/**", (route) => route.fulfill({ body: "<html><body>Player test</body></html>", contentType: "text/html" }));
   for (const [groupId, videoIds] of Object.entries(liveGroups)) {

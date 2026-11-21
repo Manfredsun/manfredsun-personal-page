@@ -4,8 +4,6 @@ interface LiveVideo {
   role?: "鍵盤手" | "keyboard 2";
 }
 
-export const livePlaylistUrl = "https://www.youtube.com/playlist?list=PLiZ7WjNpF4H4AxUbHKn1Q2FCJ35mAIjXs";
-
 export const concertVideos: Partial<Record<string, LiveVideo[]>> = {
   "present-is-present-2025": [
     { title: "金黃色的", videoId: "J0bPjp2XGWI" },
@@ -29,9 +27,4 @@ export const otherLiveVideos: LiveVideo[] = [
   { title: "PINK / キタニタツヤ Keyboard + Program", videoId: "JIP0Q-JD1rQ" },
   { title: "不在一起就不會分開", videoId: "13Mgn-qjHn4" },
   { title: "壞蛋 Keyboard^2", videoId: "hOaTewrgL5M" },
-  { title: "Confirmation", videoId: "hsGobVtd54M" },
-  { title: "The Girl from Ipanema", videoId: "zEp-2UBg_qA" },
-  { title: "Just the Two of Us", videoId: "L7v5kUNnysA" },
-  { title: "Spain", videoId: "P0BaSgjNJiY" },
-  { title: "Autumn Leaves", videoId: "q2lbxjT_-I8" },
 ];
