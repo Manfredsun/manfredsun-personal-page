@@ -6,7 +6,6 @@ roles: []
 featured: true
 verification: "verified"
 page_type: "selected-works"
-year: 2024
 artist: "Jacky Fcy 范卓賢"
 case_study: true
 summary: "與 Jacky Fcy 范卓賢合作的精選作品。"

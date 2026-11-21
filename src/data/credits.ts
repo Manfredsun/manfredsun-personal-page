@@ -9,6 +9,7 @@ export interface CreditRecord {
   category: "music" | "theatre" | "live" | "personal" | "archive";
   work_slug: string;
   year?: number;
+  date?: string;
   external_url?: string;
   verified: boolean;
   verification?: "verified" | "needs-verification";
@@ -32,6 +33,7 @@ export interface PublicProjectCredit {
   work_slug: string;
   category: CreditRecord["category"];
   year?: number;
+  date?: string;
   roles: string[];
   artist?: string;
   company?: string;
@@ -48,6 +50,7 @@ export const publicProjects = [...publicCredits.reduce((projects, credit) => {
       work_slug: credit.work_slug,
       category: credit.category,
       year: credit.year,
+      date: credit.date,
       artist: credit.artist,
       company: credit.company,
       external_url: credit.external_url,

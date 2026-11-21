@@ -4,11 +4,12 @@ import { sitePath } from "../utils/paths";
 import { album, musicVideos } from "../data/music-portfolio";
 ---
 
-<BaseLayout title="音樂作品集｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的作曲、編曲及音樂製作作品。" canonicalPath="/music-portfolio/">
+<BaseLayout title="音樂作品集｜申承羲 Manfred Sun" description="瀏覽申承羲的作曲、編曲與音樂製作作品，查看逐首製作職務、原始影片及精選合作案例。" canonicalPath="/music-portfolio/">
   <section class="page-hero shell music-hero">
     <p class="eyebrow">精選音樂作品</p>
     <h1 class="display">音樂作品集</h1>
     <p class="page-hero__lede">作曲、編曲及音樂製作作品，透過聲音記錄每一次合作與創作。</p>
+    <a class="music-selection-link text-link" href={sitePath("/works/jacky-fcy-selected-works/")}>查看范卓賢 Jacky Fcy 編曲作品選集 <span aria-hidden="true">→</span></a>
   </section>
 
   <section class="music-gallery shell" aria-label="音樂作品集">
@@ -32,6 +33,7 @@ import { album, musicVideos } from "../data/music-portfolio";
             {work.team.map((credit) => <div><dt>{credit.role}</dt><dd>{credit.name}</dd></div>)}
           </dl>}
           <a class="music-card__link" href={work.external_url} target="_blank" rel="noopener noreferrer">YouTube ↗<span class="sr-only">：{work.project}</span></a>
+          {work.work_slug === "sunset-yuki-law" && <a class="music-card__link music-card__details" href={sitePath("/works/sunset-yuki-law/#production-credits")}>查看作曲與製作名單</a>}
         </article>
       ))}
       <article class="music-card music-card--album" data-music-card>
@@ -69,6 +71,8 @@ import { album, musicVideos } from "../data/music-portfolio";
 
 <style>
   .music-hero { padding-bottom: clamp(3rem, 7vw, 6rem); }
+  .music-selection-link { display: inline-block; margin-top: 1rem; }
+  .music-card__details { display: block; width: fit-content; }
   .music-gallery { padding-bottom: clamp(5rem, 10vw, 10rem); }
   .music-gallery__heading { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--ink); font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
   .music-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 4rem) clamp(1rem, 2vw, 2rem); align-items: start; }

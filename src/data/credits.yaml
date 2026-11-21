@@ -147,12 +147,21 @@ credits:
     source: "Obsidian: 自我簡歷.md"
 
   - project: "Present is Present 2025年度成發演唱會"
-    role: "樂手"
+    role: "鍵盤手"
     category: "live"
     work_slug: "present-is-present-2025"
     year: 2025
+    date: "2025-11-29"
     verified: true
-    source: "Wix About / Obsidian: 自我簡歷.md"
+    source: "YouTube 鍵盤演出影片及說明 / Wix About / Obsidian: 自我簡歷.md"
+
+  - project: "范卓賢 Jacky Fcy《當世界告別我們》個人音樂會"
+    role: "鍵盤手"
+    category: "live"
+    work_slug: "jacky-fcy-world-farewell-live"
+    year: 2025
+    verified: true
+    source: "YouTube 鍵盤演出影片及說明 / MyCDShop 音樂會售票頁"
 
   # ===== 2024 =====
   - project: "戀愛圓舞曲"

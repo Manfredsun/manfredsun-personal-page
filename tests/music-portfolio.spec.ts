@@ -16,6 +16,13 @@ test("shows the selected works and preserves confirmed roles", async ({ page }) 
   await expect(cards.filter({ hasText: "日落時" }).locator(".music-card__role")).toContainText("作曲");
   await expect(cards.filter({ hasText: "日落時" }).locator(".music-card__role")).not.toContainText("編曲");
   await expect(cards.filter({ hasText: "日落時" }).locator(".music-card__credits")).toContainText("Mochiice／Him Hui");
+  await expect(page.getByRole("link", { name: /Jacky Fcy 編曲作品選集/ })).toHaveAttribute("href", "/manfredsun-personal-page/works/jacky-fcy-selected-works/");
+  await cards.filter({ hasText: "日落時" }).getByRole("link", { name: "查看作曲與製作名單" }).click();
+  const credits = page.getByRole("region", { name: "製作名單" });
+  await expect(credits).toHaveAttribute("id", "production-credits");
+  await expect(credits.getByRole("listitem").filter({ hasText: "作曲" })).toContainText("申承羲");
+  await expect(page.getByRole("link", { name: "洽詢作曲合作" })).toHaveAttribute("href", "/manfredsun-personal-page/contact/#inquiry");
+  await page.goBack();
   await expect(cards.filter({ hasText: "我們就是沒有用的年輕人" }).getByRole("link", { name: "YouTube Music ↗" })).toHaveAttribute("href", /music\.youtube\.com\/playlist/);
 });
 

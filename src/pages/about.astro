@@ -28,6 +28,7 @@ const selectedWorks = sortWorks((await getCollection("works")).filter(({ data })
       <Copy name="about/bio" as="p" />
       <Copy name="about/story" as="p" />
       <a class="text-link" href={sitePath("/services/")}>查看合作服務 <span aria-hidden="true">→</span></a>
+      <a class="text-link" href={sitePath("/live-performance/#performance-records")}>查看演奏履歷 <span aria-hidden="true">→</span></a>
     </div>
   </section>
   <section class="about-work shell" aria-labelledby="about-work-title">
@@ -51,6 +52,7 @@ const selectedWorks = sortWorks((await getCollection("works")).filter(({ data })
   .about-body__copy { max-width: 37rem; font-size: clamp(1.1rem, 1.6vw, 1.3rem); }
   .about-body__copy p { margin: 0 0 1.5rem; }
   .about-body__copy p + p { color: var(--muted-ink); }
+  .about-body__copy .text-link { display: inline-block; margin-right: 1.25rem; }
   .about-work { padding-bottom: clamp(6rem, 12vw, 10rem); }
   .about-work h2 { margin: .5rem 0 2rem; font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 500; }
   .about-work ul { margin: 0 0 2rem; padding: 0; border-top: 1px solid var(--separator); list-style: none; }

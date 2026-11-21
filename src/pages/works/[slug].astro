@@ -7,7 +7,8 @@ import Copy from "../../components/Copy.astro";
 import EmptySlot from "../../components/EmptySlot.astro";
 import ProjectMedia from "../../components/ProjectMedia.astro";
 import { publicProjects } from "../../data/credits";
-import { categoryLabels } from "../../data/portfolio";
+import { categoryLabels, workInquiryLabels, workYearLabel } from "../../data/portfolio";
+import { contactInquiryId } from "../../data/site";
 
 export async function getStaticPaths() {
   const works = await getCollection("works", ({ data }) => data.case_study && data.verification === "verified");
@@ -16,6 +17,8 @@ export async function getStaticPaths() {
 interface Props { work: CollectionEntry<"works">; }
 const { work } = Astro.props;
 const { data } = work;
+const yearLabel = workYearLabel(data);
+const inquiryLabel = workInquiryLabels[data.slug];
 const workCredit = publicProjects.find((credit) => credit.work_slug === data.slug);
 const credits = data.credits.filter((credit) => credit.verified && (credit.artist || credit.company));
 const runs = data.runs.filter((run) => run.verified);
@@ -44,7 +47,7 @@ const showHeaderPoster = Boolean(data.hero_image) && roleAfterIntro;
       <div><dt>類別</dt><dd>{categoryLabels[data.category]}</dd></div>
       {data.artist && <div><dt>演出者</dt><dd>{data.artist}</dd></div>}
       {data.company && <div><dt>製作單位</dt><dd>{data.company}</dd></div>}
-      {data.year && <div><dt>年份</dt><dd>{data.year}</dd></div>}
+      {yearLabel && <div><dt>年份</dt><dd>{yearLabel}</dd></div>}
     </dl>
     {isSelectedWorks ? <>
       <Copy collection="workCopy" name={`${data.slug}/description`} title="合作簡介" class="case-study__section prose" />
@@ -75,7 +78,7 @@ const showHeaderPoster = Boolean(data.hero_image) && roleAfterIntro;
       <Copy collection="workCopy" name={`${data.slug}/sound-language`} title="音樂與聲音語言" class="case-study__section prose" fallback={data.sound_language} />
       <Copy collection="workCopy" name={`${data.slug}/process`} title="製作過程" class="case-study__section prose" fallback={data.process} />
       <ProjectMedia work={work} />
-      {credits.length ? <section class="case-study__section" aria-label="製作名單"><h2>製作名單</h2><ul class="case-study__list">
+      {credits.length ? <section id="production-credits" class="case-study__section" aria-label="製作名單"><h2>製作名單</h2><ul class="case-study__list">
         {credits.map((credit) => <li><strong>{roleLabel(credit.role)}</strong><span>{[credit.artist, credit.company].filter(Boolean).join(" · ")}</span></li>)}
       </ul></section> : <EmptySlot label="製作名單" source={`${source} → credits`} />}
       {runs.length ? <section class="case-study__section" aria-label="演出與發行版本"><h2>演出與發行版本</h2><ul class="case-study__list">
@@ -85,7 +88,10 @@ const showHeaderPoster = Boolean(data.hero_image) && roleAfterIntro;
     {data.external_links.length ? <nav aria-label="作品相關連結" class="case-study__links">
       {data.external_links.map((link) => <a class="button" href={link.url} target="_blank" rel="noopener noreferrer">{link.label} <span aria-hidden="true">↗</span></a>)}
     </nav> : <EmptySlot label="外部來源與作品連結" source={`${source} → external_links`} />}
-    <a class="text-link" href={sitePath("/credits/")}>← {ui.credits}</a>
+    <div class="case-study__actions">
+      {inquiryLabel && <a class="button button--primary" href={sitePath(`/contact/#${contactInquiryId}`)}>{inquiryLabel} <span aria-hidden="true">↗</span></a>}
+      <a class="text-link" href={sitePath("/credits/")}>← {ui.credits}</a>
+    </div>
   </article>
 </BaseLayout>
 <style is:global>
@@ -111,12 +117,14 @@ const showHeaderPoster = Boolean(data.hero_image) && roleAfterIntro;
   .prose li + li { margin-top: .5em; }
   .prose a { color: var(--accent); }
   .case-study__section { max-width: 48rem; margin-bottom: 5rem; }
+  #production-credits { scroll-margin-top: calc(var(--header-height) + 1rem); }
   .case-study h2 { margin: .5rem 0 1.5rem; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; }
   .case-study__list { margin: 0; padding: 0; border-top: 1px solid var(--separator); list-style: none; }
   .case-study__list li { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--separator); }
   .case-study__list span { color: var(--muted-ink); }
   .case-study__list strong, .case-study__list span { overflow-wrap: anywhere; }
   .case-study__links { display: flex; flex-wrap: wrap; gap: .8rem; margin-bottom: 4rem; }
+  .case-study__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
   .selected-works { max-width: none; }
   .selected-works__list { margin: 0; padding: 0; border-top: 1px solid var(--separator); list-style: none; }
   .selected-works__list li { border-bottom: 1px solid var(--separator); }

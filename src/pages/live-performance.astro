@@ -1,51 +1,76 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import YouTubePreview from "../components/YouTubePreview.astro";
-import { liveVideos } from "../data/live-performance";
+import { concertVideos, livePlaylistUrl, otherLiveVideos } from "../data/live-performance";
 import { publicProjects } from "../data/credits";
 
 const performances = publicProjects.filter((project) => project.category === "live")
-  .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+  .sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || (b.date ?? "").localeCompare(a.date ?? ""));
+const dateFormat = new Intl.DateTimeFormat("zh-TW", { dateStyle: "long", timeZone: "UTC" });
+const videoGroups = performances.flatMap((performance) => {
+  const videos = concertVideos[performance.work_slug];
+  return videos ? [{ id: `videos-${performance.work_slug}`, title: performance.project, videos }] : [];
+});
+videoGroups.push({ id: "videos-other", title: "其他演奏片段", videos: otherLiveVideos });
+const videoCount = videoGroups.reduce((count, group) => count + group.videos.length, 0);
 ---
-<BaseLayout title="現場演出｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的現場演奏影片及演出紀錄。" canonicalPath="/live-performance/">
+<BaseLayout title="現場演出｜申承羲 Manfred Sun" description="申承羲 Manfred Sun 的鍵盤演奏履歷與演出影片，包括范卓賢 Jacky Fcy《當世界告別我們》個人音樂會及 Present is Present 成發演出。" canonicalPath="/live-performance/">
   <section class="page-hero shell">
     <p class="eyebrow">舞台紀錄</p>
     <h1 class="display">現場演出</h1>
-    <p class="page-hero__lede">現場演奏的聲音與片刻，記錄舞台上的每一次相遇。</p>
+    <p class="page-hero__lede">鍵盤演奏履歷，收錄音樂會現場與其他演奏片段。</p>
   </section>
-  <section class="performances shell" aria-labelledby="live-videos-heading">
-    <div class="section-heading"><h2 id="live-videos-heading">演出影片</h2><span>{String(liveVideos.length).padStart(2, "0")} 段影片</span></div>
-    <div class="performance-grid">
-      {liveVideos.map((video) => <article data-live-video>
-        <YouTubePreview title={video.title} videoId={video.videoId} />
-        <h3>{video.title}</h3>
-        <a class="video-link" href={`https://youtu.be/${video.videoId}`} target="_blank" rel="noopener noreferrer">YouTube ↗<span class="sr-only">：{video.title}</span></a>
-      </article>)}
-    </div>
-  </section>
-  <section class="performances shell" aria-labelledby="live-records-heading">
-    <div class="section-heading"><h2 id="live-records-heading">演出紀錄</h2><span>演出歷程</span></div>
+  <section id="performance-records" class="performances shell" aria-labelledby="live-records-heading">
+    <div class="section-heading"><h2 id="live-records-heading">演出紀錄</h2></div>
     <ul class="performance-records">
-      {performances.map((performance) => <li data-live-record>
-        <span class="record-year">{performance.year}</span>
+      {performances.map((performance) => <li data-live-record={performance.work_slug}>
+        <span class="record-year">{performance.date
+          ? <time datetime={performance.date}>{dateFormat.format(new Date(performance.date))}</time>
+          : performance.year}</span>
         <h3>{performance.project}</h3>
-        <p>{performance.roles.join(" · ")}</p>
+        <div class="record-details">
+          <p>{performance.roles.join(" · ")}</p>
+          {concertVideos[performance.work_slug] && <a class="video-link" href={`#videos-${performance.work_slug}`}>
+            觀看演出影片<span class="sr-only">：{performance.project}</span>
+          </a>}
+        </div>
       </li>)}
     </ul>
+  </section>
+  <section class="performances shell" aria-labelledby="live-videos-heading">
+    <div class="section-heading">
+      <h2 id="live-videos-heading">演奏影片</h2>
+      <a href={livePlaylistUrl} target="_blank" rel="noopener noreferrer">YouTube 完整播放清單 <span aria-hidden="true">↗</span><span>（{videoCount} 段可播放）</span></a>
+    </div>
+    {videoGroups.map((group) => <section id={group.id} class="video-group" aria-labelledby={`${group.id}-heading`}>
+      <h3 id={`${group.id}-heading`}>{group.title}</h3>
+      <div class="performance-grid">
+        {group.videos.map((video) => <article data-live-video>
+          <YouTubePreview title={video.title} videoId={video.videoId} />
+          <h4>{video.title}</h4>
+          {video.role && <p class="video-role">{video.role}</p>}
+          <a class="video-link" href={`https://youtu.be/${video.videoId}`} target="_blank" rel="noopener noreferrer">YouTube ↗<span class="sr-only">：{video.title}</span></a>
+        </article>)}
+      </div>
+    </section>)}
   </section>
 </BaseLayout>
 <style>
   .performances { padding-bottom: clamp(4rem, 8vw, 7rem); }
-  .section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--ink); }
-  .section-heading h2, .section-heading span { margin: 0; font-size: .85rem; font-weight: 700; letter-spacing: .08em; }
-  .section-heading span { color: var(--muted-ink); }
+  #performance-records, .video-group { scroll-margin-top: calc(var(--header-height) + 1rem); }
+  .section-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .5rem 1rem; padding: 1rem 0; border-top: 1px solid var(--ink); }
+  .section-heading h2, .section-heading a { margin: 0; font-size: .85rem; font-weight: 700; letter-spacing: .08em; }
+  .video-group + .video-group { margin-top: clamp(3rem, 7vw, 6rem); }
+  .video-group > h3 { margin-bottom: 1.25rem; font-size: clamp(1.35rem, 3vw, 2rem); }
   .performance-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem 2rem; }
   article { min-width: 0; overflow-wrap: anywhere; }
-  h3 { margin: .85rem 0 0; font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.5rem); line-height: 1.35; }
+  h3, h4 { margin: .85rem 0 0; font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.5rem); line-height: 1.35; }
+  .video-role { margin: .35rem 0 0; color: var(--muted-ink); }
   .video-link { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: .85rem; font-weight: 700; }
   .performance-records { margin: 0; padding: 0; list-style: none; }
-  .performance-records li { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 5rem; gap: 1rem; align-items: baseline; padding: 1.5rem 0; border-bottom: 1px solid var(--separator); }
+  .performance-records li { display: grid; grid-template-columns: minmax(7rem, .6fr) minmax(0, 2fr) minmax(7rem, .6fr); gap: 1rem; align-items: baseline; padding: 1.5rem 0; border-bottom: 1px solid var(--separator); }
   .performance-records h3, .performance-records p { margin: 0; }
+  .performance-records li > * { min-width: 0; overflow-wrap: anywhere; }
   .record-year, .performance-records p { color: var(--muted-ink); }
   @media (max-width: 65rem) { .performance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 40rem) { .performance-grid { grid-template-columns: minmax(0, 1fr); } .performance-records li { grid-template-columns: minmax(0, 1fr); gap: .5rem; } .record-year:empty { display: none; } }

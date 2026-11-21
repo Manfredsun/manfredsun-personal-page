@@ -33,6 +33,56 @@ test("featured works preserve their curated order", async ({ page }) => {
   expect(slugs.slice(0, 4)).toEqual(["useless-youth", "peninsula-system", "galangal-lemongrass-poppies", "jacky-fcy-selected-works"]);
 });
 
+test("selected works show a year range while individual works keep their own year", async ({ page }) => {
+  const base = "/manfredsun-personal-page";
+  await page.goto(`${base}/`);
+  await expect(page.locator("#jacky-fcy-selected-works .work-row__spine")).toContainText("2024–2025");
+  await expect(page.locator("#useless-youth .work-row__spine").getByText("2023", { exact: true })).toBeVisible();
+  await page.locator("#jacky-fcy-selected-works a").click();
+  await expect(page.locator(".case-study__metadata").getByText("2024–2025", { exact: true })).toBeVisible();
+  const songs = page.locator(".selected-works__list li");
+  const songCredits = [
+    ["明日劇痛會暫停", "編曲 · Programming · 2025", "T4r6Ku4wKC0"],
+    ["末世花火散落後", "編曲 · Programming · 2025", "FmAZMQnNUYg"],
+    ["戀愛圓舞曲", "編曲 · Programming · 2024", "92efJUo09Jk"],
+    ["我希望你的感覺都一樣", "編曲 · Programming · 2024", "ygAXf216qP0"],
+    ["正當世界告別時", "編曲 · 2025", "ImcwlQ6s0Qg"],
+  ];
+  await expect(songs).toHaveCount(songCredits.length);
+  for (const [song, credit, videoId] of songCredits) {
+    const row = songs.filter({ hasText: song });
+    await expect(row.locator(".selected-works__meta")).toHaveText(credit);
+    await expect(row.getByRole("link")).toHaveAttribute("href", `https://youtu.be/${videoId}`);
+  }
+  await page.goto(`${base}/works/useless-youth/`);
+  await expect(page.locator(".case-study__metadata").getByText("2023", { exact: true })).toBeVisible();
+});
+
+test("mobile visitors can compare the arrangement price and examples and reach the inquiry email", async ({ page }) => {
+  test.skip(!contactReady, "Public email is required for the inquiry journey");
+  const base = "/manfredsun-personal-page";
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(`${base}/services/`);
+  const title = "單曲編曲、音樂製作與劇場音樂設計｜申承羲 Manfred Sun";
+  await expect(page).toHaveTitle(title);
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", title);
+  const arrangement = page.locator(".service-card").first();
+  await expect(arrangement.getByRole("heading", { name: "編曲", exact: true })).toBeVisible();
+  await expect(arrangement.locator(".service-price")).toHaveText("NT$5,000／首");
+  await expect(arrangement.getByText("編曲一首多少錢？", { exact: true })).toBeVisible();
+  await expect(arrangement.locator(".service-delivery dd")).toContainText("每首新台幣 5,000 元，交付編曲音檔");
+  await expect(page.getByRole("link", { name: "《達克比出任務》音場設計" })).toHaveAttribute("href", `${base}/works/duckbill-mission/`);
+  await expect(page.getByRole("link", { name: "《南薑．香茅．罌粟花》音樂設計" })).toHaveAttribute("href", `${base}/works/galangal-lemongrass-poppies/`);
+  await arrangement.getByRole("link", { name: /Jacky Fcy 編曲作品選集/ }).click();
+  await expect(page).toHaveURL(`${base}/works/jacky-fcy-selected-works/`);
+  await page.getByRole("link", { name: "洽詢編曲合作" }).click();
+  await expect(page).toHaveURL(`${base}/contact/#inquiry`);
+  const inquiry = page.locator("#inquiry");
+  await expect(inquiry.getByRole("heading", { name: "洽詢音樂合作前，要準備哪些資料？" })).toBeVisible();
+  await expect(inquiry.getByRole("listitem")).toHaveCount(4);
+  await expect(inquiry.getByRole("link", { name: /電子郵件/ })).toHaveAttribute("href", /^mailto:/);
+});
+
 test("credits filters only retain matching rows", async ({ page }) => {
   await page.goto("/manfredsun-personal-page/credits/");
   await page.getByLabel("類別").selectOption("theatre");

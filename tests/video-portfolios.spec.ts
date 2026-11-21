@@ -2,25 +2,49 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const base = "/manfredsun-personal-page";
-const liveIds = ["yq0equzjNqQ", "q4AVHDOKNuk", "JIP0Q-JD1rQ", "13Mgn-qjHn4", "hOaTewrgL5M"];
+const liveGroups = {
+  "videos-present-is-present-2025": ["J0bPjp2XGWI", "c0sOOMVziDU", "nfooLE7mTIM"],
+  "videos-jacky-fcy-world-farewell-live": ["4NhX5vrqocg", "Nz9dSXVYQWQ", "2CnLZawVToQ", "rPbpmAUaI90", "YeZypGd4UGU", "Ti69Xjatlb0", "ugzgCozT9bc"],
+  "videos-other": ["yq0equzjNqQ", "q4AVHDOKNuk", "JIP0Q-JD1rQ", "13Mgn-qjHn4", "hOaTewrgL5M", "hsGobVtd54M", "zEp-2UBg_qA", "L7v5kUNnysA", "P0BaSgjNJiY", "q2lbxjT_-I8"],
+};
 
-test("live clips preserve order, external links and independent archive records", async ({ page }) => {
-  await page.goto(`${base}/live-performance/`);
-  const cards = page.locator("[data-live-video]");
-  await expect(cards).toHaveCount(5);
-  expect(await page.locator("[data-youtube-id]").evaluateAll((links) => links.map((link) => link.getAttribute("data-youtube-id")))).toEqual(liveIds);
+test("live recordings show all 20 available clips once and connect both concerts to their credits", async ({ page }) => {
+  await page.goto(`${base}/about/`);
+  await page.getByRole("link", { name: "查看演奏履歷" }).click();
+  await expect(page).toHaveURL(`${base}/live-performance/#performance-records`);
+  await expect(page.locator("[data-live-video]")).toHaveCount(20);
   await expect(page.locator("iframe")).toHaveCount(0);
-  await expect(page.locator("[data-live-record]")).toHaveCount(5);
+  await expect(page.locator("[data-live-record]")).toHaveCount(6);
   await expect(page.locator("[data-live-record]").last()).toContainText("Kai & His Friends");
   await expect(page.locator("[data-live-record]").last().locator(".record-year")).toBeEmpty();
-  for (let i = 0; i < liveIds.length; i++) {
-    await expect(cards.nth(i).getByRole("link", { name: /YouTube/ })).toHaveAttribute("href", `https://youtu.be/${liveIds[i]}`);
-  }
+
+  const present = page.locator('[data-live-record="present-is-present-2025"]');
+  await expect(present.locator("time")).toHaveAttribute("datetime", "2025-11-29");
+  await expect(present.locator("time")).toHaveText("2025年11月29日");
+  await expect(present.getByText("鍵盤手", { exact: true })).toBeVisible();
+  await expect(present.getByRole("link", { name: /觀看演出影片/ })).toHaveAttribute("href", "#videos-present-is-present-2025");
+  const jacky = page.locator('[data-live-record="jacky-fcy-world-farewell-live"]');
+  await expect(jacky.locator(".record-year")).toHaveText("2025");
+  await expect(jacky.getByText("鍵盤手", { exact: true })).toBeVisible();
+  await jacky.getByRole("link", { name: /觀看演出影片/ }).click();
+  await expect(page).toHaveURL(`${base}/live-performance/#videos-jacky-fcy-world-farewell-live`);
+  await expect(page.locator("#videos-jacky-fcy-world-farewell-live").getByText("keyboard 2", { exact: true })).toHaveCount(6);
+  await expect(page.getByRole("link", { name: /YouTube 完整播放清單/ })).toHaveAttribute("href", "https://www.youtube.com/playlist?list=PLiZ7WjNpF4H4AxUbHKn1Q2FCJ35mAIjXs");
+
   await page.route("https://www.youtube-nocookie.com/**", (route) => route.fulfill({ body: "<html><body>Player test</body></html>", contentType: "text/html" }));
-  await cards.first().locator("[data-youtube-id]").focus();
-  await page.keyboard.press("Enter");
-  await expect(cards.first().locator("iframe")).toHaveAttribute("src", `https://www.youtube-nocookie.com/embed/${liveIds[0]}?autoplay=1`);
-  await expect(cards.first().getByRole("link", { name: /YouTube/ })).toBeVisible();
+  for (const [groupId, videoIds] of Object.entries(liveGroups)) {
+    const group = page.locator(`#${groupId}`);
+    const cards = group.locator("[data-live-video]");
+    const previews = group.locator("[data-youtube-id]");
+    expect(await previews.evaluateAll((links) => links.map((link) => link.getAttribute("data-youtube-id")))).toEqual(videoIds);
+    for (const [index, videoId] of videoIds.entries()) {
+      await expect(cards.nth(index).getByRole("link", { name: /YouTube/ })).toHaveAttribute("href", `https://youtu.be/${videoId}`);
+    }
+    await previews.first().focus();
+    await page.keyboard.press("Enter");
+    await expect(cards.first().locator("iframe")).toHaveAttribute("src", `https://www.youtube-nocookie.com/embed/${videoIds[0]}?autoplay=1`);
+    await expect(cards.first().getByRole("link", { name: /YouTube/ })).toBeVisible();
+  }
 });
 
 test("AI videos load only on demand and both play and seek", async ({ page, request }) => {

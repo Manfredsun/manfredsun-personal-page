@@ -3,15 +3,17 @@ import { ui } from "../data/ui";
 import { sitePath } from "../utils/paths";
 import Copy from "../components/Copy.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getServices, serviceDetails } from "../data/services";
-const services = await getServices();
-const contactPath = sitePath("/contact/");
+import { arrangementServiceId, getServices, serviceDetails } from "../data/services";
+import { contactInquiryId } from "../data/site";
+const services = (await getServices()).sort((a, b) => Number(b.id === arrangementServiceId) - Number(a.id === arrangementServiceId));
+const contactPath = sitePath(`/contact/#${contactInquiryId}`);
 const posterPath = sitePath("/images/services/commission-price-list.jpg");
+const priceNumber = new Intl.NumberFormat("zh-TW");
 ---
 
 <BaseLayout
-  title="合作服務｜申承羲 Manfred Sun"
-  description="詞曲創作、編曲、音樂製作、劇場音樂設計、音訊後製處理與樂譜製作服務。"
+  title="單曲編曲、音樂製作與劇場音樂設計｜申承羲 Manfred Sun"
+  description="申承羲提供單曲編曲服務。查看新台幣參考價、編曲音檔交付內容與實際作品，了解如何洽詢編曲、音樂製作或劇場音樂設計。"
   canonicalPath="/services/"
 >
   <section class="page-hero shell services-hero">
@@ -28,20 +30,29 @@ const posterPath = sitePath("/images/services/commission-price-list.jpg");
     <div class="services-grid">
       {services.map((service) => {
         const details = serviceDetails[service.id];
+        const price = details?.price;
+        const amount = price && priceNumber.format(price.amount);
+        const isArrangement = service.id === arrangementServiceId;
         return (
           <article class="service-card">
             <h3>{service.data.title}</h3>
             <p class="service-price">
-              {details?.price ? <><strong>{details.price.amount}</strong>{details.price.label && <span>{details.price.label}</span>}</> : "個別報價"}
+              {price ? <><strong>NT${amount}／{price.unit}</strong>{price.label && <span>{price.label}</span>}</> : "個別報價"}
             </p>
             <Copy name={service.id} label={service.data.title} class="service-summary" />
             {details && <dl class="service-delivery">
-              <dt>可交付內容</dt>
-              <dd>{details.deliverables}</dd>
+              {isArrangement && price ? <>
+                <dt>編曲一首多少錢？</dt>
+                <dd>單曲編曲參考價為每{price.unit}新台幣 {amount} 元，交付{details.deliverables}。實際報價依編制、工作量與所需版本確認。</dd>
+              </> : <>
+                <dt>可交付內容</dt>
+                <dd>{details.deliverables}</dd>
+              </>}
             </dl>}
-            {details?.example && <a class="service-example" href={sitePath(details.example.path)}>
-              {details.example.label} <span aria-hidden="true">↗</span>
-            </a>}
+            {details?.examples?.map((example) => <div class="service-case">
+              <a class="service-example" href={sitePath(example.path)}>{example.label} <span aria-hidden="true">↗</span></a>
+              {example.description && <p>{example.description}</p>}
+            </div>)}
           </article>
         );
       })}
@@ -116,6 +127,7 @@ const posterPath = sitePath("/images/services/commission-price-list.jpg");
     color: var(--accent);
   }
   .service-card .service-example { margin-top: .35rem; }
+  .service-case > p { margin: 0; color: var(--muted-ink); }
   .services-terms {
     padding: clamp(1.25rem, 3vw, 2.5rem);
     border: 1px solid var(--separator);

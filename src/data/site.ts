@@ -13,3 +13,4 @@ export const site = schema.parse(parse(raw));
 export const contactEmail = z.email().safeParse(site.email.trim()).success ? site.email.trim() : "";
 export const socialLinks = site.socials.filter(({ label, url }) => label.trim() && /^https?:\/\//.test(url) && z.url().safeParse(url).success);
 export const contactReady = Boolean(contactEmail);
+export const contactInquiryId = "inquiry";
