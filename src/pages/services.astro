@@ -3,8 +3,10 @@ import { ui } from "../data/ui";
 import { sitePath } from "../utils/paths";
 import Copy from "../components/Copy.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getServices } from "../data/services";
+import { getServices, serviceDetails } from "../data/services";
 const services = await getServices();
+const contactPath = sitePath("/contact/");
+const posterPath = sitePath("/images/services/commission-price-list.jpg");
 ---
 
 <BaseLayout
@@ -12,38 +14,120 @@ const services = await getServices();
   description="詞曲創作、編曲、音樂製作、劇場音樂設計、音訊後製處理與樂譜製作服務。"
   canonicalPath="/services/"
 >
-  <section class="page-hero shell">
-    <p class="eyebrow">服務項目</p>
+  <section class="page-hero shell services-hero">
     <h1 class="display">合作服務</h1>
     <Copy name="services/intro" as="p" class="page-hero__lede" />
+    <div class="services-actions">
+      <a class="button button--primary" href={contactPath}>{ui.requestQuote} <span aria-hidden="true">↗</span></a>
+      <a class="button" href="#service-list">查看服務 <span aria-hidden="true">↓</span></a>
+    </div>
   </section>
-  <figure class="services-poster">
-    <img src={sitePath("/images/services/commission-poster-updated.jpg")} alt="音樂委託接案資訊：詞曲創作、音樂編曲、後製混音及譜務製作。交件時間及報價依委託需求確認。" width="1080" height="1385" fetchpriority="high" decoding="async" />
-  </figure>
-  <section class="services-grid shell" aria-label="服務項目">
-    {services.map((service) => (
-      <article class="service-card">
-        <p class="eyebrow">服務項目</p>
-        <h2>{service.data.title}</h2>
-        <Copy name={service.id} label={service.data.title} />
-      </article>
-    ))}
+  <section id="service-list" class="services-section shell" aria-labelledby="service-list-title">
+    <h2 id="service-list-title" class="section-title">服務項目</h2>
+    <p class="services-price-note">價目以新台幣（TWD）計，僅供參考。實際報價以雙方確認為準。</p>
+    <div class="services-grid">
+      {services.map((service) => {
+        const details = serviceDetails[service.id];
+        return (
+          <article class="service-card">
+            <h3>{service.data.title}</h3>
+            <p class="service-price">
+              {details?.price ? <><strong>{details.price.amount}</strong>{details.price.label && <span>{details.price.label}</span>}</> : "個別報價"}
+            </p>
+            <Copy name={service.id} label={service.data.title} class="service-summary" />
+            {details && <dl class="service-delivery">
+              <dt>可交付內容</dt>
+              <dd>{details.deliverables}</dd>
+            </dl>}
+            {details?.example && <a class="service-example" href={sitePath(details.example.path)}>
+              {details.example.label} <span aria-hidden="true">↗</span>
+            </a>}
+          </article>
+        );
+      })}
+    </div>
   </section>
-  <section class="services-cta shell">
-    <p class="eyebrow">合作洽詢</p>
-    <Copy name="services/contact-heading" as="h2" />
-    <a class="button button--primary" href={sitePath("/contact/")}>{ui.requestQuote} <span aria-hidden="true">↗</span></a>
+  <section class="services-section shell" aria-labelledby="service-terms-title">
+    <div class="services-terms">
+      <h2 id="service-terms-title">報價與交期</h2>
+      <dl>
+        <div><dt>報價</dt><dd>按委託內容及工作量個別報價。</dd></div>
+        <div><dt>交期</dt><dd>按製作內容及工作量確認。</dd></div>
+        <div><dt>合作前確認</dt><dd>修改次數、交付格式及付款安排。</dd></div>
+      </dl>
+    </div>
+  </section>
+  <section class="services-cta shell" aria-labelledby="service-contact-title">
+    <Copy name="services/contact-heading" as="h2" id="service-contact-title" />
+    <p>洽詢時可附上專案簡介、所需服務、預計交期、交付需求及預算範圍。</p>
+    <div class="services-actions">
+      <a class="button button--primary" href={contactPath}>{ui.requestQuote} <span aria-hidden="true">↗</span></a>
+      <a class="service-example" href={posterPath}>查看完整價目表 <span aria-hidden="true">↗</span></a>
+    </div>
   </section>
 </BaseLayout>
 
-<style is:global>
-  .services-poster { width: 40%; margin: 0 auto; }
-  .services-poster img { display: block; width: 100%; height: auto; }
-  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 1px; background: var(--separator); }
-  .service-card { min-height: 15rem; padding: clamp(1.5rem, 4vw, 3rem); background: var(--canvas); }
-  .service-card h2 { margin: .7rem 0 1rem; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; }
-  .service-card p:last-child { max-width: 28rem; color: var(--muted-ink); line-height: 1.65; }
-  .services-cta { padding-block: clamp(6rem, 12vw, 10rem); }
-  .services-cta h2 { max-width: 35rem; margin: .6rem 0 2rem; font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 5rem); line-height: .98; }
-  @media (max-width: 42rem) { .services-poster { width: 90%; } .services-grid { grid-template-columns: 1fr; } }
+<style>
+  .services-hero {
+    min-height: 0;
+    padding-block: calc(var(--header-height) + clamp(2.5rem, 7vw, 6rem)) clamp(2rem, 5vw, 4rem);
+  }
+  .services-hero :global(.page-hero__lede) { margin-top: 1.5rem; }
+  .services-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; margin-top: 1.5rem; }
+  .services-section { padding-block-start: clamp(2rem, 5vw, 4rem); }
+  #service-list { scroll-margin-top: var(--header-height); }
+  .services-section .section-title { font-size: clamp(1.75rem, 3.5vw, 3rem); }
+  .services-price-note { margin: .75rem 0 1.5rem; color: var(--muted-ink); }
+  .services-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    padding: clamp(1.25rem, 2.8vw, 2.25rem);
+    border: 1px solid var(--separator);
+    border-block-start: 2px solid var(--accent);
+    border-radius: .5rem;
+    background: var(--surface);
+  }
+  .service-card h3, .services-terms h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    line-height: 1.2;
+  }
+  .service-card :global(.service-summary) { color: var(--muted-ink); margin-top: .75rem; }
+  .service-card :global(.service-summary p) { margin: 0; }
+  .service-price { margin: .75rem 0 0; color: var(--accent); font-weight: 700; }
+  .service-price strong { font-size: 1.25rem; }
+  .service-price span { display: block; color: var(--muted-ink); font-size: .9rem; font-weight: 400; }
+  .service-delivery { margin: auto 0 0; padding-top: 1.25rem; }
+  .service-delivery dt { border-top: 1px solid var(--separator); padding-top: .85rem; }
+  .service-delivery dd, .services-terms dd { margin: 0; color: var(--muted-ink); }
+  .service-delivery dt, .services-terms dt { font-weight: 700; }
+  .service-example {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    align-self: flex-start;
+    min-height: 2.75rem;
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .service-card .service-example { margin-top: .35rem; }
+  .services-terms {
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border: 1px solid var(--separator);
+    border-radius: .5rem;
+    background: color-mix(in srgb, var(--surface), var(--accent) 4%);
+  }
+  .services-terms dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0 0; }
+  .services-cta { padding-block: clamp(3rem, 7vw, 6rem); }
+  .services-cta :global(h2) { margin: 0; font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 3rem); line-height: 1.2; }
+  .services-cta > p { margin: .75rem 0 0; color: var(--muted-ink); }
+  @media (max-width: 62rem) { .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 40rem) {
+    .services-grid, .services-terms dl { grid-template-columns: minmax(0, 1fr); }
+  }
 </style>
