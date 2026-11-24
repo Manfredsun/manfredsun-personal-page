@@ -41,23 +41,23 @@ credits:
     verified: true
     source: "Obsidian: 自我簡歷.md / src/content/works/duckbill-mission.md"
 
-  - project: "王道明畢業展演"
+  - project: "林道明畢業展演音樂會《動與靜的對話》"
     role: "音響"
     category: "live"
-    work_slug: "wang-dao-ming-graduation-2026"
+    work_slug: "lin-dao-ming-graduation-2026"
     year: 2026
-    date: "2026-05-30"
+    date: "2026-06-13"
     verified: true
-    source: "Obsidian: 我的人生.md"
+    source: "本人紀錄及使用者確認，活動名稱與日期依音樂會海報"
 
-  - project: "王道明畢業展演"
-    role: "樂手"
+  - project: "林道明畢業展演音樂會《動與靜的對話》"
+    role: "鋼琴"
     category: "live"
-    work_slug: "wang-dao-ming-graduation-2026"
+    work_slug: "lin-dao-ming-graduation-2026"
     year: 2026
-    date: "2026-05-30"
+    date: "2026-06-13"
     verified: true
-    source: "Obsidian: 我的人生.md"
+    source: "音樂會海報演出名單"
 
   # ===== 2025 =====
   - project: "明日劇痛會暫停"
