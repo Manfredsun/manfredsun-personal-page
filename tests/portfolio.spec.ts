@@ -71,10 +71,10 @@ test("mobile visitors can compare the arrangement price and examples and reach t
   await expect(arrangement.locator(".service-price")).toHaveText("NT$5,000／首");
   await expect(arrangement.getByText("編曲一首多少錢？", { exact: true })).toBeVisible();
   await expect(arrangement.locator(".service-delivery dd")).toContainText("每首新台幣 5,000 元，交付編曲音檔");
-  const liveSound = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "音場設計｜音控", exact: true }) });
+  const liveSound = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "音場設計", exact: true }) });
   await expect(liveSound.locator(".service-price")).toHaveText("個別報價");
-  await expect(liveSound.getByRole("link", { name: "《達克比出任務》音場設計" })).toHaveAttribute("href", `${base}/works/duckbill-mission/`);
-  await expect(liveSound.getByRole("link", { name: "林道明《動與靜的對話》音響" })).toHaveAttribute("href", `${base}/works/lin-dao-ming-graduation-2026/`);
+  await expect(liveSound.getByRole("link", { name: "《達克比出任務》" })).toHaveAttribute("href", `${base}/works/duckbill-mission/`);
+  await expect(liveSound.getByRole("link", { name: "林道明《動與靜的對話》" })).toHaveAttribute("href", `${base}/works/lin-dao-ming-graduation-2026/`);
   const theatreVideo = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "影像執行", exact: true }) });
   await expect(theatreVideo.locator(".service-price")).toHaveText("個別報價");
   await expect(theatreVideo.getByRole("link", { name: "合唱音樂劇《第一市場》" })).toHaveAttribute("href", `${base}/credits/#credit-first-public-retail-market`);
