@@ -30,11 +30,17 @@ export const serviceDetails: Record<string, {
   },
   "services/live-sound": {
     deliverables: "演出現場音控與混音，器材配置及分工於洽詢時確認。",
-    examples: [{
-      label: "《達克比出任務》音場設計",
-      path: "/works/duckbill-mission/",
-      description: "在這場演出中負責演出音控、音響器材統籌、現場執行及現場混音。",
-    }],
+    examples: [
+      {
+        label: "《達克比出任務》音場設計",
+        path: "/works/duckbill-mission/",
+        description: "在這場演出中負責演出音控、音響器材統籌、現場執行及現場混音。",
+      },
+      {
+        label: "林道明《動與靜的對話》音響",
+        path: "/works/lin-dao-ming-graduation-2026/",
+      },
+    ],
   },
   "services/theatre-video": {
     deliverables: "依製作需求提供演出現場影像執行，工作範圍與現場分工於洽詢時確認。",
