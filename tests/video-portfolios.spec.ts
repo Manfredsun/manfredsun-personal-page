@@ -15,7 +15,8 @@ test("live recordings show the selected 15 clips and connect both concerts to th
   await expect(page.locator("[data-live-video]")).toHaveCount(15);
   await expect(page.getByText("15 段影片", { exact: true })).toBeVisible();
   await expect(page.locator("iframe")).toHaveCount(0);
-  await expect(page.locator("[data-live-record]")).toHaveCount(6);
+  await expect(page.locator("[data-live-record]")).toHaveCount(7);
+  await expect(page.locator('[data-live-record="wang-dao-ming-graduation-2026"]')).toContainText("音響 · 樂手");
   await expect(page.locator("[data-live-record]").last()).toContainText("Kai & His Friends");
   await expect(page.locator("[data-live-record]").last().locator(".record-year")).toBeEmpty();
 

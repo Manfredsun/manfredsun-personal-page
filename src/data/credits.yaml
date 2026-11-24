@@ -41,6 +41,24 @@ credits:
     verified: true
     source: "Obsidian: 自我簡歷.md / src/content/works/duckbill-mission.md"
 
+  - project: "王道明畢業展演"
+    role: "音響"
+    category: "live"
+    work_slug: "wang-dao-ming-graduation-2026"
+    year: 2026
+    date: "2026-05-30"
+    verified: true
+    source: "Obsidian: 我的人生.md"
+
+  - project: "王道明畢業展演"
+    role: "樂手"
+    category: "live"
+    work_slug: "wang-dao-ming-graduation-2026"
+    year: 2026
+    date: "2026-05-30"
+    verified: true
+    source: "Obsidian: 我的人生.md"
+
   # ===== 2025 =====
   - project: "明日劇痛會暫停"
     artist: "Jacky Fcy 范卓賢"

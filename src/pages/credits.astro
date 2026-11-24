@@ -6,7 +6,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { publicProjects } from "../data/credits";
 import { categoryLabels } from "../data/portfolio";
 
-const caseSlugs = new Set((await getCollection("works", ({ data }) => data.case_study && data.verification === "verified")).map(({ data }) => data.slug));
+const cases = new Map((await getCollection("works", ({ data }) => data.case_study && data.verification === "verified")).map(({ data }) => [data.slug, data]));
 const years = [...new Set(publicProjects.flatMap((credit) => credit.year ? [credit.year] : []))].sort((a, b) => b - a);
 const roles = [...new Set(publicProjects.flatMap((credit) => credit.roles))].sort();
 const categories = [...new Set(publicProjects.map((credit) => credit.category))];
@@ -46,23 +46,29 @@ const categories = [...new Set(publicProjects.map((credit) => credit.category))]
     <div class="credits-table">
       <div class="credits-table__head" aria-hidden="true"><span>作品</span><span>職務</span><span>類別</span></div>
       <ul>
-        {publicProjects.map((credit) => (
+        {publicProjects.map((credit) => {
+          const work = cases.get(credit.work_slug);
+          return (
           <li id={`credit-${credit.work_slug}`} class="credits-table__row" data-year={credit.year || ""} data-category={credit.category} data-roles={credit.roles.join("|")}>
             <div class="credit-project">
-              {caseSlugs.has(credit.work_slug)
-                ? <a href={sitePath(`/works/${credit.work_slug}/`)}>{credit.project}</a>
+              {work
+                ? <a href={sitePath(`/works/${credit.work_slug}/`)}>
+                  {credit.category === "live" && work.cover && <img class="credit-cover" src={sitePath(work.cover)} alt={work.cover_alt} width="160" height="120" loading="lazy" />}
+                  {credit.project}
+                </a>
                 : credit.external_url
                   ? <a href={credit.external_url} target="_blank" rel="noopener noreferrer">{credit.project} <span aria-hidden="true">↗</span></a>
                   : <strong>{credit.project}</strong>}
               {(credit.year || credit.artist || credit.company) && <small>{[credit.year, credit.artist && !credit.project.includes(credit.artist) ? credit.artist : null, credit.company].filter(Boolean).join(" · ")}</small>}
-              {caseSlugs.has(credit.work_slug) && credit.external_url && (
+              {work && credit.external_url && (
                 <a class="credit-external" href={credit.external_url} target="_blank" rel="noopener noreferrer">外部連結 ↗</a>
               )}
             </div>
             <strong>{credit.roles.join(" · ")}</strong>
             <span>{categoryLabels[credit.category]}</span>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
     <p class="filter-empty" data-credit-empty hidden>沒有符合條件的作品。</p>
@@ -92,6 +98,7 @@ const categories = [...new Set(publicProjects.map((credit) => credit.category))]
 <style is:global>
   .credit-project { display: grid; gap: .5rem; min-width: 0; }
   .credit-project small { color: var(--muted-ink); }
+  .credit-cover { display: block; width: 10rem; max-width: 100%; height: auto; margin-bottom: .5rem; }
   .credit-project .credit-external { width: fit-content; color: var(--muted-ink); font-family: var(--sans); font-size: .875rem; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
   .credit-project .credit-external:hover { color: var(--ink); }
   .credits-index { padding-block: clamp(3rem, 7vw, 6rem) clamp(5rem, 11vw, 9rem); }
