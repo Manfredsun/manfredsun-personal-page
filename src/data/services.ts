@@ -36,6 +36,13 @@ export const serviceDetails: Record<string, {
       description: "在這場演出中負責演出音控、音響器材統籌、現場執行及現場混音。",
     }],
   },
+  "services/theatre-video": {
+    deliverables: "依製作需求提供演出現場影像執行，工作範圍與現場分工於洽詢時確認。",
+    examples: [
+      { label: "合唱音樂劇《第一市場》", path: "/credits/#credit-first-public-retail-market" },
+      { label: "蘭陽戲劇團《新周公法鬥桃花女》", path: "/credits/#credit-new-zhou-gong-fights-peach-blossom-girl" },
+    ],
+  },
   "services/sound-design": {
     deliverables: "完成清理、音量平衡或混音的音檔",
     price: { label: "後製混音", amount: 1000, unit: "軌" },

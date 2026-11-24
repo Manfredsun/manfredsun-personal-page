@@ -74,6 +74,10 @@ test("mobile visitors can compare the arrangement price and examples and reach t
   const liveSound = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "音場設計｜音控", exact: true }) });
   await expect(liveSound.locator(".service-price")).toHaveText("個別報價");
   await expect(liveSound.getByRole("link", { name: "《達克比出任務》音場設計" })).toHaveAttribute("href", `${base}/works/duckbill-mission/`);
+  const theatreVideo = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "影像執行", exact: true }) });
+  await expect(theatreVideo.locator(".service-price")).toHaveText("個別報價");
+  await expect(theatreVideo.getByRole("link", { name: "合唱音樂劇《第一市場》" })).toHaveAttribute("href", `${base}/credits/#credit-first-public-retail-market`);
+  await expect(theatreVideo.getByRole("link", { name: "蘭陽戲劇團《新周公法鬥桃花女》" })).toHaveAttribute("href", `${base}/credits/#credit-new-zhou-gong-fights-peach-blossom-girl`);
   const theatre = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "劇場音樂設計", exact: true }) });
   await expect(theatre.getByRole("link", { name: "《南薑．香茅．罌粟花》音樂設計" })).toHaveAttribute("href", `${base}/works/galangal-lemongrass-poppies/`);
   await expect(theatre.getByRole("link", { name: "《半島體制》音樂設計" })).toHaveAttribute("href", `${base}/works/peninsula-system/`);

@@ -47,7 +47,7 @@ const categories = [...new Set(publicProjects.map((credit) => credit.category))]
       <div class="credits-table__head" aria-hidden="true"><span>作品</span><span>職務</span><span>類別</span></div>
       <ul>
         {publicProjects.map((credit) => (
-          <li class="credits-table__row" data-year={credit.year || ""} data-category={credit.category} data-roles={credit.roles.join("|")}>
+          <li id={`credit-${credit.work_slug}`} class="credits-table__row" data-year={credit.year || ""} data-category={credit.category} data-roles={credit.roles.join("|")}>
             <div class="credit-project">
               {caseSlugs.has(credit.work_slug)
                 ? <a href={sitePath(`/works/${credit.work_slug}/`)}>{credit.project}</a>
@@ -103,7 +103,7 @@ const categories = [...new Set(publicProjects.map((credit) => credit.category))]
   .credits-table__head, .credits-table__row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, .8fr); gap: 1rem; align-items: center; }
   .credits-table__head { padding: 1rem 0; color: var(--muted-ink); font-size: .9375rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
   .credits-table ul { margin: 0; padding: 0; list-style: none; }
-  .credits-table__row { min-height: 5.5rem; padding: 1.25rem 0; border-top: 1px solid var(--separator); }
+  .credits-table__row { min-height: 5.5rem; padding: 1.25rem 0; border-top: 1px solid var(--separator); scroll-margin-top: calc(var(--header-height) + 1rem); }
   .credits-table__row a { width: fit-content; font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.8rem); line-height: 1.2; }
   .credits-table__row strong { font-weight: 650; }
   .credits-table__row span { color: var(--muted-ink); }
