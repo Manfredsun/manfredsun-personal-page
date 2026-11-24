@@ -71,8 +71,11 @@ test("mobile visitors can compare the arrangement price and examples and reach t
   await expect(arrangement.locator(".service-price")).toHaveText("NT$5,000／首");
   await expect(arrangement.getByText("編曲一首多少錢？", { exact: true })).toBeVisible();
   await expect(arrangement.locator(".service-delivery dd")).toContainText("每首新台幣 5,000 元，交付編曲音檔");
-  await expect(page.getByRole("link", { name: "《達克比出任務》音場設計" })).toHaveAttribute("href", `${base}/works/duckbill-mission/`);
-  await expect(page.getByRole("link", { name: "《南薑．香茅．罌粟花》音樂設計" })).toHaveAttribute("href", `${base}/works/galangal-lemongrass-poppies/`);
+  const liveSound = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "音場設計｜音控", exact: true }) });
+  await expect(liveSound.locator(".service-price")).toHaveText("個別報價");
+  await expect(liveSound.getByRole("link", { name: "《達克比出任務》音場設計" })).toHaveAttribute("href", `${base}/works/duckbill-mission/`);
+  const theatre = page.locator(".service-card").filter({ has: page.getByRole("heading", { name: "劇場音樂設計", exact: true }) });
+  await expect(theatre.getByRole("link", { name: "《南薑．香茅．罌粟花》音樂設計" })).toHaveAttribute("href", `${base}/works/galangal-lemongrass-poppies/`);
   await arrangement.getByRole("link", { name: /Jacky Fcy 編曲作品選集/ }).click();
   await expect(page).toHaveURL(`${base}/works/jacky-fcy-selected-works/`);
   await page.getByRole("link", { name: "洽詢編曲合作" }).click();

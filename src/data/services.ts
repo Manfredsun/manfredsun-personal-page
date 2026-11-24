@@ -23,14 +23,15 @@ export const serviceDetails: Record<string, {
   },
   "services/theatre-music": {
     deliverables: "配合劇本、場景與演出需求的音樂",
-    examples: [
-      { label: "《南薑．香茅．罌粟花》音樂設計", path: "/works/galangal-lemongrass-poppies/" },
-      {
-        label: "《達克比出任務》音場設計",
-        path: "/works/duckbill-mission/",
-        description: "在這場演出中負責演出音控、音響器材統籌、現場執行及現場混音。",
-      },
-    ],
+    examples: [{ label: "《南薑．香茅．罌粟花》音樂設計", path: "/works/galangal-lemongrass-poppies/" }],
+  },
+  "services/live-sound": {
+    deliverables: "演出現場音控與混音，器材配置及分工於洽詢時確認。",
+    examples: [{
+      label: "《達克比出任務》音場設計",
+      path: "/works/duckbill-mission/",
+      description: "在這場演出中負責演出音控、音響器材統籌、現場執行及現場混音。",
+    }],
   },
   "services/sound-design": {
     deliverables: "完成清理、音量平衡或混音的音檔",
